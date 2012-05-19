@@ -2,7 +2,7 @@
 layout: post
 title: "Sharing session between Rails and PHP"
 date: 2012-05-01 13:07
-comments: false
+comments: true
 categories: [Ruby, Rails, PHP]
 ---
 
