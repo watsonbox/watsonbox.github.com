@@ -6,6 +6,8 @@ comments: true
 categories: [Ruby, Rails, PHP]
 ---
 
+_Update: Here's a [more elegant solution](/blog/2012/07/24/rails-and-php-session-sharing-number-2/) which uses Dalli instead of memcache-client._
+
 Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here's one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using [memcached](http://memcached.org/) for session storage:
 
 ``` ini php.ini
