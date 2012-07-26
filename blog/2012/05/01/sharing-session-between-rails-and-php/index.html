@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Watsonbox</title>
+  <title>Sharing session between Rails and PHP - Watsonbox</title>
   <meta name="author" content="Howard Wilson">
 
   
-  <meta name="description" content="Back in May I posted on how I set up shared sessions between Rails and a legacy PHP app. Since then I&#8217;ve upgraded memcache-client to Mike &hellip;">
+  <meta name="description" content="Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&#8217;s one way this &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://watsonbox.github.com/">
+  <link rel="canonical" href="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -74,126 +74,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">Rails &amp; PHP Session Sharing #2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-24T16:37:00+02:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Back in May I <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">posted</a> on how I set up shared sessions between Rails and a legacy PHP app. Since then I&#8217;ve upgraded memcache-client to Mike Perham&#8217;s replacement, <a href="https://github.com/mperham/dalli/">Dalli</a>. I took this opportunity to tidy up the PHP session store as well. Here is what I have now:</p>
-
-<div><script src='https://gist.github.com/3170415.js?file='></script>
-<noscript><pre><code>require 'action_dispatch/middleware/session/dalli_store'
-
-# - PHP side is 5.3.6 configured with session.save_handler = memcache
-# - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
-module ActionDispatch
-  module Session
-    class PhpDalliStore &lt; ActionDispatch::Session::DalliStore
-      require 'php_serialize'
-
-      class PhpSerializingPoolDecorator &lt; SimpleDelegator
-        def set(key, value, ttl = nil, options = nil)
-          super(key, PHP.serialize_session(value), 0, :raw =&gt; true)
-        end
-
-        def get(key, options = nil)
-          value = super(key)
-          PHP.unserialize(value) if value &amp;&amp; value != ''
-        end
-      end
-
-      def initialize(app, options = {})
-        # Default to no namespace and cookie name matching PHP settings
-        super(app, options.merge(:namespace =&gt; nil, :key =&gt; 'PHPSESSID'))
-
-        # Decorate the pool to do some serialization
-        @pool = PhpSerializingPoolDecorator.new(@pool)
-      end
-    end
-  end
-end</code></pre></noscript></div>
-
-
-<p>This is cleaner than what I had before and should be much more resistant to changes in Dalli, too.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/05/19/confreaks-xbmc-addon/">Confreaks XBMC Addon</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-05-19T22:06:00+02:00" pubdate data-updated="true">May 19<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Today I wrote a little plugin for watching <a href="http://www.confreaks.com/">Confreaks</a> Ruby presentations in <a href="http://www.xbmc.org/">XBMC</a>.</p>
-
-<p>As luck would have it, Jonathan Beluch has been working on <a href="http://readthedocs.org/projects/xbmcswift2/">xmbcswift2</a> over the last month or so, which he describes as &#8220;A micro framework to enable rapid development of XBMC plugins&#8221;. Although the library is still under development, the documentation is very complete.</p>
-
-<p>Check out the xbmc-confreaks <a href="http://github.com/watsonbox/xbmc-confreaks">source</a>, or download the <a href="http://github.com/watsonbox/xbmc-confreaks/raw/master/release/xbmc-confreaks-0.1.zip">zip file</a> ready to be installed directly into XBMC. I&#8217;ve only tested it with the latest stable release of XBMC 11.0 Eden.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">Sharing Session Between Rails and PHP</a></h1>
+      <h1 class="entry-title">Sharing Session Between Rails and PHP</h1>
     
     
       <p class="meta">
@@ -216,7 +102,7 @@ end</code></pre></noscript></div>
   </header>
 
 
-  <div class="entry-content"><p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&#8217;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
+<div class="entry-content"><p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&#8217;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
 
 <figure class='code'><figcaption><span>php.ini</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -314,18 +200,69 @@ end</code></pre></noscript></div>
 
 <p>That&#8217;s it, your applications should both now be able to seamlessly access the same session data.</p>
 </div>
+
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Howard Wilson</span></span>
+
+      
+
+
+
+
+
+
+
+
   
 
 
-    </article>
+<time datetime="2012-05-01T13:07:00+02:00" pubdate data-updated="true">May 1<span>st</span>, 2012</time>
+      
+
+<span class="categories">
   
-  <div class="pagination">
+    <a class='category' href='/blog/categories/php/'>PHP</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+  
+</span>
+
+
+    </p>
     
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/" data-via="" data-counturl="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
 </div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/05/19/confreaks-xbmc-addon/" title="Next Post: Confreaks XBMC Addon">Confreaks XBMC Addon &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
 <aside class="sidebar">
   
     <section>
@@ -350,7 +287,7 @@ end</code></pre></noscript></div>
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/watsonbox">@watsonbox</a> on GitHub
@@ -384,6 +321,7 @@ end</code></pre></noscript></div>
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -398,7 +336,10 @@ end</code></pre></noscript></div>
       var disqus_shortname = 'watsonbox';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/';
+        var disqus_url = 'http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

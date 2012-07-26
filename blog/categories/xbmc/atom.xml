@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: XBMC | Watsonbox]]></title>
+  <link href="http://watsonbox.github.com/blog/categories/xbmc/atom.xml" rel="self"/>
+  <link href="http://watsonbox.github.com/"/>
+  <updated>2012-07-26T23:08:53+02:00</updated>
+  <id>http://watsonbox.github.com/</id>
+  <author>
+    <name><![CDATA[Howard Wilson]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Confreaks XBMC Addon]]></title>
+    <link href="http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon/"/>
+    <updated>2012-05-19T22:06:00+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon</id>
+    <content type="html"><![CDATA[<p>Today I wrote a little plugin for watching <a href="http://www.confreaks.com/">Confreaks</a> Ruby presentations in <a href="http://www.xbmc.org/">XBMC</a>.</p>
+
+<p>As luck would have it, Jonathan Beluch has been working on <a href="http://readthedocs.org/projects/xbmcswift2/">xmbcswift2</a> over the last month or so, which he describes as "A micro framework to enable rapid development of XBMC plugins". Although the library is still under development, the documentation is very complete.</p>
+
+<p>Check out the xbmc-confreaks <a href="http://github.com/watsonbox/xbmc-confreaks">source</a>, or download the <a href="http://github.com/watsonbox/xbmc-confreaks/raw/master/release/xbmc-confreaks-0.1.zip">zip file</a> ready to be installed directly into XBMC. I've only tested it with the latest stable release of XBMC 11.0 Eden.</p>
+]]></content>
+  </entry>
+  
+</feed>

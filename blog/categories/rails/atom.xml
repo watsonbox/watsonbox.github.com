@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Rails | Watsonbox]]></title>
+  <link href="http://watsonbox.github.com/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://watsonbox.github.com/"/>
+  <updated>2012-07-26T23:08:53+02:00</updated>
+  <id>http://watsonbox.github.com/</id>
+  <author>
+    <name><![CDATA[Howard Wilson]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rails &amp; PHP Session Sharing #2]]></title>
+    <link href="http://watsonbox.github.com/blog/2012/07/24/rails-and-php-session-sharing-number-2/"/>
+    <updated>2012-07-24T16:37:00+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2012/07/24/rails-and-php-session-sharing-number-2</id>
+    <content type="html"><![CDATA[<p>Back in May I <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">posted</a> on how I set up shared sessions between Rails and a legacy PHP app. Since then I've upgraded memcache-client to Mike Perham's replacement, <a href="https://github.com/mperham/dalli/">Dalli</a>. I took this opportunity to tidy up the PHP session store as well. Here is what I have now:</p>
+
+<p><div><script src='https://gist.github.com/3170415.js?file='></script>
+<noscript><pre><code>require 'action_dispatch/middleware/session/dalli_store'
+
+# - PHP side is 5.3.6 configured with session.save_handler = memcache
+# - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
+module ActionDispatch
+  module Session
+    class PhpDalliStore &lt; ActionDispatch::Session::DalliStore
+      require 'php_serialize'
+
+      class PhpSerializingPoolDecorator &lt; SimpleDelegator
+        def set(key, value, ttl = nil, options = nil)
+          super(key, PHP.serialize_session(value), 0, :raw =&gt; true)
+        end
+
+        def get(key, options = nil)
+          value = super(key)
+          PHP.unserialize(value) if value &amp;&amp; value != ''
+        end
+      end
+
+      def initialize(app, options = {})
+        # Default to no namespace and cookie name matching PHP settings
+        super(app, options.merge(:namespace =&gt; nil, :key =&gt; 'PHPSESSID'))
+
+        # Decorate the pool to do some serialization
+        @pool = PhpSerializingPoolDecorator.new(@pool)
+      end
+    end
+  end
+end</code></pre></noscript></div>
+</p>
+
+<p>This is cleaner than what I had before and should be much more resistant to changes in Dalli, too.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Sharing session between Rails and PHP]]></title>
+    <link href="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/"/>
+    <updated>2012-05-01T13:07:00+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php</id>
+    <content type="html"><![CDATA[<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here's one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
+
+<p><code>ini php.ini
+session.save_handler = memcache
+session.save_path = "tcp://localhost:11211"
+</code></p>
+
+<p>If you're interested in seeing how the PHP data gets serialized, take the value of the <code>PHPSESSID</code> cookie and perform a <code>GET</code> request in a memcached telnet session:</p>
+
+<p><code>bash
+$ telnet localhost 11211
+Trying ::1...
+Connected to localhost.
+Escape character is '^]'.
+get a29ajb8go3bkm6r6k2qu4hv3d5
+VALUE a29ajb8go3bkm6r6k2qu4hv3d5 0 298
+state|s:32:"hgc8cf6e737b4f28ca9872ghe059577b";access_token|s:113:"AAACldPr8ZAokBAFmih7MCYhTlrOSmz7Ro3wJrZCVLeZCkrpQGhSL5hy4dRjYXikOjaBWbt2GJkjcpQj6MpJIopZBU3vURpVfJZBHKZAb7MyQZDZD";user_id|i:100000123456789;LAST_FACEBOOK_IDENTITY_CHECK|s:10:"1334154070";LAST_FACEBOOK_OAUTH_CHECK|s:10:"1334154070";
+END
+</code></p>
+
+<p>There are a few Ruby libraries out there which can speak the language of PHP serialization. I've chosen Thomas Hurst's <a href="https://github.com/watsonbox/php-serialize">php-serialize</a>. Note that I've linked to my fork which also supports <code>.</code> characters in array keys. Add that to your Gemfile, and then include the following middleware in your Rails application.</p>
+
+<p><div><script src='https://gist.github.com/2367946.js?file='></script>
+<noscript><pre><code># Overrides functionality in Rack::Session::Memcache from Rack 1.4.1 to support sharing PHP sessions
+# - PHP side is 5.3.6 configured with session.save_handler = memcache
+# - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
+
+module ActionDispatch
+  module Session
+    class PhpSessionStore &lt; ActionDispatch::Session::MemCacheStore
+      require 'php_serialize'
+      
+      def initialize(app, options = {})
+        require 'memcache'
+        options[:expire_after] ||= options[:expires]
+        
+        # Default to no namespace and cookie name matching PHP settings
+        super(app, options.merge(:namespace =&gt; nil, :key =&gt; 'PHPSESSID'))
+      end
+      
+      def get_session(env, sid)
+        with_lock(env, [nil, {}]) do
+          unless session = deserialize_session(sid)
+            sid, session = generate_sid, {}
+            
+            unless /^STORED/ =~ @pool.add(sid, PHP.serialize_session(session), 0, true)
+              raise &quot;Session collision on '#{sid.inspect}'&quot;
+            end
+          end
+          [sid, session]
+        end
+      end
+      
+      def set_session(env, session_id, new_session, options)
+        expiry = options[:expire_after]
+        expiry = expiry.nil? ? 0 : expiry + 1
+
+        with_lock(env, false) do
+          @pool.set session_id, PHP.serialize_session(new_session), expiry, true
+          session_id
+        end
+      end
+
+      protected
+
+      def deserialize_session(session_id)
+        if session_id
+          raw_session = @pool.get(session_id, true)
+
+          if raw_session &amp;&amp; raw_session != ''
+            PHP.unserialize(raw_session)
+          end
+        end
+      end
+    end
+  end
+end</code></pre></noscript></div>
+</p>
+
+<p>Now you can use this session store in <code>session_store.rb</code>:</p>
+
+<p><code>
+YourApp::Application.config.session_store :php_session_store, :expire_after =&gt; 10.minutes
+</code></p>
+
+<p>That's it, your applications should both now be able to seamlessly access the same session data.</p>
+]]></content>
+  </entry>
+  
+</feed>
