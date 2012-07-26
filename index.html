@@ -216,7 +216,9 @@ end</code></pre></noscript></div>
   </header>
 
 
-  <div class="entry-content"><p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&#8217;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
+  <div class="entry-content"><p><em>Update: Here&#8217;s a <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">more elegant solution</a> which uses Dalli instead of memcache-client.</em></p>
+
+<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&#8217;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
 
 <figure class='code'><figcaption><span>php.ini</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
