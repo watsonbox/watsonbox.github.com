@@ -4,7 +4,7 @@
   <title><![CDATA[Watsonbox]]></title>
   <link href="http://watsonbox.github.com/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2012-07-26T23:22:27+02:00</updated>
+  <updated>2012-09-27T15:24:56+02:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -12,6 +12,129 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[FB Canvas Apps #1: Dialog Positioning]]></title>
+    <link href="http://watsonbox.github.com/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning/"/>
+    <updated>2012-09-25T16:33:00+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning</id>
+    <content type="html"><![CDATA[<p>Having worked on several Facebook applications, I&#8217;ve built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame.</p>
+
+<p>The problem is caused by Facebook resizing the canvas iFrame to accommodate the entire page. When a dialog is displayed inside the canvas application, it is displayed vertically centered inside that iFrame, which can cause the current browser scroll position to jump up or down accordingly.</p>
+
+<p>The fix is to call Facebook&#8217;s <a href="http://developers.facebook.com/docs/reference/javascript/FB.Canvas.getPageInfo/"><code>FB.Canvas.getPageInfo</code></a> JS API method, to position the dialog relative to the user&#8217;s current browser scroll position.</p>
+
+<p>Here is an implementation which uses <a href="http://coffeescript.org/">CoffeeScript</a> and extends the <a href="http://jqueryui.com/demos/dialog/">jQuery UI dialog widget</a>.</p>
+
+<figure class='code'><figcaption><span>Facebook Initialization</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="c1"># Async Facebook initialisation</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nv">fbAsyncInit = </span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span> <span class="nv">appId: </span><span class="s">&#39;APP_ID&#39;</span><span class="p">,</span> <span class="nv">status: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">cookie: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">xfbml: </span><span class="kc">true</span> <span class="p">})</span>
+</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">setAutoGrow</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Allows other components to hook into this event with $(document).on(&#39;fb:initialized&#39;, -&gt; ...)</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s">&#39;fb:initialized&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>The Dialog Widget</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">CanvasDialog =</span>
+</span><span class='line'>  <span class="c1"># Some example default dialog options</span>
+</span><span class='line'>  <span class="nv">options: </span><span class="p">{</span>
+</span><span class='line'>    <span class="nv">width: </span><span class="mi">600</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">modal: </span><span class="kc">true</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">autoOpen: </span><span class="kc">true</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">_init: </span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nx">@_inCanvas</span>
+</span><span class='line'>      <span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="nx">_fbLoaded</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="kc">on</span> <span class="s">&#39;fb:initialized&#39;</span><span class="p">,</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">_showDialog</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Displays the dialog positioned correctly inside the FB canvas iFrame</span>
+</span><span class='line'>  <span class="nv">_showDialogInCanvas: </span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span> <span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="o">=&gt;</span>
+</span><span class='line'>      <span class="vi">@options.position = </span><span class="p">[</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="mi">50</span><span class="p">]</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">_showDialog</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Calls the jQuery UI dialog&#39;s original init method</span>
+</span><span class='line'>  <span class="nv">_showDialog: </span><span class="o">-&gt;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_init</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># True if dialog is being loading inside the FB iFrame (any iFrame for that matter)</span>
+</span><span class='line'>  <span class="nv">_inCanvas: </span><span class="nx">top</span> <span class="o">!=</span> <span class="nx">self</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># True if FB javascript API has been loaded</span>
+</span><span class='line'>  <span class="nv">_fbLoaded: </span><span class="o">-&gt;</span> <span class="k">typeof</span> <span class="nx">FB</span> <span class="o">!=</span> <span class="s">&#39;undefined&#39;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">widget</span> <span class="s">&quot;ui.canvasDialog&quot;</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">,</span> <span class="nx">CanvasDialog</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Example Usage</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s">&#39;#canvasDialog&#39;</span><span class="p">).</span><span class="nx">canvasDialog</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Notes</h3>
+
+<ul>
+<li><p>By triggering an event when Facebook is initialized, the <code>CanvasDialog</code> is able to wait for the Facebook JS API to become available if it has not yet been loaded.</p></li>
+<li><p>In development it can be useful to work outside the Facebook environment. The <code>CanvasDialog</code> detects this and shows the dialog without attempting to call the Facebook API.</p></li>
+<li><p>In the past I&#8217;ve often used the excellent and well maintained <a href="http://www.jacklmoore.com/colorbox">ColorBox</a> library for dialogs. I note that it too has been <a href="https://github.com/jackmoore/colorbox/pull/93">updated</a> with similar functionalilty.</p></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails &amp; PHP Session Sharing #2]]></title>
