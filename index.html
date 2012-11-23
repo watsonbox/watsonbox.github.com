@@ -9,7 +9,7 @@
   <meta name="author" content="Howard Wilson">
 
   
-  <meta name="description" content="Having worked on several Facebook applications, I&#8217;ve built up a few tricks to solve some common problems. This one shows how to get a dialog ( &hellip;">
+  <meta name="description" content="Recently I was asked to add a fixed position &#8216;tab&#8217; to the left side of a Facebook canvas app, for example like the Get Satisfaction &# &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +76,74 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/">FB Canvas Apps #2: Fixed Positioning</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-23T13:32:00+01:00" pubdate data-updated="true">Nov 23<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recently I was asked to add a fixed position &#8216;tab&#8217; to the left side of a Facebook canvas app, for example like the <a href="https://getsatisfaction.com/">Get Satisfaction</a> &#8216;Community&#8217; tab.</p>
+
+<p>Normally this would be a simple case of using <code>position: fixed</code>, but not in this case because Facebook canvas apps live inside iFrames. Facebook resizes this iFrame to fit its content, meaning that the main browser scrollbar is used to scroll around the page rather than the iFrame&#8217;s scrollbar. However, fixed position elements are fixed relative to the iFrame, not the main document. Since the iFrame never actually scrolls, the fixed element stays put.</p>
+
+<p>The solution is to use a little javascript to scroll the fixed element relative to the Facebook scroll position at a fixed interval. This gives a slightly different user experience but is the best approach I&#8217;ve found so far.</p>
+
+<figure class='code'><figcaption><span>CoffeeScript/jQuery: pseudoFixed Method and Invocation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">$.fn.pseudoFixed = </span><span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nv">top = </span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">().</span><span class="nx">top</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">setInterval</span><span class="p">(</span>
+</span><span class='line'>    <span class="o">=&gt;</span> <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span><span class="p">((</span><span class="nx">info</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span> <span class="nv">top: </span><span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="nx">top</span> <span class="p">})),</span>
+</span><span class='line'>    <span class="mi">1000</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s">&#39;[data-behavior~=pseudo-fixed]&#39;</span><span class="p">).</span><span class="nx">pseudoFixed</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Example HTML Tab Element</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">data-behavior=</span><span class="s">&quot;pseudo-fixed&quot;</span> <span class="na">style=</span><span class="s">&quot;position: fixed; left: 0; top: 150px&quot;</span><span class="nt">&gt;</span>...<span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -483,6 +551,10 @@ end</code></pre></noscript></div>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/">FB Canvas Apps #2: Fixed Positioning</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning/">FB Canvas Apps #1: Dialog Positioning</a>

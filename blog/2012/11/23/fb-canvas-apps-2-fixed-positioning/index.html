@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Confreaks XBMC Addon - Watsonbox</title>
+  <title>FB Canvas Apps #2: Fixed Positioning - Watsonbox</title>
   <meta name="author" content="Howard Wilson">
 
   
-  <meta name="description" content="Today I wrote a little plugin for watching Confreaks Ruby presentations in XBMC. As luck would have it, Jonathan Beluch has been working on &hellip;">
+  <meta name="description" content="Recently I was asked to add a fixed position &#8216;tab&#8217; to the left side of a Facebook canvas app, for example like the Get Satisfaction &# &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon/">
+  <link rel="canonical" href="http://watsonbox.github.com/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,7 +79,7 @@
   
   <header>
     
-      <h1 class="entry-title">Confreaks XBMC Addon</h1>
+      <h1 class="entry-title">FB Canvas Apps #2: Fixed Positioning</h1>
     
     
       <p class="meta">
@@ -95,18 +95,46 @@
   
 
 
-<time datetime="2012-05-19T22:06:00+02:00" pubdate data-updated="true">May 19<span>th</span>, 2012</time>
+<time datetime="2012-11-23T13:32:00+01:00" pubdate data-updated="true">Nov 23<span>rd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Today I wrote a little plugin for watching <a href="http://www.confreaks.com/">Confreaks</a> Ruby presentations in <a href="http://www.xbmc.org/">XBMC</a>.</p>
+<div class="entry-content"><p>Recently I was asked to add a fixed position &#8216;tab&#8217; to the left side of a Facebook canvas app, for example like the <a href="https://getsatisfaction.com/">Get Satisfaction</a> &#8216;Community&#8217; tab.</p>
 
-<p>As luck would have it, Jonathan Beluch has been working on <a href="http://readthedocs.org/projects/xbmcswift2/">xmbcswift2</a> over the last month or so, which he describes as &#8220;A micro framework to enable rapid development of XBMC plugins&#8221;. Although the library is still under development, the documentation is very complete.</p>
+<p>Normally this would be a simple case of using <code>position: fixed</code>, but not in this case because Facebook canvas apps live inside iFrames. Facebook resizes this iFrame to fit its content, meaning that the main browser scrollbar is used to scroll around the page rather than the iFrame&#8217;s scrollbar. However, fixed position elements are fixed relative to the iFrame, not the main document. Since the iFrame never actually scrolls, the fixed element stays put.</p>
 
-<p>Check out the xbmc-confreaks <a href="http://github.com/watsonbox/xbmc-confreaks">source</a>, or download the <a href="http://github.com/watsonbox/xbmc-confreaks/raw/master/release/xbmc-confreaks-0.1.zip">zip file</a> ready to be installed directly into XBMC. I&#8217;ve only tested it with the latest stable release of XBMC 11.0 Eden.</p>
+<p>The solution is to use a little javascript to scroll the fixed element relative to the Facebook scroll position at a fixed interval. This gives a slightly different user experience but is the best approach I&#8217;ve found so far.</p>
+
+<figure class='code'><figcaption><span>CoffeeScript/jQuery: pseudoFixed Method and Invocation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">$.fn.pseudoFixed = </span><span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nv">top = </span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">().</span><span class="nx">top</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">setInterval</span><span class="p">(</span>
+</span><span class='line'>    <span class="o">=&gt;</span> <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span><span class="p">((</span><span class="nx">info</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span> <span class="nv">top: </span><span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="nx">top</span> <span class="p">})),</span>
+</span><span class='line'>    <span class="mi">1000</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s">&#39;[data-behavior~=pseudo-fixed]&#39;</span><span class="p">).</span><span class="nx">pseudoFixed</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Example HTML Tab Element</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">data-behavior=</span><span class="s">&quot;pseudo-fixed&quot;</span> <span class="na">style=</span><span class="s">&quot;position: fixed; left: 0; top: 150px&quot;</span><span class="nt">&gt;</span>...<span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
@@ -129,12 +157,12 @@
   
 
 
-<time datetime="2012-05-19T22:06:00+02:00" pubdate data-updated="true">May 19<span>th</span>, 2012</time>
+<time datetime="2012-11-23T13:32:00+01:00" pubdate data-updated="true">Nov 23<span>rd</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/python/'>Python</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>, <a class='category' href='/blog/categories/xbmc/'>XBMC</a>
+    <a class='category' href='/blog/categories/coffeescript/'>CoffeeScript</a>, <a class='category' href='/blog/categories/facebook/'>Facebook</a>, <a class='category' href='/blog/categories/jquery/'>jQuery</a>
   
 </span>
 
@@ -143,7 +171,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon/" data-via="" data-counturl="http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/" data-via="" data-counturl="http://watsonbox.github.com/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -156,10 +184,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/05/01/sharing-session-between-rails-and-php/" title="Previous Post: Sharing session between Rails and PHP">&laquo; Sharing session between Rails and PHP</a>
+        <a class="basic-alignment left" href="/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning/" title="Previous Post: FB Canvas Apps #1: Dialog Positioning">&laquo; FB Canvas Apps #1: Dialog Positioning</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/" title="Next Post: Rails &amp; PHP Session Sharing #2">Rails &amp; PHP Session Sharing #2 &raquo;</a>
       
     </p>
   </footer>
@@ -255,8 +281,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon/';
-        var disqus_url = 'http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon/';
+        var disqus_identifier = 'http://watsonbox.github.com/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/';
+        var disqus_url = 'http://watsonbox.github.com/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/';
         var disqus_script = 'embed.js';
       
     (function () {
