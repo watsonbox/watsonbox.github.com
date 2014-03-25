@@ -4,7 +4,7 @@
   <title><![CDATA[Category: jQuery | Watsonbox]]></title>
   <link href="http://watsonbox.github.com/blog/categories/jquery/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2012-11-23T15:05:26+01:00</updated>
+  <updated>2014-03-25T12:37:40+01:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -18,14 +18,14 @@
     <link href="http://watsonbox.github.com/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/"/>
     <updated>2012-11-23T13:32:00+01:00</updated>
     <id>http://watsonbox.github.com/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning</id>
-    <content type="html"><![CDATA[<p>Recently I was asked to add a fixed position 'tab' to the left side of a Facebook canvas app, for example like the <a href="https://getsatisfaction.com/">Get Satisfaction</a> 'Community' tab.</p>
+    <content type="html"><![CDATA[<p>Recently I was asked to add a fixed position &lsquo;tab&rsquo; to the left side of a Facebook canvas app, for example like the <a href="https://getsatisfaction.com/">Get Satisfaction</a> &lsquo;Community&rsquo; tab.</p>
 
-<p>Normally this would be a simple case of using <code>position: fixed</code>, but not in this case because Facebook canvas apps live inside iFrames. Facebook resizes this iFrame to fit its content, meaning that the main browser scrollbar is used to scroll around the page rather than the iFrame's scrollbar. However, fixed position elements are fixed relative to the iFrame, not the main document. Since the iFrame never actually scrolls, the fixed element stays put.</p>
+<p>Normally this would be a simple case of using <code>position: fixed</code>, but not in this case because Facebook canvas apps live inside iFrames. Facebook resizes this iFrame to fit its content, meaning that the main browser scrollbar is used to scroll around the page rather than the iFrame&rsquo;s scrollbar. However, fixed position elements are fixed relative to the iFrame, not the main document. Since the iFrame never actually scrolls, the fixed element stays put.</p>
 
-<p>The solution is to use a little javascript to scroll the fixed element relative to the Facebook scroll position at a fixed interval. This gives a slightly different user experience but is the best approach I've found so far.</p>
+<p>The solution is to use a little javascript to scroll the fixed element relative to the Facebook scroll position at a fixed interval. This gives a slightly different user experience but is the best approach I&rsquo;ve found so far.</p>
 
 <p>```coffeescript CoffeeScript/jQuery: pseudoFixed Method and Invocation
-$.fn.pseudoFixed = ->
+$.fn.pseudoFixed = &ndash;>
   top = this.position().top</p>
 
 <p>  window.setInterval(</p>
@@ -36,7 +36,7 @@ $.fn.pseudoFixed = ->
 
 <p>  )</p>
 
-<p>$('[data-behavior~=pseudo-fixed]').pseudoFixed()
+<p>$(&lsquo;[data-behavior~=pseudo-fixed]&rsquo;).pseudoFixed()
 ```</p>
 
 <p>```html Example HTML Tab Element</p>
@@ -53,18 +53,18 @@ $.fn.pseudoFixed = ->
     <link href="http://watsonbox.github.com/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning/"/>
     <updated>2012-09-25T16:33:00+02:00</updated>
     <id>http://watsonbox.github.com/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning</id>
-    <content type="html"><![CDATA[<p>Having worked on several Facebook applications, I've built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame.</p>
+    <content type="html"><![CDATA[<p>Having worked on several Facebook applications, I&rsquo;ve built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame.</p>
 
 <p>The problem is caused by Facebook resizing the canvas iFrame to accommodate the entire page. When a dialog is displayed inside the canvas application, it is displayed vertically centered inside that iFrame, which can cause the current browser scroll position to jump up or down accordingly.</p>
 
-<p>The fix is to call Facebook's <a href="http://developers.facebook.com/docs/reference/javascript/FB.Canvas.getPageInfo/"><code>FB.Canvas.getPageInfo</code></a> JS API method, to position the dialog relative to the user's current browser scroll position.</p>
+<p>The fix is to call Facebook&rsquo;s <a href="http://developers.facebook.com/docs/reference/javascript/FB.Canvas.getPageInfo/"><code>FB.Canvas.getPageInfo</code></a> JS API method, to position the dialog relative to the user&rsquo;s current browser scroll position.</p>
 
 <p>Here is an implementation which uses <a href="http://coffeescript.org/">CoffeeScript</a> and extends the <a href="http://jqueryui.com/demos/dialog/">jQuery UI dialog widget</a>.</p>
 
 <p>``` coffeescript Facebook Initialization
-$ ->
+$ &ndash;>
   # Async Facebook initialisation
-  window.fbAsyncInit = -></p>
+  window.fbAsyncInit = &ndash;></p>
 
 <pre><code>FB.init({ appId: 'APP_ID', status: true, cookie: true, xfbml: true })
 FB.Canvas.setAutoGrow()
@@ -87,7 +87,7 @@ autoOpen: true
 
 <p>  }</p>
 
-<p>  _init: -></p>
+<p>  _init: &ndash;></p>
 
 <pre><code>if @_inCanvas
   if this._fbLoaded()
@@ -99,23 +99,23 @@ else
 </code></pre>
 
 <p>  # Displays the dialog positioned correctly inside the FB canvas iFrame
-  _showDialogInCanvas: -></p>
+  _showDialogInCanvas: &ndash;></p>
 
 <pre><code>FB.Canvas.getPageInfo (info) =&gt;
   @options.position = ['center', info.scrollTop + 50]
   this._showDialog()
 </code></pre>
 
-<p>  # Calls the jQuery UI dialog's original init method
-  <em>showDialog: -> $.ui.dialog.prototype.</em>init.apply(this, arguments)</p>
+<p>  # Calls the jQuery UI dialog&rsquo;s original init method
+  <em>showDialog: &ndash;> $.ui.dialog.prototype.</em>init.apply(this, arguments)</p>
 
 <p>  # True if dialog is being loading inside the FB iFrame (any iFrame for that matter)
   _inCanvas: top != self</p>
 
 <p>  # True if FB javascript API has been loaded
-  _fbLoaded: -> typeof FB != 'undefined'</p>
+  _fbLoaded: &ndash;> typeof FB != &lsquo;undefined&rsquo;</p>
 
-<p>$.widget "ui.canvasDialog", $.ui.dialog, CanvasDialog
+<p>$.widget &ldquo;ui.canvasDialog&rdquo;, $.ui.dialog, CanvasDialog
 ```</p>
 
 <p><code>coffeescript Example Usage
@@ -127,7 +127,7 @@ $('#canvasDialog').canvasDialog()
 <ul>
 <li><p>By triggering an event when Facebook is initialized, the <code>CanvasDialog</code> is able to wait for the Facebook JS API to become available if it has not yet been loaded.</p></li>
 <li><p>In development it can be useful to work outside the Facebook environment. The <code>CanvasDialog</code> detects this and shows the dialog without attempting to call the Facebook API.</p></li>
-<li><p>In the past I've often used the excellent and well maintained <a href="http://www.jacklmoore.com/colorbox">ColorBox</a> library for dialogs. I note that it too has been <a href="https://github.com/jackmoore/colorbox/pull/93">updated</a> with similar functionalilty.</p></li>
+<li><p>In the past I&rsquo;ve often used the excellent and well maintained <a href="http://www.jacklmoore.com/colorbox">ColorBox</a> library for dialogs. I note that it too has been <a href="https://github.com/jackmoore/colorbox/pull/93">updated</a> with similar functionalilty.</p></li>
 </ul>
 
 ]]></content>

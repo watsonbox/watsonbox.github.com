@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Sharing session between Rails and PHP - Watsonbox</title>
+  <title>Sharing Session Between Rails and PHP - Watsonbox</title>
   <meta name="author" content="Howard Wilson">
 
   
-  <meta name="description" content="Update: Here&#8217;s a more elegant solution which uses Dalli instead of memcache-client. Sometimes Rails and PHP applications must live side by side &hellip;">
+  <meta name="description" content="Update: Here&rsquo;s a more elegant solution which uses Dalli instead of memcache-client. Sometimes Rails and PHP applications must live side by side &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,13 +18,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/">
+  <link rel="canonical" href="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="Watsonbox" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -102,9 +103,9 @@
   </header>
 
 
-<div class="entry-content"><p><em>Update: Here&#8217;s a <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">more elegant solution</a> which uses Dalli instead of memcache-client.</em></p>
+<div class="entry-content"><p><em>Update: Here&rsquo;s a <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">more elegant solution</a> which uses Dalli instead of memcache-client.</em></p>
 
-<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&#8217;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
+<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&rsquo;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
 
 <figure class='code'><figcaption><span>php.ini</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -113,7 +114,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>If you&#8217;re interested in seeing how the PHP data gets serialized, take the value of the <code>PHPSESSID</code> cookie and perform a <code>GET</code> request in a memcached telnet session:</p>
+<p>If you&rsquo;re interested in seeing how the PHP data gets serialized, take the value of the <code>PHPSESSID</code> cookie and perform a <code>GET</code> request in a memcached telnet session:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -134,9 +135,9 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>There are a few Ruby libraries out there which can speak the language of PHP serialization. I&#8217;ve chosen Thomas Hurst&#8217;s <a href="https://github.com/watsonbox/php-serialize">php-serialize</a>. Note that I&#8217;ve linked to my fork which also supports <code>.</code> characters in array keys. Add that to your Gemfile, and then include the following middleware in your Rails application.</p>
+<p>There are a few Ruby libraries out there which can speak the language of PHP serialization. I&rsquo;ve chosen Thomas Hurst&rsquo;s <a href="https://github.com/watsonbox/php-serialize">php-serialize</a>. Note that I&rsquo;ve linked to my fork which also supports <code>.</code> characters in array keys. Add that to your Gemfile, and then include the following middleware in your Rails application.</p>
 
-<div><script src='https://gist.github.com/2367946.js?file='></script>
+<div><script src='https://gist.github.com/2367946.js'></script>
 <noscript><pre><code># Overrides functionality in Rack::Session::Memcache from Rack 1.4.1 to support sharing PHP sessions
 # - PHP side is 5.3.6 configured with session.save_handler = memcache
 # - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
@@ -200,7 +201,7 @@ end</code></pre></noscript></div>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>That&#8217;s it, your applications should both now be able to seamlessly access the same session data.</p>
+<p>That&rsquo;s it, your applications should both now be able to seamlessly access the same session data.</p>
 </div>
 
 
@@ -237,7 +238,7 @@ end</code></pre></noscript></div>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/" data-via="" data-counturl="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/" data-via="" data-counturl="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -272,6 +273,10 @@ end</code></pre></noscript></div>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/25/confreaks-xbmc-addon-0-dot-3-0/">Confreaks XBMC Addon 0.3.0</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/">FB Canvas Apps #2: Fixed Positioning</a>
       </li>
     
@@ -288,7 +293,7 @@ end</code></pre></noscript></div>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">Sharing session between Rails and PHP</a>
+        <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">Sharing Session Between Rails and PHP</a>
       </li>
     
   </ul>
@@ -303,7 +308,7 @@ end</code></pre></noscript></div>
   <a href="https://github.com/watsonbox">@watsonbox</a> on GitHub
   
   <script type="text/javascript">
-    $.domReady(function(){
+    $(document).ready(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -327,7 +332,6 @@ end</code></pre></noscript></div>
 
 
 
-
   
 </aside>
 
@@ -335,7 +339,7 @@ end</code></pre></noscript></div>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2012 - Howard Wilson -
+  Copyright &copy; 2014 - Howard Wilson -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
@@ -353,7 +357,7 @@ end</code></pre></noscript></div>
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
@@ -364,7 +368,7 @@ end</code></pre></noscript></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
+  js = d.createElement(s); js.id = id; js.async = true;
   js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
@@ -386,7 +390,7 @@ end</code></pre></noscript></div>
       var twitterWidgets = document.createElement('script');
       twitterWidgets.type = 'text/javascript';
       twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>

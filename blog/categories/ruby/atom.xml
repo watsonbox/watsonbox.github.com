@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Watsonbox]]></title>
   <link href="http://watsonbox.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2012-11-23T15:05:26+01:00</updated>
+  <updated>2014-03-25T12:37:40+01:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -14,13 +14,22 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Confreaks XBMC Addon 0.3.0]]></title>
+    <link href="http://watsonbox.github.com/blog/2014/03/25/confreaks-xbmc-addon-0-dot-3-0/"/>
+    <updated>2014-03-25T12:30:25+01:00</updated>
+    <id>http://watsonbox.github.com/blog/2014/03/25/confreaks-xbmc-addon-0-dot-3-0</id>
+    <content type="html"><![CDATA[<p>I finally got around to updating <a href="https://github.com/watsonbox/xbmc-confreaks">xbmc-confreaks</a> to work properly with XBMC Frodo and Gotham. This time I&rsquo;ve also submitted it to the official XBMC Addons repository so as of yesterday you should be able to install it through &lsquo;Get Addons&rsquo; in XBMC itself. Be aware that you might need to refresh the repository (right click) first.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Rails &amp; PHP Session Sharing #2]]></title>
     <link href="http://watsonbox.github.com/blog/2012/07/24/rails-and-php-session-sharing-number-2/"/>
     <updated>2012-07-24T16:37:00+02:00</updated>
     <id>http://watsonbox.github.com/blog/2012/07/24/rails-and-php-session-sharing-number-2</id>
-    <content type="html"><![CDATA[<p>Back in May I <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">posted</a> on how I set up shared sessions between Rails and a legacy PHP app. Since then I've upgraded memcache-client to Mike Perham's replacement, <a href="https://github.com/mperham/dalli/">Dalli</a>. I took this opportunity to tidy up the PHP session store as well. Here is what I have now:</p>
+    <content type="html"><![CDATA[<p>Back in May I <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">posted</a> on how I set up shared sessions between Rails and a legacy PHP app. Since then I&rsquo;ve upgraded memcache-client to Mike Perham&rsquo;s replacement, <a href="https://github.com/mperham/dalli/">Dalli</a>. I took this opportunity to tidy up the PHP session store as well. Here is what I have now:</p>
 
-<p><div><script src='https://gist.github.com/3170415.js?file='></script>
+<p><div><script src='https://gist.github.com/3170415.js'></script>
 <noscript><pre><code>require 'action_dispatch/middleware/session/dalli_store'
 
 # - PHP side is 5.3.6 configured with session.save_handler = memcache
@@ -64,9 +73,9 @@ end</code></pre></noscript></div>
     <id>http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon</id>
     <content type="html"><![CDATA[<p>Today I wrote a little plugin for watching <a href="http://www.confreaks.com/">Confreaks</a> Ruby presentations in <a href="http://www.xbmc.org/">XBMC</a>.</p>
 
-<p>As luck would have it, Jonathan Beluch has been working on <a href="http://readthedocs.org/projects/xbmcswift2/">xmbcswift2</a> over the last month or so, which he describes as "A micro framework to enable rapid development of XBMC plugins". Although the library is still under development, the documentation is very complete.</p>
+<p>As luck would have it, Jonathan Beluch has been working on <a href="http://readthedocs.org/projects/xbmcswift2/">xmbcswift2</a> over the last month or so, which he describes as &ldquo;A micro framework to enable rapid development of XBMC plugins&rdquo;. Although the library is still under development, the documentation is very complete.</p>
 
-<p>Check out the xbmc-confreaks <a href="http://github.com/watsonbox/xbmc-confreaks">source</a>, or download the <a href="http://github.com/watsonbox/xbmc-confreaks/raw/master/release/xbmc-confreaks-0.1.zip">zip file</a> ready to be installed directly into XBMC. I've only tested it with the latest stable release of XBMC 11.0 Eden.</p>
+<p>Check out the xbmc-confreaks <a href="http://github.com/watsonbox/xbmc-confreaks">source</a>, or download the <a href="http://github.com/watsonbox/xbmc-confreaks/raw/master/release/xbmc-confreaks-0.1.zip">zip file</a> ready to be installed directly into XBMC. I&rsquo;ve only tested it with the latest stable release of XBMC 11.0 Eden.</p>
 ]]></content>
   </entry>
   
@@ -75,16 +84,16 @@ end</code></pre></noscript></div>
     <link href="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/"/>
     <updated>2012-05-01T13:07:00+02:00</updated>
     <id>http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php</id>
-    <content type="html"><![CDATA[<p><em>Update: Here's a <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">more elegant solution</a> which uses Dalli instead of memcache-client.</em></p>
+    <content type="html"><![CDATA[<p><em>Update: Here&rsquo;s a <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">more elegant solution</a> which uses Dalli instead of memcache-client.</em></p>
 
-<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here's one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
+<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&rsquo;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
 
 <p><code>ini php.ini
 session.save_handler = memcache
 session.save_path = "tcp://localhost:11211"
 </code></p>
 
-<p>If you're interested in seeing how the PHP data gets serialized, take the value of the <code>PHPSESSID</code> cookie and perform a <code>GET</code> request in a memcached telnet session:</p>
+<p>If you&rsquo;re interested in seeing how the PHP data gets serialized, take the value of the <code>PHPSESSID</code> cookie and perform a <code>GET</code> request in a memcached telnet session:</p>
 
 <p><code>bash
 $ telnet localhost 11211
@@ -97,9 +106,9 @@ state|s:32:"hgc8cf6e737b4f28ca9872ghe059577b";access_token|s:113:"AAACldPr8ZAokB
 END
 </code></p>
 
-<p>There are a few Ruby libraries out there which can speak the language of PHP serialization. I've chosen Thomas Hurst's <a href="https://github.com/watsonbox/php-serialize">php-serialize</a>. Note that I've linked to my fork which also supports <code>.</code> characters in array keys. Add that to your Gemfile, and then include the following middleware in your Rails application.</p>
+<p>There are a few Ruby libraries out there which can speak the language of PHP serialization. I&rsquo;ve chosen Thomas Hurst&rsquo;s <a href="https://github.com/watsonbox/php-serialize">php-serialize</a>. Note that I&rsquo;ve linked to my fork which also supports <code>.</code> characters in array keys. Add that to your Gemfile, and then include the following middleware in your Rails application.</p>
 
-<p><div><script src='https://gist.github.com/2367946.js?file='></script>
+<p><div><script src='https://gist.github.com/2367946.js'></script>
 <noscript><pre><code># Overrides functionality in Rack::Session::Memcache from Rack 1.4.1 to support sharing PHP sessions
 # - PHP side is 5.3.6 configured with session.save_handler = memcache
 # - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
@@ -162,7 +171,7 @@ end</code></pre></noscript></div>
 YourApp::Application.config.session_store :php_session_store, :expire_after =&gt; 10.minutes
 </code></p>
 
-<p>That's it, your applications should both now be able to seamlessly access the same session data.</p>
+<p>That&rsquo;s it, your applications should both now be able to seamlessly access the same session data.</p>
 ]]></content>
   </entry>
   

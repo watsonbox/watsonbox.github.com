@@ -9,7 +9,7 @@
   <meta name="author" content="Howard Wilson">
 
   
-  <meta name="description" content="Recently I was asked to add a fixed position &#8216;tab&#8217; to the left side of a Facebook canvas app, for example like the Get Satisfaction &# &hellip;">
+  <meta name="description" content="I finally got around to updating xbmc-confreaks to work properly with XBMC Frodo and Gotham. This time I&rsquo;ve also submitted it to the official &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,13 +18,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://watsonbox.github.com/">
+  <link rel="canonical" href="http://watsonbox.github.com">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="Watsonbox" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -82,6 +83,42 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/03/25/confreaks-xbmc-addon-0-dot-3-0/">Confreaks XBMC Addon 0.3.0</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-25T12:30:25+01:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I finally got around to updating <a href="https://github.com/watsonbox/xbmc-confreaks">xbmc-confreaks</a> to work properly with XBMC Frodo and Gotham. This time I&rsquo;ve also submitted it to the official XBMC Addons repository so as of yesterday you should be able to install it through &lsquo;Get Addons&rsquo; in XBMC itself. Be aware that you might need to refresh the repository (right click) first.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/">FB Canvas Apps #2: Fixed Positioning</a></h1>
     
     
@@ -105,11 +142,11 @@
   </header>
 
 
-  <div class="entry-content"><p>Recently I was asked to add a fixed position &#8216;tab&#8217; to the left side of a Facebook canvas app, for example like the <a href="https://getsatisfaction.com/">Get Satisfaction</a> &#8216;Community&#8217; tab.</p>
+  <div class="entry-content"><p>Recently I was asked to add a fixed position &lsquo;tab&rsquo; to the left side of a Facebook canvas app, for example like the <a href="https://getsatisfaction.com/">Get Satisfaction</a> &lsquo;Community&rsquo; tab.</p>
 
-<p>Normally this would be a simple case of using <code>position: fixed</code>, but not in this case because Facebook canvas apps live inside iFrames. Facebook resizes this iFrame to fit its content, meaning that the main browser scrollbar is used to scroll around the page rather than the iFrame&#8217;s scrollbar. However, fixed position elements are fixed relative to the iFrame, not the main document. Since the iFrame never actually scrolls, the fixed element stays put.</p>
+<p>Normally this would be a simple case of using <code>position: fixed</code>, but not in this case because Facebook canvas apps live inside iFrames. Facebook resizes this iFrame to fit its content, meaning that the main browser scrollbar is used to scroll around the page rather than the iFrame&rsquo;s scrollbar. However, fixed position elements are fixed relative to the iFrame, not the main document. Since the iFrame never actually scrolls, the fixed element stays put.</p>
 
-<p>The solution is to use a little javascript to scroll the fixed element relative to the Facebook scroll position at a fixed interval. This gives a slightly different user experience but is the best approach I&#8217;ve found so far.</p>
+<p>The solution is to use a little javascript to scroll the fixed element relative to the Facebook scroll position at a fixed interval. This gives a slightly different user experience but is the best approach I&rsquo;ve found so far.</p>
 
 <figure class='code'><figcaption><span>CoffeeScript/jQuery: pseudoFixed Method and Invocation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -173,11 +210,11 @@
   </header>
 
 
-  <div class="entry-content"><p>Having worked on several Facebook applications, I&#8217;ve built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame.</p>
+  <div class="entry-content"><p>Having worked on several Facebook applications, I&rsquo;ve built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame.</p>
 
 <p>The problem is caused by Facebook resizing the canvas iFrame to accommodate the entire page. When a dialog is displayed inside the canvas application, it is displayed vertically centered inside that iFrame, which can cause the current browser scroll position to jump up or down accordingly.</p>
 
-<p>The fix is to call Facebook&#8217;s <a href="http://developers.facebook.com/docs/reference/javascript/FB.Canvas.getPageInfo/"><code>FB.Canvas.getPageInfo</code></a> JS API method, to position the dialog relative to the user&#8217;s current browser scroll position.</p>
+<p>The fix is to call Facebook&rsquo;s <a href="http://developers.facebook.com/docs/reference/javascript/FB.Canvas.getPageInfo/"><code>FB.Canvas.getPageInfo</code></a> JS API method, to position the dialog relative to the user&rsquo;s current browser scroll position.</p>
 
 <p>Here is an implementation which uses <a href="http://coffeescript.org/">CoffeeScript</a> and extends the <a href="http://jqueryui.com/demos/dialog/">jQuery UI dialog widget</a>.</p>
 
@@ -285,7 +322,7 @@
 <ul>
 <li><p>By triggering an event when Facebook is initialized, the <code>CanvasDialog</code> is able to wait for the Facebook JS API to become available if it has not yet been loaded.</p></li>
 <li><p>In development it can be useful to work outside the Facebook environment. The <code>CanvasDialog</code> detects this and shows the dialog without attempting to call the Facebook API.</p></li>
-<li><p>In the past I&#8217;ve often used the excellent and well maintained <a href="http://www.jacklmoore.com/colorbox">ColorBox</a> library for dialogs. I note that it too has been <a href="https://github.com/jackmoore/colorbox/pull/93">updated</a> with similar functionalilty.</p></li>
+<li><p>In the past I&rsquo;ve often used the excellent and well maintained <a href="http://www.jacklmoore.com/colorbox">ColorBox</a> library for dialogs. I note that it too has been <a href="https://github.com/jackmoore/colorbox/pull/93">updated</a> with similar functionalilty.</p></li>
 </ul>
 
 </div>
@@ -323,9 +360,9 @@
   </header>
 
 
-  <div class="entry-content"><p>Back in May I <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">posted</a> on how I set up shared sessions between Rails and a legacy PHP app. Since then I&#8217;ve upgraded memcache-client to Mike Perham&#8217;s replacement, <a href="https://github.com/mperham/dalli/">Dalli</a>. I took this opportunity to tidy up the PHP session store as well. Here is what I have now:</p>
+  <div class="entry-content"><p>Back in May I <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">posted</a> on how I set up shared sessions between Rails and a legacy PHP app. Since then I&rsquo;ve upgraded memcache-client to Mike Perham&rsquo;s replacement, <a href="https://github.com/mperham/dalli/">Dalli</a>. I took this opportunity to tidy up the PHP session store as well. Here is what I have now:</p>
 
-<div><script src='https://gist.github.com/3170415.js?file='></script>
+<div><script src='https://gist.github.com/3170415.js'></script>
 <noscript><pre><code>require 'action_dispatch/middleware/session/dalli_store'
 
 # - PHP side is 5.3.6 configured with session.save_handler = memcache
@@ -396,9 +433,9 @@ end</code></pre></noscript></div>
 
   <div class="entry-content"><p>Today I wrote a little plugin for watching <a href="http://www.confreaks.com/">Confreaks</a> Ruby presentations in <a href="http://www.xbmc.org/">XBMC</a>.</p>
 
-<p>As luck would have it, Jonathan Beluch has been working on <a href="http://readthedocs.org/projects/xbmcswift2/">xmbcswift2</a> over the last month or so, which he describes as &#8220;A micro framework to enable rapid development of XBMC plugins&#8221;. Although the library is still under development, the documentation is very complete.</p>
+<p>As luck would have it, Jonathan Beluch has been working on <a href="http://readthedocs.org/projects/xbmcswift2/">xmbcswift2</a> over the last month or so, which he describes as &ldquo;A micro framework to enable rapid development of XBMC plugins&rdquo;. Although the library is still under development, the documentation is very complete.</p>
 
-<p>Check out the xbmc-confreaks <a href="http://github.com/watsonbox/xbmc-confreaks">source</a>, or download the <a href="http://github.com/watsonbox/xbmc-confreaks/raw/master/release/xbmc-confreaks-0.1.zip">zip file</a> ready to be installed directly into XBMC. I&#8217;ve only tested it with the latest stable release of XBMC 11.0 Eden.</p>
+<p>Check out the xbmc-confreaks <a href="http://github.com/watsonbox/xbmc-confreaks">source</a>, or download the <a href="http://github.com/watsonbox/xbmc-confreaks/raw/master/release/xbmc-confreaks-0.1.zip">zip file</a> ready to be installed directly into XBMC. I&rsquo;ve only tested it with the latest stable release of XBMC 11.0 Eden.</p>
 </div>
   
   
@@ -434,9 +471,9 @@ end</code></pre></noscript></div>
   </header>
 
 
-  <div class="entry-content"><p><em>Update: Here&#8217;s a <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">more elegant solution</a> which uses Dalli instead of memcache-client.</em></p>
+  <div class="entry-content"><p><em>Update: Here&rsquo;s a <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">more elegant solution</a> which uses Dalli instead of memcache-client.</em></p>
 
-<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&#8217;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
+<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&rsquo;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
 
 <figure class='code'><figcaption><span>php.ini</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -445,7 +482,7 @@ end</code></pre></noscript></div>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>If you&#8217;re interested in seeing how the PHP data gets serialized, take the value of the <code>PHPSESSID</code> cookie and perform a <code>GET</code> request in a memcached telnet session:</p>
+<p>If you&rsquo;re interested in seeing how the PHP data gets serialized, take the value of the <code>PHPSESSID</code> cookie and perform a <code>GET</code> request in a memcached telnet session:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -466,9 +503,9 @@ end</code></pre></noscript></div>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>There are a few Ruby libraries out there which can speak the language of PHP serialization. I&#8217;ve chosen Thomas Hurst&#8217;s <a href="https://github.com/watsonbox/php-serialize">php-serialize</a>. Note that I&#8217;ve linked to my fork which also supports <code>.</code> characters in array keys. Add that to your Gemfile, and then include the following middleware in your Rails application.</p>
+<p>There are a few Ruby libraries out there which can speak the language of PHP serialization. I&rsquo;ve chosen Thomas Hurst&rsquo;s <a href="https://github.com/watsonbox/php-serialize">php-serialize</a>. Note that I&rsquo;ve linked to my fork which also supports <code>.</code> characters in array keys. Add that to your Gemfile, and then include the following middleware in your Rails application.</p>
 
-<div><script src='https://gist.github.com/2367946.js?file='></script>
+<div><script src='https://gist.github.com/2367946.js'></script>
 <noscript><pre><code># Overrides functionality in Rack::Session::Memcache from Rack 1.4.1 to support sharing PHP sessions
 # - PHP side is 5.3.6 configured with session.save_handler = memcache
 # - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
@@ -532,7 +569,7 @@ end</code></pre></noscript></div>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>That&#8217;s it, your applications should both now be able to seamlessly access the same session data.</p>
+<p>That&rsquo;s it, your applications should both now be able to seamlessly access the same session data.</p>
 </div>
   
   
@@ -553,6 +590,10 @@ end</code></pre></noscript></div>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/25/confreaks-xbmc-addon-0-dot-3-0/">Confreaks XBMC Addon 0.3.0</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/">FB Canvas Apps #2: Fixed Positioning</a>
       </li>
     
@@ -569,7 +610,7 @@ end</code></pre></noscript></div>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">Sharing session between Rails and PHP</a>
+        <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">Sharing Session Between Rails and PHP</a>
       </li>
     
   </ul>
@@ -584,7 +625,7 @@ end</code></pre></noscript></div>
   <a href="https://github.com/watsonbox">@watsonbox</a> on GitHub
   
   <script type="text/javascript">
-    $.domReady(function(){
+    $(document).ready(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -608,14 +649,13 @@ end</code></pre></noscript></div>
 
 
 
-
   
 </aside>
 
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2012 - Howard Wilson -
+  Copyright &copy; 2014 - Howard Wilson -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
@@ -630,7 +670,7 @@ end</code></pre></noscript></div>
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
@@ -641,7 +681,7 @@ end</code></pre></noscript></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
+  js = d.createElement(s); js.id = id; js.async = true;
   js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
@@ -663,7 +703,7 @@ end</code></pre></noscript></div>
       var twitterWidgets = document.createElement('script');
       twitterWidgets.type = 'text/javascript';
       twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>
