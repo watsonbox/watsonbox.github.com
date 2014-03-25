@@ -8,3 +8,10 @@
 //$heading-font-family: "Verdana", sans-serif;
 //$header-title-font-family: "Futura", sans-serif;
 //$header-subtitle-font-family: "Futura", sans-serif;
+
+@font-face {
+  font-family: 'Museo Sans';
+  src: url(/assets/fonts/MuseoSans_500.otf) format(opentype);
+}
+
+$heading-font-family: "Museo Sans", sans-serif;
