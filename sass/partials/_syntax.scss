@@ -69,7 +69,7 @@ html .gist .gist-file {
       &:hover { color: $base1 !important; }
     }
     a[href*='#file'] {
-      position: absolute; top: 0; left:0; right:-10px;
+      position: absolute; top: 0; left:0; right:0px;
       color: #474747 !important;
       @extend .code-title;
       &:hover { color: $link-color !important; }
@@ -258,4 +258,10 @@ figure.code {
   font-size: 13px;
   text-shadow: #cbcccc 0 1px 0;
   padding-left: 3em;
+}
+
+.gist .gist-file .gist-data {
+  .file-data { overflow-x: auto; }
+  .line-numbers .line-number { clear:right; display:block }
+  table { width: 100% }
 }
