@@ -19,3 +19,44 @@
 //$sidebar-pad-medium: 15px;
 //$sidebar-pad-wide: 20px;
 //$sidebar-width-wide: 300px;
+
+body > header h1 {
+      @media only screen and (min-width: 992px) {
+        display: none;
+      }
+}
+
+body > header h2 {
+      padding-left:5.62em;
+      text-align:right;
+      @media only screen and (min-width: 432px) {
+              text-align:left;
+              padding-left:3.9em;
+      }
+      @media only screen and (min-width: 768px) {
+              padding-left:5em;
+      }
+      @media only screen and (min-width: 992px) {
+              padding-left:2.9em;
+      }
+}
+
+body > header h1:before {
+      content:"";
+      position: absolute;
+      left: 0em;
+      right: 0;
+      top: 1.5em;
+      height: 52px;
+      width: 336px;
+      overflow:hidden;
+      text-align:right;
+      background-image: url('/images/logo.png');
+      background-repeat: no-repeat;
+      @media only screen and (min-width: 432px) {
+              top:.32em;
+      }
+      @media only screen and (min-width: 768px) {
+              left:.75em;
+      }
+}
