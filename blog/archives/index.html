@@ -31,7 +31,15 @@ Nov 23 2012 posted &hellip;">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+  document.base_document_write = document.write;
 
+  document.write = function(html) {
+    if (html.match(/^<link rel="stylesheet".+gist\.github\.com\/assets\/embed.*/) == null) {
+      document.base_document_write(html);
+    }
+  }
+</script>
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
