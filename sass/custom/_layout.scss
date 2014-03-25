@@ -19,19 +19,3 @@
 //$sidebar-pad-medium: 15px;
 //$sidebar-pad-wide: 20px;
 //$sidebar-width-wide: 300px;
-
-@media only screen {
-  body > header h1 {
-    text-indent: -1000px !important;
-  }
-
-  body > header h2 {
-    text-indent: -1000px !important;
-    height: 0;
-  }
-
-  body > header h1 {
-    background: url('/images/logo.png') no-repeat 0 8px;
-    width: 336px;
-  }
-}
