@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Watsonbox</title>
+  <title>Lazy and Partial Data Loading With Ember.js and Rails - Watsonbox</title>
   <meta name="author" content="Howard Wilson">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://watsonbox.github.com">
+  <link rel="canonical" href="http://watsonbox.github.com/blog/2014/06/13/lazy-and-partial-data-loading-with-ember-dot-js-and-rails">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Watsonbox" type="application/atom+xml">
@@ -83,15 +83,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/06/13/lazy-and-partial-data-loading-with-ember-dot-js-and-rails/">Lazy and Partial Data Loading With Ember.js and Rails</a></h1>
+      <h1 class="entry-title">Lazy and Partial Data Loading With Ember.js and Rails</h1>
     
     
       <p class="meta">
@@ -114,7 +111,7 @@
   </header>
 
 
-  <div class="entry-content"><p>While learning <a href="http://emberjs.com/">Ember.js</a>, I couldn&rsquo;t find all the info laid out clearly in one place on these subjects, so thought I&rsquo;d write up my findings. I&rsquo;m using Ember.js 1.5.1, Ember Data 1.0.0-beta.7+canary.f482da04 (!!), and Rails 4.1.0.</p>
+<div class="entry-content"><p>While learning <a href="http://emberjs.com/">Ember.js</a>, I couldn&rsquo;t find all the info laid out clearly in one place on these subjects, so thought I&rsquo;d write up my findings. I&rsquo;m using Ember.js 1.5.1, Ember Data 1.0.0-beta.7+canary.f482da04 (!!), and Rails 4.1.0.</p>
 
 <h2>Lazy Loading Relationships</h2>
 
@@ -348,22 +345,16 @@
 </span></code></pre></td></tr></table></div></figure>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/25/confreaks-xbmc-addon-0-dot-3-0/">Confreaks XBMC Addon 0.3.0</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Howard Wilson</span></span>
+
+      
 
 
 
@@ -375,490 +366,48 @@
   
 
 
-<time datetime="2014-03-25T12:30:25+01:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
-        
-      </p>
+<time datetime="2014-06-13T14:43:13+02:00" pubdate data-updated="true">Jun 13<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ember-dot-js/'>Ember.js</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+  
+</span>
+
+
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>I finally got around to updating <a href="https://github.com/watsonbox/xbmc-confreaks">xbmc-confreaks</a> to work properly with XBMC Frodo and Gotham. This time I&rsquo;ve also submitted it to the official XBMC Addons repository so as of yesterday you should be able to install it through &lsquo;Get Addons&rsquo; in XBMC itself. Be aware that you might need to refresh the repository (right click) first.</p>
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2014/06/13/lazy-and-partial-data-loading-with-ember-dot-js-and-rails/" data-via="" data-counturl="http://watsonbox.github.com/blog/2014/06/13/lazy-and-partial-data-loading-with-ember-dot-js-and-rails/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
 </div>
-  
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/">FB Canvas Apps #2: Fixed Positioning</a></h1>
-    
-    
-      <p class="meta">
-        
+        <a class="basic-alignment left" href="/blog/2014/03/25/confreaks-xbmc-addon-0-dot-3-0/" title="Previous Post: Confreaks XBMC Addon 0.3.0">&laquo; Confreaks XBMC Addon 0.3.0</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-23T13:32:00+01:00" pubdate data-updated="true">Nov 23<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Recently I was asked to add a fixed position &lsquo;tab&rsquo; to the left side of a Facebook canvas app, for example like the <a href="https://getsatisfaction.com/">Get Satisfaction</a> &lsquo;Community&rsquo; tab.</p>
-
-<p>Normally this would be a simple case of using <code>position: fixed</code>, but not in this case because Facebook canvas apps live inside iFrames. Facebook resizes this iFrame to fit its content, meaning that the main browser scrollbar is used to scroll around the page rather than the iFrame&rsquo;s scrollbar. However, fixed position elements are fixed relative to the iFrame, not the main document. Since the iFrame never actually scrolls, the fixed element stays put.</p>
-
-<p>The solution is to use a little javascript to scroll the fixed element relative to the Facebook scroll position at a fixed interval. This gives a slightly different user experience but is the best approach I&rsquo;ve found so far.</p>
-
-<figure class='code'><figcaption><span>CoffeeScript/jQuery: pseudoFixed Method and Invocation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">$.fn.pseudoFixed = </span><span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nv">top = </span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">().</span><span class="nx">top</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">setInterval</span><span class="p">(</span>
-</span><span class='line'>    <span class="o">=&gt;</span> <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span><span class="p">((</span><span class="nx">info</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span> <span class="nv">top: </span><span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="nx">top</span> <span class="p">})),</span>
-</span><span class='line'>    <span class="mi">1000</span>
-</span><span class='line'>  <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s">&#39;[data-behavior~=pseudo-fixed]&#39;</span><span class="p">).</span><span class="nx">pseudoFixed</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Example HTML Tab Element</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">data-behavior=</span><span class="s">&quot;pseudo-fixed&quot;</span> <span class="na">style=</span><span class="s">&quot;position: fixed; left: 0; top: 150px&quot;</span><span class="nt">&gt;</span>...<span class="nt">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
 
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning/">FB Canvas Apps #1: Dialog Positioning</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-25T16:33:00+02:00" pubdate data-updated="true">Sep 25<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Having worked on several Facebook applications, I&rsquo;ve built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame.</p>
-
-<p>The problem is caused by Facebook resizing the canvas iFrame to accommodate the entire page. When a dialog is displayed inside the canvas application, it is displayed vertically centered inside that iFrame, which can cause the current browser scroll position to jump up or down accordingly.</p>
-
-<p>The fix is to call Facebook&rsquo;s <a href="http://developers.facebook.com/docs/reference/javascript/FB.Canvas.getPageInfo/"><code>FB.Canvas.getPageInfo</code></a> JS API method, to position the dialog relative to the user&rsquo;s current browser scroll position.</p>
-
-<p>Here is an implementation which uses <a href="http://coffeescript.org/">CoffeeScript</a> and extends the <a href="http://jqueryui.com/demos/dialog/">jQuery UI dialog widget</a>.</p>
-
-<figure class='code'><figcaption><span>Facebook Initialization</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="c1"># Async Facebook initialisation</span>
-</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nv">fbAsyncInit = </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span> <span class="nv">appId: </span><span class="s">&#39;APP_ID&#39;</span><span class="p">,</span> <span class="nv">status: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">cookie: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">xfbml: </span><span class="kc">true</span> <span class="p">})</span>
-</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">setAutoGrow</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1"># Allows other components to hook into this event with $(document).on(&#39;fb:initialized&#39;, -&gt; ...)</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s">&#39;fb:initialized&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>The Dialog Widget</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">CanvasDialog =</span>
-</span><span class='line'>  <span class="c1"># Some example default dialog options</span>
-</span><span class='line'>  <span class="nv">options: </span><span class="p">{</span>
-</span><span class='line'>    <span class="nv">width: </span><span class="mi">600</span><span class="p">,</span>
-</span><span class='line'>    <span class="nv">modal: </span><span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>    <span class="nv">autoOpen: </span><span class="kc">true</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">_init: </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="nx">@_inCanvas</span>
-</span><span class='line'>      <span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="nx">_fbLoaded</span><span class="p">()</span>
-</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
-</span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="kc">on</span> <span class="s">&#39;fb:initialized&#39;</span><span class="p">,</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">_showDialog</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Displays the dialog positioned correctly inside the FB canvas iFrame</span>
-</span><span class='line'>  <span class="nv">_showDialogInCanvas: </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span> <span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="o">=&gt;</span>
-</span><span class='line'>      <span class="vi">@options.position = </span><span class="p">[</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="mi">50</span><span class="p">]</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">_showDialog</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Calls the jQuery UI dialog&#39;s original init method</span>
-</span><span class='line'>  <span class="nv">_showDialog: </span><span class="o">-&gt;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_init</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># True if dialog is being loading inside the FB iFrame (any iFrame for that matter)</span>
-</span><span class='line'>  <span class="nv">_inCanvas: </span><span class="nx">top</span> <span class="o">!=</span> <span class="nx">self</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># True if FB javascript API has been loaded</span>
-</span><span class='line'>  <span class="nv">_fbLoaded: </span><span class="o">-&gt;</span> <span class="k">typeof</span> <span class="nx">FB</span> <span class="o">!=</span> <span class="s">&#39;undefined&#39;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">widget</span> <span class="s">&quot;ui.canvasDialog&quot;</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">,</span> <span class="nx">CanvasDialog</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Example Usage</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s">&#39;#canvasDialog&#39;</span><span class="p">).</span><span class="nx">canvasDialog</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Notes</h3>
-
-<ul>
-<li><p>By triggering an event when Facebook is initialized, the <code>CanvasDialog</code> is able to wait for the Facebook JS API to become available if it has not yet been loaded.</p></li>
-<li><p>In development it can be useful to work outside the Facebook environment. The <code>CanvasDialog</code> detects this and shows the dialog without attempting to call the Facebook API.</p></li>
-<li><p>In the past I&rsquo;ve often used the excellent and well maintained <a href="http://www.jacklmoore.com/colorbox">ColorBox</a> library for dialogs. I note that it too has been <a href="https://github.com/jackmoore/colorbox/pull/93">updated</a> with similar functionalilty.</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">Rails &amp; PHP Session Sharing #2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-24T16:37:00+02:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Back in May I <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">posted</a> on how I set up shared sessions between Rails and a legacy PHP app. Since then I&rsquo;ve upgraded memcache-client to Mike Perham&rsquo;s replacement, <a href="https://github.com/mperham/dalli/">Dalli</a>. I took this opportunity to tidy up the PHP session store as well. Here is what I have now:</p>
-
-<div><script src='https://gist.github.com/3170415.js'></script>
-<noscript><pre><code>require 'action_dispatch/middleware/session/dalli_store'
-
-# - PHP side is 5.3.6 configured with session.save_handler = memcache
-# - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
-module ActionDispatch
-  module Session
-    class PhpDalliStore &lt; ActionDispatch::Session::DalliStore
-      require 'php_serialize'
-
-      class PhpSerializingPoolDecorator &lt; SimpleDelegator
-        def set(key, value, ttl = nil, options = nil)
-          super(key, PHP.serialize_session(value), 0, :raw =&gt; true)
-        end
-
-        def get(key, options = nil)
-          value = super(key)
-          PHP.unserialize(value) if value &amp;&amp; value != ''
-        end
-      end
-
-      def initialize(app, options = {})
-        # Default to no namespace and cookie name matching PHP settings
-        super(app, options.merge(:namespace =&gt; nil, :key =&gt; 'PHPSESSID'))
-
-        # Decorate the pool to do some serialization
-        @pool = PhpSerializingPoolDecorator.new(@pool)
-      end
-    end
-  end
-end</code></pre></noscript></div>
-
-
-<p>This is cleaner than what I had before and should be much more resistant to changes in Dalli, too.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/05/19/confreaks-xbmc-addon/">Confreaks XBMC Addon</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-05-19T22:06:00+02:00" pubdate data-updated="true">May 19<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Today I wrote a little plugin for watching <a href="http://www.confreaks.com/">Confreaks</a> Ruby presentations in <a href="http://www.xbmc.org/">XBMC</a>.</p>
-
-<p>As luck would have it, Jonathan Beluch has been working on <a href="http://readthedocs.org/projects/xbmcswift2/">xmbcswift2</a> over the last month or so, which he describes as &ldquo;A micro framework to enable rapid development of XBMC plugins&rdquo;. Although the library is still under development, the documentation is very complete.</p>
-
-<p>Check out the xbmc-confreaks <a href="http://github.com/watsonbox/xbmc-confreaks">source</a>, or download the <a href="http://github.com/watsonbox/xbmc-confreaks/raw/master/release/xbmc-confreaks-0.1.zip">zip file</a> ready to be installed directly into XBMC. I&rsquo;ve only tested it with the latest stable release of XBMC 11.0 Eden.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">Sharing Session Between Rails and PHP</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-05-01T13:07:00+02:00" pubdate data-updated="true">May 1<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>Update: Here&rsquo;s a <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">more elegant solution</a> which uses Dalli instead of memcache-client.</em></p>
-
-<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&rsquo;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
-
-<figure class='code'><figcaption><span>php.ini</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ini'><span class='line'><span class="na">session.save_handler</span> <span class="o">=</span> <span class="s">memcache</span>
-</span><span class='line'><span class="na">session.save_path</span> <span class="o">=</span> <span class="s">&quot;tcp://localhost:11211&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you&rsquo;re interested in seeing how the PHP data gets serialized, take the value of the <code>PHPSESSID</code> cookie and perform a <code>GET</code> request in a memcached telnet session:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>telnet localhost 11211
-</span><span class='line'>Trying ::1...
-</span><span class='line'>Connected to localhost.
-</span><span class='line'>Escape character is <span class="s1">&#39;^]&#39;</span>.
-</span><span class='line'>get a29ajb8go3bkm6r6k2qu4hv3d5
-</span><span class='line'>VALUE a29ajb8go3bkm6r6k2qu4hv3d5 0 298
-</span><span class='line'>state|s:32:<span class="s2">&quot;hgc8cf6e737b4f28ca9872ghe059577b&quot;</span>;access_token|s:113:<span class="s2">&quot;AAACldPr8ZAokBAFmih7MCYhTlrOSmz7Ro3wJrZCVLeZCkrpQGhSL5hy4dRjYXikOjaBWbt2GJkjcpQj6MpJIopZBU3vURpVfJZBHKZAb7MyQZDZD&quot;</span>;user_id|i:100000123456789;LAST_FACEBOOK_IDENTITY_CHECK|s:10:<span class="s2">&quot;1334154070&quot;</span>;LAST_FACEBOOK_OAUTH_CHECK|s:10:<span class="s2">&quot;1334154070&quot;</span>;
-</span><span class='line'>END
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are a few Ruby libraries out there which can speak the language of PHP serialization. I&rsquo;ve chosen Thomas Hurst&rsquo;s <a href="https://github.com/watsonbox/php-serialize">php-serialize</a>. Note that I&rsquo;ve linked to my fork which also supports <code>.</code> characters in array keys. Add that to your Gemfile, and then include the following middleware in your Rails application.</p>
-
-<div><script src='https://gist.github.com/2367946.js'></script>
-<noscript><pre><code># Overrides functionality in Rack::Session::Memcache from Rack 1.4.1 to support sharing PHP sessions
-# - PHP side is 5.3.6 configured with session.save_handler = memcache
-# - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
-
-module ActionDispatch
-  module Session
-    class PhpSessionStore &lt; ActionDispatch::Session::MemCacheStore
-      require 'php_serialize'
-      
-      def initialize(app, options = {})
-        require 'memcache'
-        options[:expire_after] ||= options[:expires]
-        
-        # Default to no namespace and cookie name matching PHP settings
-        super(app, options.merge(:namespace =&gt; nil, :key =&gt; 'PHPSESSID'))
-      end
-      
-      def get_session(env, sid)
-        with_lock(env, [nil, {}]) do
-          unless session = deserialize_session(sid)
-            sid, session = generate_sid, {}
-            
-            unless /^STORED/ =~ @pool.add(sid, PHP.serialize_session(session), 0, true)
-              raise &quot;Session collision on '#{sid.inspect}'&quot;
-            end
-          end
-          [sid, session]
-        end
-      end
-      
-      def set_session(env, session_id, new_session, options)
-        expiry = options[:expire_after]
-        expiry = expiry.nil? ? 0 : expiry + 1
-
-        with_lock(env, false) do
-          @pool.set session_id, PHP.serialize_session(new_session), expiry, true
-          session_id
-        end
-      end
-
-      protected
-
-      def deserialize_session(session_id)
-        if session_id
-          raw_session = @pool.get(session_id, true)
-
-          if raw_session &amp;&amp; raw_session != ''
-            PHP.unserialize(raw_session)
-          end
-        end
-      end
-    end
-  end
-end</code></pre></noscript></div>
-
-
-<p>Now you can use this session store in <code>session_store.rb</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>YourApp::Application.config.session_store :php_session_store, :expire_after <span class="o">=</span>&gt; 10.minutes
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&rsquo;s it, your applications should both now be able to seamlessly access the same session data.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -899,7 +448,7 @@ end</code></pre></noscript></div>
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/watsonbox">@watsonbox</a> on GitHub
@@ -932,6 +481,7 @@ end</code></pre></noscript></div>
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -946,7 +496,10 @@ end</code></pre></noscript></div>
       var disqus_shortname = 'watsonbox';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://watsonbox.github.com/blog/2014/06/13/lazy-and-partial-data-loading-with-ember-dot-js-and-rails/';
+        var disqus_url = 'http://watsonbox.github.com/blog/2014/06/13/lazy-and-partial-data-loading-with-ember-dot-js-and-rails/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

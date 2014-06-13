@@ -4,7 +4,7 @@
   <title><![CDATA[Watsonbox]]></title>
   <link href="http://watsonbox.github.com/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2014-03-25T18:46:54+01:00</updated>
+  <updated>2014-06-13T17:44:23+02:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -12,6 +12,247 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Lazy and Partial Data Loading With Ember.js and Rails]]></title>
+    <link href="http://watsonbox.github.com/blog/2014/06/13/lazy-and-partial-data-loading-with-ember-dot-js-and-rails/"/>
+    <updated>2014-06-13T14:43:13+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2014/06/13/lazy-and-partial-data-loading-with-ember-dot-js-and-rails</id>
+    <content type="html"><![CDATA[<p>While learning <a href="http://emberjs.com/">Ember.js</a>, I couldn&rsquo;t find all the info laid out clearly in one place on these subjects, so thought I&rsquo;d write up my findings. I&rsquo;m using Ember.js 1.5.1, Ember Data 1.0.0-beta.7+canary.f482da04 (!!), and Rails 4.1.0.</p>
+
+<h2>Lazy Loading Relationships</h2>
+
+<p>Most of the Rails/Ember guidelines out there suggest that related data should normally be sideloaded, which is great and helps reduce the number of HTTP requests required, or data duplication (in the case of embedded data). To sideload data, set up the relationship and Rails serializer as follows:</p>
+
+<figure class='code'><figcaption><span>app/assets/javascripts/models/project.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.Project = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">name: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">description: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">invoices: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="s">&#39;invoice&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>app/serializers/project_serializer.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ProjectSerializer</span> <span class="o">&lt;</span> <span class="ss">ActiveModel</span><span class="p">:</span><span class="ss">:Serializer</span>
+</span><span class='line'>  <span class="n">attributes</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:invoices</span><span class="p">,</span> <span class="ss">embed</span><span class="p">:</span> <span class="ss">:ids</span><span class="p">,</span> <span class="kp">include</span><span class="p">:</span> <span class="kp">true</span> <span class="c1"># Sideload relationship</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Example JSON Response</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;projects&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="p">{</span> <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Project 1&quot;</span><span class="p">,</span> <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="nt">&quot;invoice_ids&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="p">}</span>
+</span><span class='line'>  <span class="p">],</span>
+</span><span class='line'>  <span class="nt">&quot;invoices&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="p">{</span> <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nt">&quot;reference&quot;</span><span class="p">:</span> <span class="s2">&quot;INV-002&quot;</span><span class="p">,</span> <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-06-11&quot;</span><span class="p">,</span> <span class="nt">&quot;project_id&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span>
+</span><span class='line'>    <span class="p">{</span> <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nt">&quot;reference&quot;</span><span class="p">:</span> <span class="s2">&quot;INV-001&quot;</span><span class="p">,</span> <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-04-04&quot;</span><span class="p">,</span> <span class="nt">&quot;project_id&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Async Loading</h3>
+
+<p>Often we&rsquo;d prefer to lazily load the associated data only when it&rsquo;s referenced. Ember Data calls this an async relationship. Simply modify the above by omitting the <code>include</code> serializer option and adding <code>async</code> to the relationship:</p>
+
+<figure class='code'><figcaption><span>app/assets/javascripts/models/project.js.coffee (partial)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">invoices: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="s">&#39;invoice&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">async: </span><span class="kc">true</span> <span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>app/serializers/lazy_project_serializer.rb (partial)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">has_many</span> <span class="ss">:invoices</span><span class="p">,</span> <span class="ss">embed</span><span class="p">:</span> <span class="ss">:ids</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Example JSON Response</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;projects&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="p">{</span> <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Project 1&quot;</span><span class="p">,</span> <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="nt">&quot;invoice_ids&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="p">}</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When the <code>invoices</code> relationship is accessed, Ember Data will automatically make a request to <code>/invoices?ids[]=1&amp;ids[]=2</code> (or presumably wherever that route is defined), so the Rails <code>InvoicesController</code> must be set up to restrict returned data based on the <code>ids</code> parameter.</p>
+
+<p>Note that if an association is set to <code>async</code>, but sideloaded data exists in the server response, Ember Data will simply use that data and not attempt to make another request. This is useful, allowing data to be sideloaded for a detail view because we know we&rsquo;re going to need it, but not for a list view where it might not be used. When moving from list to detail, the invoices will be loaded, but when arriving directly on the detail page, only the project will be loaded. Specify a different serializer in Rails for each action:</p>
+
+<figure class='code'><figcaption><span>app/controllers/projects_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ProjectsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">respond_to</span> <span class="ss">:json</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>    <span class="n">respond_with</span> <span class="no">Project</span><span class="o">.</span><span class="n">all</span><span class="p">,</span> <span class="n">each_serializer</span><span class="p">:</span> <span class="no">LazyProjectSerializer</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>    <span class="n">respond_with</span> <span class="no">Project</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Async Loading From Links</h3>
+
+<p>Another possibility, which gives more control over association endpoints, and avoids having to pass a bunch of IDs around, is to provide links for the relationships in the JSON response. For example:</p>
+
+<figure class='code'><figcaption><span>app/serializers/project_serializer.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ProjectSerializer</span> <span class="o">&lt;</span> <span class="ss">ActiveModel</span><span class="p">:</span><span class="ss">:Serializer</span>
+</span><span class='line'>  <span class="n">attributes</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:links</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">links</span>
+</span><span class='line'>    <span class="p">{</span> <span class="ss">invoices</span><span class="p">:</span> <span class="n">project_invoices_path</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Loading Partial Models</h2>
+
+<p>Imagine that we have a dropdown list of projects in the page navbar. In addition to lazy loading related data, we might also want to omit attributes we know we&rsquo;re not going to need yet. In this case a large project description might be a candidate for ommission from the list view, especially if the list of projects is large. The most comprehensive description of this problem I was able to find is <a href="http://discuss.emberjs.com/t/loading-partial-models-then-filling-them-with-ember-data/819">here</a>, and includes links to related discussions.</p>
+
+<p>Firstly we need to identify the list data as partial by adding a <code>partial</code> attribute and setting it in a <code>PartialProjectSerializer</code>. We also ommit the invoices and description:</p>
+
+<figure class='code'><figcaption><span>app/assets/javascripts/models/project.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.Project = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">name: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">description: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">partial: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;boolean&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">invoices: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="s">&#39;invoice&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">async: </span><span class="kc">true</span> <span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>app/serializers/partial_project_serializer.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PartialProjectSerializer</span> <span class="o">&lt;</span> <span class="no">ApplicationSerializer</span>
+</span><span class='line'>  <span class="n">attributes</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:partial</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">partial</span>
+</span><span class='line'>    <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We now have two problems to solve:</p>
+
+<ol>
+<li>Reload a complete model for the detail view if we have only a partial model.</li>
+<li>Don&rsquo;t allow partial list data to overwrite a complete model if it comes in afterwards. You can simulate this in your dev environment using a threaded web server such as Puma and setting a delay on the resource index.</li>
+</ol>
+
+
+<p>For the first we can use <code>setupController</code> on the project route. Modifying the <code>model</code> hook won&rsquo;t work when a model is passed for example to <code>link-to</code> because it <a href="http://emberjs.com/guides/routing/asynchronous-routing/#toc_beforemodel-and-aftermodel">doesn&rsquo;t get called</a>.</p>
+
+<figure class='code'><figcaption><span>app/assets/javascripts/routes/project_route.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">Facture.ProjectRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">(params) -&gt;</span>
+</span><span class='line'>    <span class="nx">@store</span><span class="p">.</span><span class="nx">find</span> <span class="s">&#39;project&#39;</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">project_id</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">setupController: </span><span class="nf">(controller, model) -&gt;</span>
+</span><span class='line'>    <span class="c1"># If the model is partial, we&#39;ll refresh it (from the full project resource)</span>
+</span><span class='line'>    <span class="nx">model</span><span class="p">.</span><span class="nx">reload</span><span class="p">()</span> <span class="k">if</span> <span class="nx">model</span><span class="p">.</span><span class="nx">get</span> <span class="s">&#39;partial&#39;</span>
+</span><span class='line'>    <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;model&#39;</span><span class="p">,</span> <span class="nx">model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It would be nice if we could solve the second problem by asking Ember Data to retrieve and <em>merge</em> data from the server (using something like <code>Store#find_and_update</code>), but that doesn&rsquo;t appear to be possible. It is however possible to update individual records using <a href="http://emberjs.com/api/data/classes/DS.Store.html#method_update"><code>Store#update</code></a>.</p>
+
+<p>I&rsquo;ve been getting these projects in the <code>ApplicationRoute</code>, which now looks like this:</p>
+
+<figure class='code'><figcaption><span>app/assets/javascripts/routes/application.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">Facture.ApplicationRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">setupController: </span><span class="nf">(controller) -&gt;</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span> <span class="s">&#39;/projects.json&#39;</span><span class="p">,</span> <span class="nf">(data) =&gt;</span>
+</span><span class='line'>      <span class="c1"># Update records in the store</span>
+</span><span class='line'>      <span class="nv">projects = </span><span class="nx">data</span><span class="p">[</span><span class="s">&#39;projects&#39;</span><span class="p">].</span><span class="nx">map</span> <span class="nf">(project) =&gt;</span>
+</span><span class='line'>        <span class="c1"># Don&#39;t merge partial=true</span>
+</span><span class='line'>        <span class="k">if</span> <span class="nv">existing_project = </span><span class="nx">@store</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s">&#39;project&#39;</span><span class="p">,</span> <span class="nx">project</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
+</span><span class='line'>          <span class="nv">project.partial = </span><span class="kc">false</span> <span class="k">unless</span> <span class="nx">existing_project</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;partial&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">@store</span><span class="p">.</span><span class="nx">update</span> <span class="s">&#39;project&#39;</span><span class="p">,</span> <span class="nx">project</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1"># Set all records on the controller</span>
+</span><span class='line'>      <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;projects&#39;</span><span class="p">,</span> <span class="nx">projects</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Confreaks XBMC Addon 0.3.0]]></title>
