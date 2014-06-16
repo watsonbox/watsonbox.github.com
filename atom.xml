@@ -4,7 +4,7 @@
   <title><![CDATA[Watsonbox]]></title>
   <link href="http://watsonbox.github.com/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2014-06-14T12:16:25+02:00</updated>
+  <updated>2014-06-16T13:23:02+02:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -22,7 +22,7 @@
 
 <h2>Lazy Loading Relationships</h2>
 
-<p>Most of the Rails/Ember guidelines out there suggest that related data should normally be sideloaded, which is great and helps reduce the number of HTTP requests required, or data duplication (in the case of embedded data). To sideload data, set up the relationship and Rails serializer as follows:</p>
+<p>Most of the <a href="http://emberjs.com/api/data/classes/DS.ActiveModelSerializer.html">Rails/Ember guidelines</a> out there suggest that related data should normally be sideloaded, which is great and helps reduce the number of HTTP requests required, or data duplication (in the case of embedded data). To sideload data, set up the relationship and Rails serializer as follows:</p>
 
 <figure class='code'><figcaption><span>app/assets/javascripts/models/project.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
