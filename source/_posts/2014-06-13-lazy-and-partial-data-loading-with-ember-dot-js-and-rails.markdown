@@ -10,7 +10,7 @@ While learning [Ember.js](http://emberjs.com/), I couldn't find all the info lai
 
 ## Lazy Loading Relationships
 
-Most of the Rails/Ember guidelines out there suggest that related data should normally be sideloaded, which is great and helps reduce the number of HTTP requests required, or data duplication (in the case of embedded data). To sideload data, set up the relationship and Rails serializer as follows:
+Most of the [Rails/Ember guidelines](http://emberjs.com/api/data/classes/DS.ActiveModelSerializer.html) out there suggest that related data should normally be sideloaded, which is great and helps reduce the number of HTTP requests required, or data duplication (in the case of embedded data). To sideload data, set up the relationship and Rails serializer as follows:
 
 ``` coffeescript app/assets/javascripts/models/project.js.coffee
 App.Project = DS.Model.extend
