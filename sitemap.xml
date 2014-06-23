@@ -37,12 +37,18 @@
         <lastmod>2014-06-16T13:21:43+02:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://watsonbox.github.com/blog/2014/06/23/aggregation-for-ember-data-async-relationships/
+        </loc>
+        <lastmod>2014-06-23T17:31:26+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://watsonbox.github.com/blog/archives/</loc>
-        <lastmod>2014-06-16T13:21:43+02:00</lastmod>
+        <lastmod>2014-06-23T17:31:26+02:00</lastmod>
     </url>
     <url>
         <loc>http://watsonbox.github.com/</loc>
-        <lastmod>2014-06-16T13:21:43+02:00</lastmod>
+        <lastmod>2014-06-23T17:31:26+02:00</lastmod>
     </url>
     <url>
         <loc>http://watsonbox.github.com/robots.txt</loc>

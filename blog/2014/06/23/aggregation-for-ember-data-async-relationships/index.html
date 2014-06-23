@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Sharing Session Between Rails and PHP - Watsonbox</title>
+  <title>Aggregation for Ember Data Async Relationships - Watsonbox</title>
   <meta name="author" content="Howard Wilson">
 
   
-  <meta name="description" content="Update: Here&rsquo;s a more elegant solution which uses Dalli instead of memcache-client. Sometimes Rails and PHP applications must live side by side &hellip;">
+  <meta name="description" content="Ember.js has computed properties for aggregating data which are automatically re-calculated when the source data set changes. But what if we want to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php">
+  <link rel="canonical" href="http://watsonbox.github.com/blog/2014/06/23/aggregation-for-ember-data-async-relationships">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Watsonbox" type="application/atom+xml">
@@ -88,7 +88,7 @@
   
   <header>
     
-      <h1 class="entry-title">Sharing Session Between Rails and PHP</h1>
+      <h1 class="entry-title">Aggregation for Ember Data Async Relationships</h1>
     
     
       <p class="meta">
@@ -104,27 +104,33 @@
   
 
 
-<time datetime="2012-05-01T13:07:00+02:00" pubdate data-updated="true">May 1<span>st</span>, 2012</time>
+<time datetime="2014-06-23T17:12:21+02:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p><em>Update: Here&rsquo;s a <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">more elegant solution</a> which uses Dalli instead of memcache-client.</em></p>
+<div class="entry-content"><p>Ember.js has <a href="http://emberjs.com/guides/object-model/computed-properties-and-aggregate-data/">computed properties</a> for aggregating data which are automatically re-calculated when the source data set changes. But what if we want to display aggregate data from an async relationship in a list view? We might have the following:</p>
 
-<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&rsquo;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
-
-<figure class='code'><figcaption><span>php.ini</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>app/assets/javascripts/models/invoice.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ini'><span class='line'><span class="na">session.save_handler</span> <span class="o">=</span> <span class="s">memcache</span>
-</span><span class='line'><span class="na">session.save_path</span> <span class="o">=</span> <span class="s">&quot;tcp://localhost:11211&quot;</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.Invoice = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">lineItems: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="s">&#39;lineItem&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">async: </span><span class="kc">true</span> <span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">lineItemAmounts: </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">computed</span><span class="p">.</span><span class="nx">mapBy</span><span class="p">(</span><span class="s">&#39;lineItems&#39;</span><span class="p">,</span> <span class="s">&#39;amount&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">amount: </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">computed</span><span class="p">.</span><span class="nx">sum</span><span class="p">(</span><span class="s">&#39;lineItemAmounts&#39;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>If you&rsquo;re interested in seeing how the PHP data gets serialized, take the value of the <code>PHPSESSID</code> cookie and perform a <code>GET</code> request in a memcached telnet session:</p>
+<p>Each <code>App.Invoice</code> has a bunch of <code>App.LineItem</code>s, and calculates its own amount by summing up their individual amounts. However, each time an invoice is rendered, all of the line items will be fetched from the server in order to make this calculation.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p>What we can do instead is send the aggregate figure from the server along with the invoice. It might be calculated on the fly (with a <code>group by</code> query, for example), or maintained along with the invoice. Here&rsquo;s an approach that does exactly this, but will switch to using the real ember data objects once they have been loaded:</p>
+
+<figure class='code'><figcaption><span>app/assets/javascripts/models/invoice.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -132,84 +138,30 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>telnet localhost 11211
-</span><span class='line'>Trying ::1...
-</span><span class='line'>Connected to localhost.
-</span><span class='line'>Escape character is <span class="s1">&#39;^]&#39;</span>.
-</span><span class='line'>get a29ajb8go3bkm6r6k2qu4hv3d5
-</span><span class='line'>VALUE a29ajb8go3bkm6r6k2qu4hv3d5 0 298
-</span><span class='line'>state|s:32:<span class="s2">&quot;hgc8cf6e737b4f28ca9872ghe059577b&quot;</span>;access_token|s:113:<span class="s2">&quot;AAACldPr8ZAokBAFmih7MCYhTlrOSmz7Ro3wJrZCVLeZCkrpQGhSL5hy4dRjYXikOjaBWbt2GJkjcpQj6MpJIopZBU3vURpVfJZBHKZAb7MyQZDZD&quot;</span>;user_id|i:100000123456789;LAST_FACEBOOK_IDENTITY_CHECK|s:10:<span class="s2">&quot;1334154070&quot;</span>;LAST_FACEBOOK_OAUTH_CHECK|s:10:<span class="s2">&quot;1334154070&quot;</span>;
-</span><span class='line'>END
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.Invoice = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">subtotal: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;number&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">lineItems: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="s">&#39;lineItem&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">async: </span><span class="kc">true</span> <span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">lineItemAmounts: </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">computed</span><span class="p">.</span><span class="nx">mapBy</span><span class="p">(</span><span class="s">&#39;lineItems&#39;</span><span class="p">,</span> <span class="s">&#39;amount&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">lineItemAmountsSum: </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">computed</span><span class="p">.</span><span class="nx">sum</span><span class="p">(</span><span class="s">&#39;lineItemAmounts&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Uses subtotal until async lineItems become available</span>
+</span><span class='line'>  <span class="nv">amount: </span><span class="p">(</span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nx">@cacheFor</span><span class="p">(</span><span class="s">&#39;lineItems&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;lineItemAmountsSum&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;subtotal&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">).</span><span class="nx">property</span><span class="p">(</span><span class="s">&#39;lineItems.@each.amount&#39;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>There are a few Ruby libraries out there which can speak the language of PHP serialization. I&rsquo;ve chosen Thomas Hurst&rsquo;s <a href="https://github.com/watsonbox/php-serialize">php-serialize</a>. Note that I&rsquo;ve linked to my fork which also supports <code>.</code> characters in array keys. Add that to your Gemfile, and then include the following middleware in your Rails application.</p>
-
-<div><script src='https://gist.github.com/2367946.js'></script>
-<noscript><pre><code># Overrides functionality in Rack::Session::Memcache from Rack 1.4.1 to support sharing PHP sessions
-# - PHP side is 5.3.6 configured with session.save_handler = memcache
-# - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
-
-module ActionDispatch
-  module Session
-    class PhpSessionStore &lt; ActionDispatch::Session::MemCacheStore
-      require 'php_serialize'
-      
-      def initialize(app, options = {})
-        require 'memcache'
-        options[:expire_after] ||= options[:expires]
-        
-        # Default to no namespace and cookie name matching PHP settings
-        super(app, options.merge(:namespace =&gt; nil, :key =&gt; 'PHPSESSID'))
-      end
-      
-      def get_session(env, sid)
-        with_lock(env, [nil, {}]) do
-          unless session = deserialize_session(sid)
-            sid, session = generate_sid, {}
-            
-            unless /^STORED/ =~ @pool.add(sid, PHP.serialize_session(session), 0, true)
-              raise &quot;Session collision on '#{sid.inspect}'&quot;
-            end
-          end
-          [sid, session]
-        end
-      end
-      
-      def set_session(env, session_id, new_session, options)
-        expiry = options[:expire_after]
-        expiry = expiry.nil? ? 0 : expiry + 1
-
-        with_lock(env, false) do
-          @pool.set session_id, PHP.serialize_session(new_session), expiry, true
-          session_id
-        end
-      end
-
-      protected
-
-      def deserialize_session(session_id)
-        if session_id
-          raw_session = @pool.get(session_id, true)
-
-          if raw_session &amp;&amp; raw_session != ''
-            PHP.unserialize(raw_session)
-          end
-        end
-      end
-    end
-  end
-end</code></pre></noscript></div>
-
-
-<p>Now you can use this session store in <code>session_store.rb</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>YourApp::Application.config.session_store :php_session_store, :expire_after <span class="o">=</span>&gt; 10.minutes
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&rsquo;s it, your applications should both now be able to seamlessly access the same session data.</p>
+<p>In this case <code>subtotal</code> is the aggregated amount from the server.</p>
 </div>
 
 
@@ -232,12 +184,12 @@ end</code></pre></noscript></div>
   
 
 
-<time datetime="2012-05-01T13:07:00+02:00" pubdate data-updated="true">May 1<span>st</span>, 2012</time>
+<time datetime="2014-06-23T17:12:21+02:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/php/'>PHP</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+    <a class='category' href='/blog/categories/ember-dot-js/'>Ember.js</a>
   
 </span>
 
@@ -246,7 +198,7 @@ end</code></pre></noscript></div>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/" data-via="" data-counturl="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2014/06/23/aggregation-for-ember-data-async-relationships/" data-via="" data-counturl="http://watsonbox.github.com/blog/2014/06/23/aggregation-for-ember-data-async-relationships/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -259,8 +211,8 @@ end</code></pre></noscript></div>
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2014/06/13/lazy-and-partial-data-loading-with-ember-dot-js-and-rails/" title="Previous Post: Lazy and Partial Data Loading with Ember.js and Rails">&laquo; Lazy and Partial Data Loading with Ember.js and Rails</a>
       
-        <a class="basic-alignment right" href="/blog/2012/05/19/confreaks-xbmc-addon/" title="Next Post: Confreaks XBMC Addon">Confreaks XBMC Addon &raquo;</a>
       
     </p>
   </footer>
@@ -367,8 +319,8 @@ end</code></pre></noscript></div>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/';
-        var disqus_url = 'http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/';
+        var disqus_identifier = 'http://watsonbox.github.com/blog/2014/06/23/aggregation-for-ember-data-async-relationships/';
+        var disqus_url = 'http://watsonbox.github.com/blog/2014/06/23/aggregation-for-ember-data-async-relationships/';
         var disqus_script = 'embed.js';
       
     (function () {

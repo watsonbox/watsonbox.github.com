@@ -4,7 +4,7 @@
   <title><![CDATA[Watsonbox]]></title>
   <link href="http://watsonbox.github.com/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2014-06-16T13:23:02+02:00</updated>
+  <updated>2014-06-23T17:40:42+02:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -12,6 +12,65 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Aggregation for Ember Data Async Relationships]]></title>
+    <link href="http://watsonbox.github.com/blog/2014/06/23/aggregation-for-ember-data-async-relationships/"/>
+    <updated>2014-06-23T17:12:21+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2014/06/23/aggregation-for-ember-data-async-relationships</id>
+    <content type="html"><![CDATA[<p>Ember.js has <a href="http://emberjs.com/guides/object-model/computed-properties-and-aggregate-data/">computed properties</a> for aggregating data which are automatically re-calculated when the source data set changes. But what if we want to display aggregate data from an async relationship in a list view? We might have the following:</p>
+
+<figure class='code'><figcaption><span>app/assets/javascripts/models/invoice.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.Invoice = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">lineItems: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="s">&#39;lineItem&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">async: </span><span class="kc">true</span> <span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">lineItemAmounts: </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">computed</span><span class="p">.</span><span class="nx">mapBy</span><span class="p">(</span><span class="s">&#39;lineItems&#39;</span><span class="p">,</span> <span class="s">&#39;amount&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">amount: </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">computed</span><span class="p">.</span><span class="nx">sum</span><span class="p">(</span><span class="s">&#39;lineItemAmounts&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Each <code>App.Invoice</code> has a bunch of <code>App.LineItem</code>s, and calculates its own amount by summing up their individual amounts. However, each time an invoice is rendered, all of the line items will be fetched from the server in order to make this calculation.</p>
+
+<p>What we can do instead is send the aggregate figure from the server along with the invoice. It might be calculated on the fly (with a <code>group by</code> query, for example), or maintained along with the invoice. Here&rsquo;s an approach that does exactly this, but will switch to using the real ember data objects once they have been loaded:</p>
+
+<figure class='code'><figcaption><span>app/assets/javascripts/models/invoice.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.Invoice = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">subtotal: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;number&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">lineItems: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="s">&#39;lineItem&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">async: </span><span class="kc">true</span> <span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">lineItemAmounts: </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">computed</span><span class="p">.</span><span class="nx">mapBy</span><span class="p">(</span><span class="s">&#39;lineItems&#39;</span><span class="p">,</span> <span class="s">&#39;amount&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">lineItemAmountsSum: </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">computed</span><span class="p">.</span><span class="nx">sum</span><span class="p">(</span><span class="s">&#39;lineItemAmounts&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Uses subtotal until async lineItems become available</span>
+</span><span class='line'>  <span class="nv">amount: </span><span class="p">(</span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nx">@cacheFor</span><span class="p">(</span><span class="s">&#39;lineItems&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;lineItemAmountsSum&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;subtotal&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">).</span><span class="nx">property</span><span class="p">(</span><span class="s">&#39;lineItems.@each.amount&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this case <code>subtotal</code> is the aggregated amount from the server.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lazy and Partial Data Loading With Ember.js and Rails]]></title>

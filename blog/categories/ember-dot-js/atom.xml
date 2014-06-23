@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ember.js | Watsonbox]]></title>
   <link href="http://watsonbox.github.com/blog/categories/ember-dot-js/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2014-06-16T13:23:02+02:00</updated>
+  <updated>2014-06-23T17:40:42+02:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Aggregation for Ember Data Async Relationships]]></title>
+    <link href="http://watsonbox.github.com/blog/2014/06/23/aggregation-for-ember-data-async-relationships/"/>
+    <updated>2014-06-23T17:12:21+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2014/06/23/aggregation-for-ember-data-async-relationships</id>
+    <content type="html"><![CDATA[<p>Ember.js has <a href="http://emberjs.com/guides/object-model/computed-properties-and-aggregate-data/">computed properties</a> for aggregating data which are automatically re-calculated when the source data set changes. But what if we want to display aggregate data from an async relationship in a list view? We might have the following:</p>
+
+<p>``` coffeescript app/assets/javascripts/models/invoice.js.coffee
+App.Invoice = DS.Model.extend
+  lineItems: DS.hasMany(&lsquo;lineItem&rsquo;, { async: true })</p>
+
+<p>  lineItemAmounts: Ember.computed.mapBy(&lsquo;lineItems&rsquo;, &lsquo;amount&rsquo;)
+  amount: Ember.computed.sum(&lsquo;lineItemAmounts&rsquo;)
+```</p>
+
+<p>Each <code>App.Invoice</code> has a bunch of <code>App.LineItem</code>s, and calculates its own amount by summing up their individual amounts. However, each time an invoice is rendered, all of the line items will be fetched from the server in order to make this calculation.</p>
+
+<p>What we can do instead is send the aggregate figure from the server along with the invoice. It might be calculated on the fly (with a <code>group by</code> query, for example), or maintained along with the invoice. Here&rsquo;s an approach that does exactly this, but will switch to using the real ember data objects once they have been loaded:</p>
+
+<p>``` coffeescript app/assets/javascripts/models/invoice.js.coffee
+App.Invoice = DS.Model.extend
+  subtotal: DS.attr(&lsquo;number&rsquo;)
+  lineItems: DS.hasMany(&lsquo;lineItem&rsquo;, { async: true })</p>
+
+<p>  lineItemAmounts: Ember.computed.mapBy(&lsquo;lineItems&rsquo;, &lsquo;amount&rsquo;)
+  lineItemAmountsSum: Ember.computed.sum(&lsquo;lineItemAmounts&rsquo;)</p>
+
+<p>  # Uses subtotal until async lineItems become available
+  amount: (&ndash;></p>
+
+<pre><code>if @cacheFor('lineItems')
+  @get('lineItemAmountsSum')
+else
+  @get('subtotal')
+</code></pre>
+
+<p>  ).property(&lsquo;<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#108;&#105;&#110;&#101;&#x49;&#x74;&#101;&#x6d;&#115;&#x2e;&#x40;&#101;&#x61;&#99;&#104;&#46;&#x61;&#109;&#111;&#117;&#110;&#x74;">&#108;&#105;&#x6e;&#101;&#73;&#x74;&#101;&#x6d;&#115;&#46;&#64;&#x65;&#x61;&#x63;&#104;&#x2e;&#97;&#109;&#111;&#x75;&#110;&#x74;</a>&rsquo;)
+```</p>
+
+<p>In this case <code>subtotal</code> is the aggregated amount from the server.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lazy and Partial Data Loading with Ember.js and Rails]]></title>
