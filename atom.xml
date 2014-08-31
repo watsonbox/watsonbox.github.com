@@ -4,7 +4,7 @@
   <title><![CDATA[Watsonbox]]></title>
   <link href="http://watsonbox.github.com/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2014-07-16T14:52:44+02:00</updated>
+  <updated>2014-08-31T15:36:14+02:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -12,6 +12,69 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Getting Started With Dokku]]></title>
+    <link href="http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku/"/>
+    <updated>2014-08-31T14:35:02+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku</id>
+    <content type="html"><![CDATA[<p>I decided to jump in and set up my own mini-Heroku with <a href="https://www.docker.com/">Docker</a> and <a href="https://github.com/progrium/dokku">Dokku</a> as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3.</p>
+
+<p>I <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-dokku-application">installed Dokku on Digital Ocean</a>. It doesn&rsquo;t have to be Digital Ocean but they certainly make it easy. Then <a href="https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04">added some swap space</a>, too. Save some typing by setting up an alias:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">alias </span><span class="nv">dokku</span><span class="o">=</span><span class="err">&#39;</span>ssh -t dokku@yourvps.tld
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Configuration Variables</h2>
+
+<p>Dokku allows applications to be configured using enviornment variables as described in the twelve-factor app:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku config:set acme <span class="nv">company_name</span><span class="o">=</span><span class="s2">&quot;Acme Corporation&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That won&rsquo;t work though, because Dokku&rsquo;s command line app <a href="https://github.com/progrium/dokku/issues/482">doesn&rsquo;t support spaces in config variables</a>. You can get around this by setting the configuration directly in <code>/home/dokku/acme/ENV</code>:</p>
+
+<figure class='code'><figcaption><span>/home/dokku/acme/ENV</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">company_name</span><span class="o">=</span><span class="s2">&quot;Acme Corporation&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>They won&rsquo;t be correctly reported by <code>dokku config acme</code>, but they&rsquo;ll work.</p>
+
+<h2>Configuration Backup</h2>
+
+<p>You can backup Dokku&rsquo;s configuration (including application configuration) with:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku backup:export <span class="o">[</span>FILE<span class="o">]</span><span class="sb">`</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will place the backup in <code>/home/dokku/[FILE]</code>.</p>
+
+<h2>Multiple Domains and Basic Auth</h2>
+
+<p>I installed a couple of plugins which worked well out of the box:</p>
+
+<p><a href="https://github.com/matto1990/dokku-secure-apps">https://github.com/matto1990/dokku-secure-apps</a><br/>Secures an individual app with HTTP Basic authentication. Dead simple to use and useful when deploying apps for testing or private use only.</p>
+
+<p><a href="https://github.com/neam/dokku-custom-domains">https://github.com/neam/dokku-custom-domains</a><br/>Configure additional custom domains for your dokku app.</p>
+
+<h2>Persistent Storage</h2>
+
+<p>Dokku has plenty of <a href="https://github.com/progrium/dokku/wiki/Plugins#datastores">plugins for different data stores</a>. I decided to work with <a href="https://github.com/ohardy/dokku-mariadb">ohardy/dokku-mariadb</a> since on a VPS with farily limited memory, I preferred to only run one container and a single instance of MariaDB.</p>
+
+<p>The main problem I faced here was keeping database connections working after a reboot. On reboot, docker containers are restarted and will receive a new private IP. This means that the <code>DATABASE_URL</code> used by the apps, e.g. <code>mysql://[PRIVATE_IP]:3306/[database]</code> will change and break database connections. Despite some <a href="https://github.com/Kloadut/dokku-pg-plugin/issues/12">discussion</a> and <a href="https://github.com/Kloadut/dokku-md-plugin/commit/de26c1e10f1e30c059ae827fff65b4a132ccc2ed">attempted fixes</a>, the multiple container dokku MariaDB plugin (<a href="https://github.com/Kloadut/dokku-md-plugin">kloadut/dokku-md-plugin</a>) uses a dynamic port for each container, which also changes on reboot, so suffers from the same problem.</p>
+
+<p>I fixed this issue in <a href="https://github.com/watsonbox/dokku-mariadb/commit/ab724e99f49968695da3a0ce09fe7582bf735328">watsonbox/dokku-mariadb:reboot-persist-connections</a> by patching ohardy/dokku-mariadb to use a fixed IP address. It also uses a fixed port (3306), since only one container/instance is created.</p>
+
+<p>Worth noting that ohardy/dokku-mariadb stores persistent DB data on the host in <code>/home/dokku/.o_mariadb</code> (kloadut/dokku-md-plugin in <code>/home/dokku/.mariadb</code>).</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Aggregation for Ember Data Async Relationships]]></title>

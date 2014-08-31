@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Rails &amp; PHP Session Sharing #2 - Watsonbox</title>
+  <title>Getting Started With Dokku - Watsonbox</title>
   <meta name="author" content="Howard Wilson">
 
   
-  <meta name="description" content="Back in May I posted on how I set up shared sessions between Rails and a legacy PHP app. Since then I&rsquo;ve upgraded memcache-client to Mike &hellip;">
+  <meta name="description" content="I decided to jump in and set up my own mini-Heroku with Docker and Dokku as seems to be the fashion at the moment. Here are my thoughts and a few of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://watsonbox.github.com/blog/2012/07/24/rails-and-php-session-sharing-number-2">
+  <link rel="canonical" href="http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Watsonbox" type="application/atom+xml">
@@ -89,7 +89,7 @@
   
   <header>
     
-      <h1 class="entry-title">Rails &amp; PHP Session Sharing #2</h1>
+      <h1 class="entry-title">Getting Started With Dokku</h1>
     
     
       <p class="meta">
@@ -105,49 +105,68 @@
   
 
 
-<time datetime="2012-07-24T16:37:00+02:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
+<time datetime="2014-08-31T14:35:02+02:00" pubdate data-updated="true">Aug 31<span>st</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Back in May I <a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">posted</a> on how I set up shared sessions between Rails and a legacy PHP app. Since then I&rsquo;ve upgraded memcache-client to Mike Perham&rsquo;s replacement, <a href="https://github.com/mperham/dalli/">Dalli</a>. I took this opportunity to tidy up the PHP session store as well. Here is what I have now:</p>
+<div class="entry-content"><p>I decided to jump in and set up my own mini-Heroku with <a href="https://www.docker.com/">Docker</a> and <a href="https://github.com/progrium/dokku">Dokku</a> as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3.</p>
 
-<div><script src='https://gist.github.com/3170415.js'></script>
-<noscript><pre><code>require 'action_dispatch/middleware/session/dalli_store'
+<p>I <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-dokku-application">installed Dokku on Digital Ocean</a>. It doesn&rsquo;t have to be Digital Ocean but they certainly make it easy. Then <a href="https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04">added some swap space</a>, too. Save some typing by setting up an alias:</p>
 
-# - PHP side is 5.3.6 configured with session.save_handler = memcache
-# - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
-module ActionDispatch
-  module Session
-    class PhpDalliStore &lt; ActionDispatch::Session::DalliStore
-      require 'php_serialize'
-
-      class PhpSerializingPoolDecorator &lt; SimpleDelegator
-        def set(key, value, ttl = nil, options = nil)
-          super(key, PHP.serialize_session(value), 0, :raw =&gt; true)
-        end
-
-        def get(key, options = nil)
-          value = super(key)
-          PHP.unserialize(value) if value &amp;&amp; value != ''
-        end
-      end
-
-      def initialize(app, options = {})
-        # Default to no namespace and cookie name matching PHP settings
-        super(app, options.merge(:namespace =&gt; nil, :key =&gt; 'PHPSESSID'))
-
-        # Decorate the pool to do some serialization
-        @pool = PhpSerializingPoolDecorator.new(@pool)
-      end
-    end
-  end
-end</code></pre></noscript></div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">alias </span><span class="nv">dokku</span><span class="o">=</span><span class="err">&#39;</span>ssh -t dokku@yourvps.tld
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>This is cleaner than what I had before and should be much more resistant to changes in Dalli, too.</p>
+<h2>Configuration Variables</h2>
+
+<p>Dokku allows applications to be configured using enviornment variables as described in the twelve-factor app:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku config:set acme <span class="nv">company_name</span><span class="o">=</span><span class="s2">&quot;Acme Corporation&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That won&rsquo;t work though, because Dokku&rsquo;s command line app <a href="https://github.com/progrium/dokku/issues/482">doesn&rsquo;t support spaces in config variables</a>. You can get around this by setting the configuration directly in <code>/home/dokku/acme/ENV</code>:</p>
+
+<figure class='code'><figcaption><span>/home/dokku/acme/ENV</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">company_name</span><span class="o">=</span><span class="s2">&quot;Acme Corporation&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>They won&rsquo;t be correctly reported by <code>dokku config acme</code>, but they&rsquo;ll work.</p>
+
+<h2>Configuration Backup</h2>
+
+<p>You can backup Dokku&rsquo;s configuration (including application configuration) with:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku backup:export <span class="o">[</span>FILE<span class="o">]</span><span class="sb">`</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will place the backup in <code>/home/dokku/[FILE]</code>.</p>
+
+<h2>Multiple Domains and Basic Auth</h2>
+
+<p>I installed a couple of plugins which worked well out of the box:</p>
+
+<p><a href="https://github.com/matto1990/dokku-secure-apps">https://github.com/matto1990/dokku-secure-apps</a><br/>Secures an individual app with HTTP Basic authentication. Dead simple to use and useful when deploying apps for testing or private use only.</p>
+
+<p><a href="https://github.com/neam/dokku-custom-domains">https://github.com/neam/dokku-custom-domains</a><br/>Configure additional custom domains for your dokku app.</p>
+
+<h2>Persistent Storage</h2>
+
+<p>Dokku has plenty of <a href="https://github.com/progrium/dokku/wiki/Plugins#datastores">plugins for different data stores</a>. I decided to work with <a href="https://github.com/ohardy/dokku-mariadb">ohardy/dokku-mariadb</a> since on a VPS with farily limited memory, I preferred to only run one container and a single instance of MariaDB.</p>
+
+<p>The main problem I faced here was keeping database connections working after a reboot. On reboot, docker containers are restarted and will receive a new private IP. This means that the <code>DATABASE_URL</code> used by the apps, e.g. <code>mysql://[PRIVATE_IP]:3306/[database]</code> will change and break database connections. Despite some <a href="https://github.com/Kloadut/dokku-pg-plugin/issues/12">discussion</a> and <a href="https://github.com/Kloadut/dokku-md-plugin/commit/de26c1e10f1e30c059ae827fff65b4a132ccc2ed">attempted fixes</a>, the multiple container dokku MariaDB plugin (<a href="https://github.com/Kloadut/dokku-md-plugin">kloadut/dokku-md-plugin</a>) uses a dynamic port for each container, which also changes on reboot, so suffers from the same problem.</p>
+
+<p>I fixed this issue in <a href="https://github.com/watsonbox/dokku-mariadb/commit/ab724e99f49968695da3a0ce09fe7582bf735328">watsonbox/dokku-mariadb:reboot-persist-connections</a> by patching ohardy/dokku-mariadb to use a fixed IP address. It also uses a fixed port (3306), since only one container/instance is created.</p>
+
+<p>Worth noting that ohardy/dokku-mariadb stores persistent DB data on the host in <code>/home/dokku/.o_mariadb</code> (kloadut/dokku-md-plugin in <code>/home/dokku/.mariadb</code>).</p>
 </div>
 
 
@@ -170,12 +189,12 @@ end</code></pre></noscript></div>
   
 
 
-<time datetime="2012-07-24T16:37:00+02:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
+<time datetime="2014-08-31T14:35:02+02:00" pubdate data-updated="true">Aug 31<span>st</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/php/'>PHP</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+    <a class='category' href='/blog/categories/docker/'>Docker</a>, <a class='category' href='/blog/categories/dokku/'>Dokku</a>
   
 </span>
 
@@ -184,7 +203,7 @@ end</code></pre></noscript></div>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2012/07/24/rails-and-php-session-sharing-number-2/" data-via="" data-counturl="http://watsonbox.github.com/blog/2012/07/24/rails-and-php-session-sharing-number-2/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku/" data-via="" data-counturl="http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -197,10 +216,8 @@ end</code></pre></noscript></div>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/05/19/confreaks-xbmc-addon/" title="Previous Post: Confreaks XBMC Addon">&laquo; Confreaks XBMC Addon</a>
+        <a class="basic-alignment left" href="/blog/2014/06/23/aggregation-for-ember-data-async-relationships/" title="Previous Post: Aggregation for Ember Data Async Relationships">&laquo; Aggregation for Ember Data Async Relationships</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning/" title="Next Post: FB Canvas Apps #1: Dialog Positioning">FB Canvas Apps #1: Dialog Positioning &raquo;</a>
       
     </p>
   </footer>
@@ -307,8 +324,8 @@ end</code></pre></noscript></div>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://watsonbox.github.com/blog/2012/07/24/rails-and-php-session-sharing-number-2/';
-        var disqus_url = 'http://watsonbox.github.com/blog/2012/07/24/rails-and-php-session-sharing-number-2/';
+        var disqus_identifier = 'http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku/';
+        var disqus_url = 'http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku/';
         var disqus_script = 'embed.js';
       
     (function () {
