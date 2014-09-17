@@ -9,7 +9,7 @@
   <meta name="author" content="Howard Wilson">
 
   
-  <meta name="description" content="I decided to jump in and set up my own mini-Heroku with Docker and Dokku as seems to be the fashion at the moment. Here are my thoughts and a few of &hellip;">
+  <meta name="description" content="UPDATE: Some recent changes to ohardy/dokku-mariadb have resolved the problems with losing DB links on reboot. I decided to jump in and set up my own &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -112,7 +112,9 @@
   </header>
 
 
-<div class="entry-content"><p>I decided to jump in and set up my own mini-Heroku with <a href="https://www.docker.com/">Docker</a> and <a href="https://github.com/progrium/dokku">Dokku</a> as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3.</p>
+<div class="entry-content"><p><em>UPDATE: Some recent changes to <a href="https://github.com/ohardy/dokku-mariadb">ohardy/dokku-mariadb</a> have resolved the problems with losing DB links on reboot.</em></p>
+
+<p>I decided to jump in and set up my own mini-Heroku with <a href="https://www.docker.com/">Docker</a> and <a href="https://github.com/progrium/dokku">Dokku</a> as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3.</p>
 
 <p>I <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-dokku-application">installed Dokku on Digital Ocean</a>. It doesn&rsquo;t have to be Digital Ocean but they certainly make it easy. Then <a href="https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04">added some swap space</a>, too. Save some typing by setting up an alias:</p>
 
