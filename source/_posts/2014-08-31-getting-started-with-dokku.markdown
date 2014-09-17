@@ -6,6 +6,8 @@ comments: true
 categories: [Docker, Dokku]
 ---
 
+*UPDATE: Some recent changes to [ohardy/dokku-mariadb](https://github.com/ohardy/dokku-mariadb) have resolved the problems with losing DB links on reboot.*
+
 I decided to jump in and set up my own mini-Heroku with [Docker](https://www.docker.com/) and [Dokku](https://github.com/progrium/dokku) as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3.
 
 I [installed Dokku on Digital Ocean](https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-dokku-application). It doesn't have to be Digital Ocean but they certainly make it easy. Then [added some swap space](https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04), too. Save some typing by setting up an alias:
