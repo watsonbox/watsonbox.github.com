@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Confreaks XBMC Addon - Watsonbox</title>
+  <title>Mean.io on Dokku - Watsonbox</title>
   <meta name="author" content="Howard Wilson">
 
   
-  <meta name="description" content="Today I wrote a little plugin for watching Confreaks Ruby presentations in XBMC. As luck would have it, Jonathan Beluch has been working on &hellip;">
+  <meta name="description" content="Here&rsquo;s how I set up the Mean.io stack for deployment with Dokku. Set up MongoDB on the Dokku host and create a database. I used Jeff Utter& &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon">
+  <link rel="canonical" href="http://watsonbox.github.com/blog/2014/09/22/mean-dot-io-on-dokku">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Watsonbox" type="application/atom+xml">
@@ -89,7 +89,7 @@
   
   <header>
     
-      <h1 class="entry-title">Confreaks XBMC Addon</h1>
+      <h1 class="entry-title">Mean.io on Dokku</h1>
     
     
       <p class="meta">
@@ -105,18 +105,104 @@
   
 
 
-<time datetime="2012-05-19T22:06:00+02:00" pubdate data-updated="true">May 19<span>th</span>, 2012</time>
+<time datetime="2014-09-22T12:32:41+02:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Today I wrote a little plugin for watching <a href="http://www.confreaks.com/">Confreaks</a> Ruby presentations in <a href="http://www.xbmc.org/">XBMC</a>.</p>
+<div class="entry-content"><p>Here&rsquo;s how I set up the <a href="http://mean.io/">Mean.io</a> stack for deployment with <a href="https://github.com/progrium/dokku">Dokku</a>.</p>
 
-<p>As luck would have it, Jonathan Beluch has been working on <a href="http://readthedocs.org/projects/xbmcswift2/">xmbcswift2</a> over the last month or so, which he describes as &ldquo;A micro framework to enable rapid development of XBMC plugins&rdquo;. Although the library is still under development, the documentation is very complete.</p>
+<ul>
+<li>Set up MongoDB on the Dokku host and create a database. I used Jeff Utter&rsquo;s single container <a href="https://github.com/jeffutter/dokku-mongodb-plugin">plugin</a> for this.</li>
+</ul>
 
-<p>Check out the xbmc-confreaks <a href="http://github.com/watsonbox/xbmc-confreaks">source</a>, or download the <a href="http://github.com/watsonbox/xbmc-confreaks/raw/master/release/xbmc-confreaks-0.1.zip">zip file</a> ready to be installed directly into XBMC. I&rsquo;ve only tested it with the latest stable release of XBMC 11.0 Eden.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku mongodb:start
+</span><span class='line'><span class="nv">$ </span>dokku mongodb:create &lt;app&gt; &lt;database&gt;
+</span><span class='line'><span class="nv">$ </span>dokku mongodb:link &lt;app&gt; &lt;database&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Modify <code>config/env/production.js</code> to use ENV var for MongoDB URL:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>config/env/production.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">db</span><span class="o">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MONGO_URL</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// [REST OF FILE ELIDED]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Configure the application to run in the production environment:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku config:set &lt;app&gt; <span class="nv">NODE_ENV</span><span class="o">=</span>production
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Set the unsafe-perm npm configuration option to allow npm to operate under the root account. More information <a href="https://github.com/progrium/dokku/wiki/Troubleshooting">here</a>. Create <code>.npmrc</code> as follows:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>.npmrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>unsafe-perm <span class="o">=</span> <span class="nb">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Configure a <a href="https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt">buildpack which supports Grunt</a> in <code>.env</code>:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>.env</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">BUILDPACK_URL</span><span class="o">=</span>https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Add Heroku build task without environment to <code>Gruntfile.js</code> since Dokku doesn&rsquo;t read config during build steps:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Gruntfile.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="c1">// [REST OF FILE ELIDED]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// For Heroku users only.</span>
+</span><span class='line'>  <span class="c1">// Docs: https://github.com/linnovate/mean/wiki/Deploying-on-Heroku</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;heroku:production&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;cssmin&#39;</span><span class="p">,</span> <span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Dokku does not set ENV vars during build steps:</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;heroku:&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;cssmin&#39;</span><span class="p">,</span> <span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
@@ -139,12 +225,12 @@
   
 
 
-<time datetime="2012-05-19T22:06:00+02:00" pubdate data-updated="true">May 19<span>th</span>, 2012</time>
+<time datetime="2014-09-22T12:32:41+02:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/python/'>Python</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>, <a class='category' href='/blog/categories/xbmc/'>XBMC</a>
+    <a class='category' href='/blog/categories/angular/'>Angular</a>, <a class='category' href='/blog/categories/docker/'>Docker</a>, <a class='category' href='/blog/categories/dokku/'>Dokku</a>, <a class='category' href='/blog/categories/express/'>Express</a>, <a class='category' href='/blog/categories/mongodb/'>MongoDB</a>, <a class='category' href='/blog/categories/node-dot-js/'>Node.js</a>
   
 </span>
 
@@ -153,7 +239,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon/" data-via="" data-counturl="http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2014/09/22/mean-dot-io-on-dokku/" data-via="" data-counturl="http://watsonbox.github.com/blog/2014/09/22/mean-dot-io-on-dokku/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -166,10 +252,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/05/01/sharing-session-between-rails-and-php/" title="Previous Post: Sharing session between Rails and PHP">&laquo; Sharing session between Rails and PHP</a>
+        <a class="basic-alignment left" href="/blog/2014/08/31/getting-started-with-dokku/" title="Previous Post: Getting Started with Dokku">&laquo; Getting Started with Dokku</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/" title="Next Post: Rails &amp; PHP Session Sharing #2">Rails &amp; PHP Session Sharing #2 &raquo;</a>
       
     </p>
   </footer>
@@ -276,8 +360,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon/';
-        var disqus_url = 'http://watsonbox.github.com/blog/2012/05/19/confreaks-xbmc-addon/';
+        var disqus_identifier = 'http://watsonbox.github.com/blog/2014/09/22/mean-dot-io-on-dokku/';
+        var disqus_url = 'http://watsonbox.github.com/blog/2014/09/22/mean-dot-io-on-dokku/';
         var disqus_script = 'embed.js';
       
     (function () {

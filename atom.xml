@@ -4,7 +4,7 @@
   <title><![CDATA[Watsonbox]]></title>
   <link href="http://watsonbox.github.com/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2014-09-17T17:59:26+02:00</updated>
+  <updated>2014-09-22T13:09:00+02:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -12,6 +12,105 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Mean.io on Dokku]]></title>
+    <link href="http://watsonbox.github.com/blog/2014/09/22/mean-dot-io-on-dokku/"/>
+    <updated>2014-09-22T12:32:41+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2014/09/22/mean-dot-io-on-dokku</id>
+    <content type="html"><![CDATA[<p>Here&rsquo;s how I set up the <a href="http://mean.io/">Mean.io</a> stack for deployment with <a href="https://github.com/progrium/dokku">Dokku</a>.</p>
+
+<ul>
+<li>Set up MongoDB on the Dokku host and create a database. I used Jeff Utter&rsquo;s single container <a href="https://github.com/jeffutter/dokku-mongodb-plugin">plugin</a> for this.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku mongodb:start
+</span><span class='line'><span class="nv">$ </span>dokku mongodb:create &lt;app&gt; &lt;database&gt;
+</span><span class='line'><span class="nv">$ </span>dokku mongodb:link &lt;app&gt; &lt;database&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Modify <code>config/env/production.js</code> to use ENV var for MongoDB URL:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>config/env/production.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">db</span><span class="o">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MONGO_URL</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// [REST OF FILE ELIDED]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Configure the application to run in the production environment:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku config:set &lt;app&gt; <span class="nv">NODE_ENV</span><span class="o">=</span>production
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Set the unsafe-perm npm configuration option to allow npm to operate under the root account. More information <a href="https://github.com/progrium/dokku/wiki/Troubleshooting">here</a>. Create <code>.npmrc</code> as follows:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>.npmrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>unsafe-perm <span class="o">=</span> <span class="nb">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Configure a <a href="https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt">buildpack which supports Grunt</a> in <code>.env</code>:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>.env</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">BUILDPACK_URL</span><span class="o">=</span>https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Add Heroku build task without environment to <code>Gruntfile.js</code> since Dokku doesn&rsquo;t read config during build steps:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Gruntfile.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="c1">// [REST OF FILE ELIDED]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// For Heroku users only.</span>
+</span><span class='line'>  <span class="c1">// Docs: https://github.com/linnovate/mean/wiki/Deploying-on-Heroku</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;heroku:production&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;cssmin&#39;</span><span class="p">,</span> <span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Dokku does not set ENV vars during build steps:</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;heroku:&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;cssmin&#39;</span><span class="p">,</span> <span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Getting Started With Dokku]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Docker | Watsonbox]]></title>
   <link href="http://watsonbox.github.com/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2014-09-17T17:59:26+02:00</updated>
+  <updated>2014-09-22T13:09:00+02:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -12,6 +12,84 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Mean.io on Dokku]]></title>
+    <link href="http://watsonbox.github.com/blog/2014/09/22/mean-dot-io-on-dokku/"/>
+    <updated>2014-09-22T12:32:41+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2014/09/22/mean-dot-io-on-dokku</id>
+    <content type="html"><![CDATA[<p>Here&rsquo;s how I set up the <a href="http://mean.io/">Mean.io</a> stack for deployment with <a href="https://github.com/progrium/dokku">Dokku</a>.</p>
+
+<ul>
+<li>Set up MongoDB on the Dokku host and create a database. I used Jeff Utter&rsquo;s single container <a href="https://github.com/jeffutter/dokku-mongodb-plugin">plugin</a> for this.</li>
+</ul>
+
+
+<p><code>bash
+$ dokku mongodb:start
+$ dokku mongodb:create &lt;app&gt; &lt;database&gt;
+$ dokku mongodb:link &lt;app&gt; &lt;database&gt;
+</code></p>
+
+<ul>
+<li>Modify <code>config/env/production.js</code> to use ENV var for MongoDB URL:</li>
+</ul>
+
+
+<p>```js config/env/production.js
+&lsquo;use strict&rsquo;;</p>
+
+<p>module.exports = {
+  db: process.env.MONGO_URL,</p>
+
+<p>// [REST OF FILE ELIDED]
+```</p>
+
+<ul>
+<li>Configure the application to run in the production environment:</li>
+</ul>
+
+
+<p><code>bash
+$ dokku config:set &lt;app&gt; NODE_ENV=production
+</code></p>
+
+<ul>
+<li>Set the unsafe-perm npm configuration option to allow npm to operate under the root account. More information <a href="https://github.com/progrium/dokku/wiki/Troubleshooting">here</a>. Create <code>.npmrc</code> as follows:</li>
+</ul>
+
+
+<p><code>bash .npmrc
+unsafe-perm = true
+</code></p>
+
+<ul>
+<li>Configure a <a href="https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt">buildpack which supports Grunt</a> in <code>.env</code>:</li>
+</ul>
+
+
+<p><code>bash .env
+BUILDPACK_URL=https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git
+</code></p>
+
+<ul>
+<li>Add Heroku build task without environment to <code>Gruntfile.js</code> since Dokku doesn&rsquo;t read config during build steps:</li>
+</ul>
+
+
+<p>```js Gruntfile.js
+  // [REST OF FILE ELIDED]</p>
+
+<p>  // For Heroku users only.
+  // Docs: <a href="https://github.com/linnovate/mean/wiki/Deploying-on-Heroku">https://github.com/linnovate/mean/wiki/Deploying-on-Heroku</a>
+  grunt.registerTask(&lsquo;heroku:production&rsquo;, [&lsquo;cssmin&rsquo;, &lsquo;uglify&rsquo;]);</p>
+
+<p>  // Dokku does not set ENV vars during build steps:
+  grunt.registerTask(&lsquo;heroku:&rsquo;, [&lsquo;cssmin&rsquo;, &lsquo;uglify&rsquo;]);
+};
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Getting Started with Dokku]]></title>
