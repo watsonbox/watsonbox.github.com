@@ -3,6 +3,11 @@ var github = (function(){
     return $('<div/>').text(str).html();
   }
   function render(target, repos){
+    // Sort repos according to number of stars - HW
+    repos.sort (function (a, b) {
+      return (a.stargazers_count < b.stargazers_count) ? 1 : -1;
+    });
+
     var i = 0, fragment = '', t = $(target)[0];
 
     for(i = 0; i < repos.length; i++) {
