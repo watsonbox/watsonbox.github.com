@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ember.js | Watsonbox]]></title>
   <link href="http://watsonbox.github.com/blog/categories/ember-dot-js/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2014-10-07T15:38:09+02:00</updated>
+  <updated>2014-10-24T16:08:00+02:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -49,7 +49,7 @@ else
   @get('subtotal')
 </code></pre>
 
-<p>  ).property(&lsquo;<a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#x6c;&#105;&#x6e;&#101;&#73;&#116;&#x65;&#109;&#115;&#x2e;&#64;&#x65;&#x61;&#x63;&#104;&#46;&#97;&#109;&#111;&#117;&#110;&#116;">&#x6c;&#x69;&#110;&#x65;&#73;&#116;&#x65;&#x6d;&#x73;&#46;&#x40;&#101;&#x61;&#x63;&#104;&#46;&#x61;&#x6d;&#x6f;&#117;&#110;&#116;</a>&rsquo;)
+<p>  ).property(&lsquo;<a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#58;&#108;&#105;&#x6e;&#101;&#73;&#116;&#101;&#109;&#x73;&#x2e;&#64;&#101;&#97;&#x63;&#x68;&#46;&#97;&#x6d;&#111;&#117;&#110;&#116;">&#108;&#x69;&#110;&#101;&#73;&#116;&#101;&#109;&#x73;&#46;&#64;&#101;&#97;&#99;&#x68;&#x2e;&#97;&#109;&#111;&#117;&#x6e;&#116;</a>&rsquo;)
 ```</p>
 
 <p>In this case <code>subtotal</code> is the aggregated amount from the server.</p>

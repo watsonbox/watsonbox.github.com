@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Speech Recognition | Watsonbox]]></title>
+  <link href="http://watsonbox.github.com/blog/categories/speech-recognition/atom.xml" rel="self"/>
+  <link href="http://watsonbox.github.com/"/>
+  <updated>2014-10-24T16:08:00+02:00</updated>
+  <id>http://watsonbox.github.com/</id>
+  <author>
+    <name><![CDATA[Howard Wilson]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby speech recognition with Pocketsphinx]]></title>
+    <link href="http://watsonbox.github.com/blog/2014/10/24/ruby-speech-recognition-with-pocketsphinx/"/>
+    <updated>2014-10-24T15:42:02+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2014/10/24/ruby-speech-recognition-with-pocketsphinx</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/watsonbox/pocketsphinx-ruby">pocketsphinx-ruby</a> is a high-level Ruby wrapper for the pocketsphinx C API. It uses the Ruby Foreign Function Interface (FFI) to directly load and call functions in libpocketsphinx, as well as libsphinxav for recoding live audio using a number of different audio backends.</p>
+
+<p>The goal of the project is to make it as easy as possible for the Ruby community to experiment with speech recognition, in particular for use in grammar-based command and control applications. Setting up a real time recognizer is as simple as:</p>
+
+<p>```ruby
+configuration = Pocketsphinx::Configuration::Grammar.new do
+  sentence &ldquo;Go forward ten meters&rdquo;
+  sentence &ldquo;Go backward ten meters&rdquo;
+end</p>
+
+<p>Pocketsphinx::LiveSpeechRecognizer.new(configuration).recognize do |speech|
+  puts speech
+end
+```</p>
+
+<p>This library supports Ruby MRI 1.9.3+, JRuby, and Rubinius. It depends on the current development versions of Pocketsphinx and Sphinxbase &ndash; there are <a href="https://github.com/watsonbox/homebrew-cmu-sphinx">Homebrew recipes</a> available for a quick start on OSX.</p>
+]]></content>
+  </entry>
+  
+</feed>

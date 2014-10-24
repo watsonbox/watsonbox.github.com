@@ -4,7 +4,7 @@
   <title><![CDATA[Watsonbox]]></title>
   <link href="http://watsonbox.github.com/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2014-10-07T15:38:09+02:00</updated>
+  <updated>2014-10-24T16:08:00+02:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -12,6 +12,38 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby Speech Recognition With Pocketsphinx]]></title>
+    <link href="http://watsonbox.github.com/blog/2014/10/24/ruby-speech-recognition-with-pocketsphinx/"/>
+    <updated>2014-10-24T15:42:02+02:00</updated>
+    <id>http://watsonbox.github.com/blog/2014/10/24/ruby-speech-recognition-with-pocketsphinx</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/watsonbox/pocketsphinx-ruby">pocketsphinx-ruby</a> is a high-level Ruby wrapper for the pocketsphinx C API. It uses the Ruby Foreign Function Interface (FFI) to directly load and call functions in libpocketsphinx, as well as libsphinxav for recoding live audio using a number of different audio backends.</p>
+
+<p>The goal of the project is to make it as easy as possible for the Ruby community to experiment with speech recognition, in particular for use in grammar-based command and control applications. Setting up a real time recognizer is as simple as:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">configuration</span> <span class="o">=</span> <span class="ss">Pocketsphinx</span><span class="p">:</span><span class="ss">:Configuration</span><span class="o">::</span><span class="no">Grammar</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">sentence</span> <span class="s2">&quot;Go forward ten meters&quot;</span>
+</span><span class='line'>  <span class="n">sentence</span> <span class="s2">&quot;Go backward ten meters&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="ss">Pocketsphinx</span><span class="p">:</span><span class="ss">:LiveSpeechRecognizer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span><span class="o">.</span><span class="n">recognize</span> <span class="k">do</span> <span class="o">|</span><span class="n">speech</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">speech</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This library supports Ruby MRI 1.9.3+, JRuby, and Rubinius. It depends on the current development versions of Pocketsphinx and Sphinxbase &ndash; there are <a href="https://github.com/watsonbox/homebrew-cmu-sphinx">Homebrew recipes</a> available for a quick start on OSX.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mean.io on Dokku]]></title>
@@ -506,11 +538,11 @@
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">$.fn.pseudoFixed = </span><span class="o">-&gt;</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">$.fn.pseudoFixed = </span><span class="nf">-&gt;</span>
 </span><span class='line'>  <span class="nv">top = </span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">().</span><span class="nx">top</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">setInterval</span><span class="p">(</span>
-</span><span class='line'>    <span class="o">=&gt;</span> <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span><span class="p">((</span><span class="nx">info</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span> <span class="nv">top: </span><span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="nx">top</span> <span class="p">})),</span>
+</span><span class='line'>    <span class="o">=&gt;</span> <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span><span class="p">(</span><span class="nf">(info) =&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span> <span class="nv">top: </span><span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="nx">top</span> <span class="p">})),</span>
 </span><span class='line'>    <span class="mi">1000</span>
 </span><span class='line'>  <span class="p">)</span>
 </span><span class='line'>
@@ -548,9 +580,9 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span> <span class="o">-&gt;</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span> <span class="nf">-&gt;</span>
 </span><span class='line'>  <span class="c1"># Async Facebook initialisation</span>
-</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nv">fbAsyncInit = </span><span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nv">fbAsyncInit = </span><span class="nf">-&gt;</span>
 </span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span> <span class="nv">appId: </span><span class="s">&#39;APP_ID&#39;</span><span class="p">,</span> <span class="nv">status: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">cookie: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">xfbml: </span><span class="kc">true</span> <span class="p">})</span>
 </span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">setAutoGrow</span><span class="p">()</span>
 </span><span class='line'>
@@ -603,29 +635,29 @@
 </span><span class='line'>    <span class="nv">autoOpen: </span><span class="kc">true</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="nv">_init: </span><span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nv">_init: </span><span class="nf">-&gt;</span>
 </span><span class='line'>    <span class="k">if</span> <span class="nx">@_inCanvas</span>
 </span><span class='line'>      <span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="nx">_fbLoaded</span><span class="p">()</span>
 </span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
 </span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="kc">on</span> <span class="s">&#39;fb:initialized&#39;</span><span class="p">,</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">on</span> <span class="s">&#39;fb:initialized&#39;</span><span class="p">,</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
 </span><span class='line'>    <span class="k">else</span>
 </span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">_showDialog</span><span class="p">()</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># Displays the dialog positioned correctly inside the FB canvas iFrame</span>
-</span><span class='line'>  <span class="nv">_showDialogInCanvas: </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span> <span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="nv">_showDialogInCanvas: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span> <span class="nf">(info) =&gt;</span>
 </span><span class='line'>      <span class="vi">@options.position = </span><span class="p">[</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="mi">50</span><span class="p">]</span>
 </span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">_showDialog</span><span class="p">()</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># Calls the jQuery UI dialog&#39;s original init method</span>
-</span><span class='line'>  <span class="nv">_showDialog: </span><span class="o">-&gt;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_init</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">_showDialog: </span><span class="nf">-&gt;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_init</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># True if dialog is being loading inside the FB iFrame (any iFrame for that matter)</span>
 </span><span class='line'>  <span class="nv">_inCanvas: </span><span class="nx">top</span> <span class="o">!=</span> <span class="nx">self</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># True if FB javascript API has been loaded</span>
-</span><span class='line'>  <span class="nv">_fbLoaded: </span><span class="o">-&gt;</span> <span class="k">typeof</span> <span class="nx">FB</span> <span class="o">!=</span> <span class="s">&#39;undefined&#39;</span>
+</span><span class='line'>  <span class="nv">_fbLoaded: </span><span class="nf">-&gt;</span> <span class="k">typeof</span> <span class="nx">FB</span> <span class="o">!=</span> <span class="s">&#39;undefined&#39;</span>
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">widget</span> <span class="s">&quot;ui.canvasDialog&quot;</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">,</span> <span class="nx">CanvasDialog</span>

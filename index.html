@@ -9,7 +9,7 @@
   <meta name="author" content="Howard Wilson">
 
   
-  <meta name="description" content="Here&rsquo;s how I set up the Mean.io stack for deployment with Dokku. Set up MongoDB on the Dokku host and create a database. I used Jeff Utter& &hellip;">
+  <meta name="description" content="pocketsphinx-ruby is a high-level Ruby wrapper for the pocketsphinx C API. It uses the Ruby Foreign Function Interface (FFI) to directly load and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +88,65 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/24/ruby-speech-recognition-with-pocketsphinx/">Ruby Speech Recognition With Pocketsphinx</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-24T15:42:02+02:00" pubdate data-updated="true">Oct 24<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://github.com/watsonbox/pocketsphinx-ruby">pocketsphinx-ruby</a> is a high-level Ruby wrapper for the pocketsphinx C API. It uses the Ruby Foreign Function Interface (FFI) to directly load and call functions in libpocketsphinx, as well as libsphinxav for recoding live audio using a number of different audio backends.</p>
+
+<p>The goal of the project is to make it as easy as possible for the Ruby community to experiment with speech recognition, in particular for use in grammar-based command and control applications. Setting up a real time recognizer is as simple as:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">configuration</span> <span class="o">=</span> <span class="ss">Pocketsphinx</span><span class="p">:</span><span class="ss">:Configuration</span><span class="o">::</span><span class="no">Grammar</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">sentence</span> <span class="s2">&quot;Go forward ten meters&quot;</span>
+</span><span class='line'>  <span class="n">sentence</span> <span class="s2">&quot;Go backward ten meters&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="ss">Pocketsphinx</span><span class="p">:</span><span class="ss">:LiveSpeechRecognizer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span><span class="o">.</span><span class="n">recognize</span> <span class="k">do</span> <span class="o">|</span><span class="n">speech</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">speech</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This library supports Ruby MRI 1.9.3+, JRuby, and Rubinius. It depends on the current development versions of Pocketsphinx and Sphinxbase &ndash; there are <a href="https://github.com/watsonbox/homebrew-cmu-sphinx">Homebrew recipes</a> available for a quick start on OSX.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -740,11 +799,11 @@
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">$.fn.pseudoFixed = </span><span class="o">-&gt;</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">$.fn.pseudoFixed = </span><span class="nf">-&gt;</span>
 </span><span class='line'>  <span class="nv">top = </span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">().</span><span class="nx">top</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">setInterval</span><span class="p">(</span>
-</span><span class='line'>    <span class="o">=&gt;</span> <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span><span class="p">((</span><span class="nx">info</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span> <span class="nv">top: </span><span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="nx">top</span> <span class="p">})),</span>
+</span><span class='line'>    <span class="o">=&gt;</span> <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span><span class="p">(</span><span class="nf">(info) =&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span> <span class="nv">top: </span><span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="nx">top</span> <span class="p">})),</span>
 </span><span class='line'>    <span class="mi">1000</span>
 </span><span class='line'>  <span class="p">)</span>
 </span><span class='line'>
@@ -809,9 +868,9 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span> <span class="o">-&gt;</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span> <span class="nf">-&gt;</span>
 </span><span class='line'>  <span class="c1"># Async Facebook initialisation</span>
-</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nv">fbAsyncInit = </span><span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nv">fbAsyncInit = </span><span class="nf">-&gt;</span>
 </span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span> <span class="nv">appId: </span><span class="s">&#39;APP_ID&#39;</span><span class="p">,</span> <span class="nv">status: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">cookie: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">xfbml: </span><span class="kc">true</span> <span class="p">})</span>
 </span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">setAutoGrow</span><span class="p">()</span>
 </span><span class='line'>
@@ -864,29 +923,29 @@
 </span><span class='line'>    <span class="nv">autoOpen: </span><span class="kc">true</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="nv">_init: </span><span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nv">_init: </span><span class="nf">-&gt;</span>
 </span><span class='line'>    <span class="k">if</span> <span class="nx">@_inCanvas</span>
 </span><span class='line'>      <span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="nx">_fbLoaded</span><span class="p">()</span>
 </span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
 </span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="kc">on</span> <span class="s">&#39;fb:initialized&#39;</span><span class="p">,</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">on</span> <span class="s">&#39;fb:initialized&#39;</span><span class="p">,</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
 </span><span class='line'>    <span class="k">else</span>
 </span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">_showDialog</span><span class="p">()</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># Displays the dialog positioned correctly inside the FB canvas iFrame</span>
-</span><span class='line'>  <span class="nv">_showDialogInCanvas: </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span> <span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="nv">_showDialogInCanvas: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span> <span class="nf">(info) =&gt;</span>
 </span><span class='line'>      <span class="vi">@options.position = </span><span class="p">[</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="mi">50</span><span class="p">]</span>
 </span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">_showDialog</span><span class="p">()</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># Calls the jQuery UI dialog&#39;s original init method</span>
-</span><span class='line'>  <span class="nv">_showDialog: </span><span class="o">-&gt;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_init</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">_showDialog: </span><span class="nf">-&gt;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_init</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># True if dialog is being loading inside the FB iFrame (any iFrame for that matter)</span>
 </span><span class='line'>  <span class="nv">_inCanvas: </span><span class="nx">top</span> <span class="o">!=</span> <span class="nx">self</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># True if FB javascript API has been loaded</span>
-</span><span class='line'>  <span class="nv">_fbLoaded: </span><span class="o">-&gt;</span> <span class="k">typeof</span> <span class="nx">FB</span> <span class="o">!=</span> <span class="s">&#39;undefined&#39;</span>
+</span><span class='line'>  <span class="nv">_fbLoaded: </span><span class="nf">-&gt;</span> <span class="k">typeof</span> <span class="nx">FB</span> <span class="o">!=</span> <span class="s">&#39;undefined&#39;</span>
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">widget</span> <span class="s">&quot;ui.canvasDialog&quot;</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">,</span> <span class="nx">CanvasDialog</span>
@@ -1026,141 +1085,9 @@ end</code></pre></noscript></div>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/05/01/sharing-session-between-rails-and-php/">Sharing Session Between Rails and PHP</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-05-01T13:07:00+02:00" pubdate data-updated="true">May 1<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>Update: Here&rsquo;s a <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">more elegant solution</a> which uses Dalli instead of memcache-client.</em></p>
-
-<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&rsquo;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
-
-<figure class='code'><figcaption><span>php.ini</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ini'><span class='line'><span class="na">session.save_handler</span> <span class="o">=</span> <span class="s">memcache</span>
-</span><span class='line'><span class="na">session.save_path</span> <span class="o">=</span> <span class="s">&quot;tcp://localhost:11211&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you&rsquo;re interested in seeing how the PHP data gets serialized, take the value of the <code>PHPSESSID</code> cookie and perform a <code>GET</code> request in a memcached telnet session:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>telnet localhost 11211
-</span><span class='line'>Trying ::1...
-</span><span class='line'>Connected to localhost.
-</span><span class='line'>Escape character is <span class="s1">&#39;^]&#39;</span>.
-</span><span class='line'>get a29ajb8go3bkm6r6k2qu4hv3d5
-</span><span class='line'>VALUE a29ajb8go3bkm6r6k2qu4hv3d5 0 298
-</span><span class='line'>state|s:32:<span class="s2">&quot;hgc8cf6e737b4f28ca9872ghe059577b&quot;</span>;access_token|s:113:<span class="s2">&quot;AAACldPr8ZAokBAFmih7MCYhTlrOSmz7Ro3wJrZCVLeZCkrpQGhSL5hy4dRjYXikOjaBWbt2GJkjcpQj6MpJIopZBU3vURpVfJZBHKZAb7MyQZDZD&quot;</span>;user_id|i:100000123456789;LAST_FACEBOOK_IDENTITY_CHECK|s:10:<span class="s2">&quot;1334154070&quot;</span>;LAST_FACEBOOK_OAUTH_CHECK|s:10:<span class="s2">&quot;1334154070&quot;</span>;
-</span><span class='line'>END
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are a few Ruby libraries out there which can speak the language of PHP serialization. I&rsquo;ve chosen Thomas Hurst&rsquo;s <a href="https://github.com/watsonbox/php-serialize">php-serialize</a>. Note that I&rsquo;ve linked to my fork which also supports <code>.</code> characters in array keys. Add that to your Gemfile, and then include the following middleware in your Rails application.</p>
-
-<div><script src='https://gist.github.com/2367946.js'></script>
-<noscript><pre><code># Overrides functionality in Rack::Session::Memcache from Rack 1.4.1 to support sharing PHP sessions
-# - PHP side is 5.3.6 configured with session.save_handler = memcache
-# - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
-
-module ActionDispatch
-  module Session
-    class PhpSessionStore &lt; ActionDispatch::Session::MemCacheStore
-      require 'php_serialize'
-      
-      def initialize(app, options = {})
-        require 'memcache'
-        options[:expire_after] ||= options[:expires]
-        
-        # Default to no namespace and cookie name matching PHP settings
-        super(app, options.merge(:namespace =&gt; nil, :key =&gt; 'PHPSESSID'))
-      end
-      
-      def get_session(env, sid)
-        with_lock(env, [nil, {}]) do
-          unless session = deserialize_session(sid)
-            sid, session = generate_sid, {}
-            
-            unless /^STORED/ =~ @pool.add(sid, PHP.serialize_session(session), 0, true)
-              raise &quot;Session collision on '#{sid.inspect}'&quot;
-            end
-          end
-          [sid, session]
-        end
-      end
-      
-      def set_session(env, session_id, new_session, options)
-        expiry = options[:expire_after]
-        expiry = expiry.nil? ? 0 : expiry + 1
-
-        with_lock(env, false) do
-          @pool.set session_id, PHP.serialize_session(new_session), expiry, true
-          session_id
-        end
-      end
-
-      protected
-
-      def deserialize_session(session_id)
-        if session_id
-          raw_session = @pool.get(session_id, true)
-
-          if raw_session &amp;&amp; raw_session != ''
-            PHP.unserialize(raw_session)
-          end
-        end
-      end
-    end
-  end
-end</code></pre></noscript></div>
-
-
-<p>Now you can use this session store in <code>session_store.rb</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>YourApp::Application.config.session_store :php_session_store, :expire_after <span class="o">=</span>&gt; 10.minutes
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&rsquo;s it, your applications should both now be able to seamlessly access the same session data.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -1171,6 +1098,10 @@ end</code></pre></noscript></div>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/10/24/ruby-speech-recognition-with-pocketsphinx/">Ruby Speech Recognition With Pocketsphinx</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/09/22/mean-dot-io-on-dokku/">Mean.io on Dokku</a>
@@ -1198,10 +1129,6 @@ end</code></pre></noscript></div>
     
       <li class="post">
         <a href="/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning/">FB Canvas Apps #1: Dialog Positioning</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">Rails &amp; PHP Session Sharing #2</a>
       </li>
     
   </ul>

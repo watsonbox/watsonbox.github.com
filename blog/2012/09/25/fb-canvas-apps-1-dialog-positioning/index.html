@@ -130,9 +130,9 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span> <span class="o">-&gt;</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span> <span class="nf">-&gt;</span>
 </span><span class='line'>  <span class="c1"># Async Facebook initialisation</span>
-</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nv">fbAsyncInit = </span><span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nv">fbAsyncInit = </span><span class="nf">-&gt;</span>
 </span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span> <span class="nv">appId: </span><span class="s">&#39;APP_ID&#39;</span><span class="p">,</span> <span class="nv">status: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">cookie: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">xfbml: </span><span class="kc">true</span> <span class="p">})</span>
 </span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">setAutoGrow</span><span class="p">()</span>
 </span><span class='line'>
@@ -185,29 +185,29 @@
 </span><span class='line'>    <span class="nv">autoOpen: </span><span class="kc">true</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="nv">_init: </span><span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nv">_init: </span><span class="nf">-&gt;</span>
 </span><span class='line'>    <span class="k">if</span> <span class="nx">@_inCanvas</span>
 </span><span class='line'>      <span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="nx">_fbLoaded</span><span class="p">()</span>
 </span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
 </span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="kc">on</span> <span class="s">&#39;fb:initialized&#39;</span><span class="p">,</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">on</span> <span class="s">&#39;fb:initialized&#39;</span><span class="p">,</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_showDialogInCanvas</span><span class="p">()</span>
 </span><span class='line'>    <span class="k">else</span>
 </span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">_showDialog</span><span class="p">()</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># Displays the dialog positioned correctly inside the FB canvas iFrame</span>
-</span><span class='line'>  <span class="nv">_showDialogInCanvas: </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span> <span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="nv">_showDialogInCanvas: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="nx">FB</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">getPageInfo</span> <span class="nf">(info) =&gt;</span>
 </span><span class='line'>      <span class="vi">@options.position = </span><span class="p">[</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">+</span> <span class="mi">50</span><span class="p">]</span>
 </span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">_showDialog</span><span class="p">()</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># Calls the jQuery UI dialog&#39;s original init method</span>
-</span><span class='line'>  <span class="nv">_showDialog: </span><span class="o">-&gt;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_init</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">_showDialog: </span><span class="nf">-&gt;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_init</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># True if dialog is being loading inside the FB iFrame (any iFrame for that matter)</span>
 </span><span class='line'>  <span class="nv">_inCanvas: </span><span class="nx">top</span> <span class="o">!=</span> <span class="nx">self</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1"># True if FB javascript API has been loaded</span>
-</span><span class='line'>  <span class="nv">_fbLoaded: </span><span class="o">-&gt;</span> <span class="k">typeof</span> <span class="nx">FB</span> <span class="o">!=</span> <span class="s">&#39;undefined&#39;</span>
+</span><span class='line'>  <span class="nv">_fbLoaded: </span><span class="nf">-&gt;</span> <span class="k">typeof</span> <span class="nx">FB</span> <span class="o">!=</span> <span class="s">&#39;undefined&#39;</span>
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">widget</span> <span class="s">&quot;ui.canvasDialog&quot;</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">dialog</span><span class="p">,</span> <span class="nx">CanvasDialog</span>
@@ -302,6 +302,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/10/24/ruby-speech-recognition-with-pocketsphinx/">Ruby Speech Recognition With Pocketsphinx</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/09/22/mean-dot-io-on-dokku/">Mean.io on Dokku</a>
       </li>
     
@@ -327,10 +331,6 @@
     
       <li class="post">
         <a href="/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning/">FB Canvas Apps #1: Dialog Positioning</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">Rails &amp; PHP Session Sharing #2</a>
       </li>
     
   </ul>
