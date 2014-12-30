@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Watsonbox]]></title>
   <link href="http://watsonbox.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://watsonbox.github.com/"/>
-  <updated>2014-10-24T16:08:00+02:00</updated>
+  <updated>2014-12-30T12:46:01+01:00</updated>
   <id>http://watsonbox.github.com/</id>
   <author>
     <name><![CDATA[Howard Wilson]]></name>
@@ -104,6 +104,8 @@ has_many :invoices, embed: :ids
 ```</p>
 
 <p>When the <code>invoices</code> relationship is accessed, Ember Data will automatically make a request to <code>/invoices?ids[]=1&amp;ids[]=2</code> (or presumably wherever that route is defined), so the Rails <code>InvoicesController</code> must be set up to restrict returned data based on the <code>ids</code> parameter.</p>
+
+<p><em>Update 30/12/14: Since Ember Data v1.0.0-beta.9 <a href="http://emberjs.com/blog/2014/08/18/ember-data-1-0-beta-9-released.html">has many coalescing has become opt-in</a>. This means setting <code>coalesceFindRequests: true</code> on the REST adapter for the above behavior. Thanks to CamonZ for pointing this out.</em></p>
 
 <p>Note that if an association is set to <code>async</code>, but sideloaded data exists in the server response, Ember Data will simply use that data and not attempt to make another request. This is useful, allowing data to be sideloaded for a detail view because we know we&rsquo;re going to need it, but not for a list view where it might not be used. When moving from list to detail, the invoices will be loaded, but when arriving directly on the detail page, only the project will be loaded. Specify a different serializer in Rails for each action:</p>
 
