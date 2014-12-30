@@ -60,6 +60,8 @@ has_many :invoices, embed: :ids
 
 When the `invoices` relationship is accessed, Ember Data will automatically make a request to `/invoices?ids[]=1&ids[]=2` (or presumably wherever that route is defined), so the Rails `InvoicesController` must be set up to restrict returned data based on the `ids` parameter.
 
+*Update 30/12/14: Since Ember Data v1.0.0-beta.9 [has many coalescing has become opt-in](http://emberjs.com/blog/2014/08/18/ember-data-1-0-beta-9-released.html). This means setting `coalesceFindRequests: true` on the REST adapter for the above behavior. Thanks to CamonZ for pointing this out.*
+
 Note that if an association is set to `async`, but sideloaded data exists in the server response, Ember Data will simply use that data and not attempt to make another request. This is useful, allowing data to be sideloaded for a detail view because we know we're going to need it, but not for a list view where it might not be used. When moving from list to detail, the invoices will be loaded, but when arriving directly on the detail page, only the project will be loaded. Specify a different serializer in Rails for each action:
 
 ``` ruby app/controllers/projects_controller.rb
