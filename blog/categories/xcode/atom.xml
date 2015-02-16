@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: XCode | Watsonbox]]></title>
+  <link href="http://watsonbox.github.com/blog/categories/xcode/atom.xml" rel="self"/>
+  <link href="http://watsonbox.github.com/"/>
+  <updated>2015-02-16T18:11:16+01:00</updated>
+  <id>http://watsonbox.github.com/</id>
+  <author>
+    <name><![CDATA[Howard Wilson]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GooglePlacesAutocomplete CocoaPod]]></title>
+    <link href="http://watsonbox.github.com/blog/2015/02/16/googleplacesautocomplete-cocoapod/"/>
+    <updated>2015-02-16T17:45:42+01:00</updated>
+    <id>http://watsonbox.github.com/blog/2015/02/16/googleplacesautocomplete-cocoapod</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/watsonbox/ios_google_places_autocomplete">GooglePlacesAutocomplete</a> is a simple <a href="https://developers.google.com/places/documentation/autocomplete">Google Places API</a> autocompleting address entry view for iOS devices, written in <a href="https://developer.apple.com/swift/">Swift</a>.</p>
+
+<p>There are already a couple of solutions out there for this. GooglePlacesAutocomplete is different because it is 100% Swift, and aims to provide the simplest possible method of entering validated, autocompleted addresses.</p>
+
+<p>It&rsquo;s available as a CocoaPod &ndash; installation instructions <a href="https://github.com/watsonbox/ios_google_places_autocomplete#installation">here</a>. Feedback and contributions welcome!</p>
+
+<h3>Screenshots</h3>
+
+<table width="100%">
+  <tr>
+    <td align="left" width="320"><img width="300" src="https://raw.githubusercontent.com/watsonbox/ios_google_places_autocomplete/master/Screenshots/view.png"/></td>
+    <td align="left"><img width="300" src="https://raw.githubusercontent.com/watsonbox/ios_google_places_autocomplete/master/Screenshots/search.png"/></td>
+  </td>
+</table>
+
+]]></content>
+  </entry>
+  
+</feed>
