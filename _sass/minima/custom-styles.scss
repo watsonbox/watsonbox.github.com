@@ -1,0 +1,51 @@
+header.site-header {
+  .wrapper {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .site-title {
+    img {
+      height: 40px;
+    }
+  }
+
+  .site-nav {
+    .page-link {
+      vertical-align: bottom;
+    }
+  }
+}
+
+.post-list {
+  li {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+}
+
+.post-content {
+  h2, h3 {
+    margin-top: 40px;
+  }
+}
+
+.highlighter-rouge, .gist {
+  margin: 30px 0;
+}
+
+h1, .post-content h1, h1.post-title {
+  font-size: 2.2em;
+}
+
+h2, .post-content h2 {
+  font-size: 1.5em;
+}
+
+h3, .post-content h3 {
+  font-size: 1.3em;
+}
+
+p {
+  margin-bottom: 20px;
+}
