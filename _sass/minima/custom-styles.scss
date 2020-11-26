@@ -1,6 +1,12 @@
+@import "utilities";
+@import "rouge";
+
 header.site-header {
+  border: none;
+  background-color: #3c3c3c;
+
   .wrapper {
-    margin-top: 20px;
+    margin-top: 40px;
     margin-bottom: 20px;
   }
 
@@ -13,12 +19,24 @@ header.site-header {
   .site-nav {
     .page-link {
       vertical-align: bottom;
+      color: #9e9e9e;
+
+      &:hover {
+        color: #fff;
+        text-decoration: none;
+      }
     }
   }
 }
 
+.page-content {
+  img, video {
+    @include shadow-box;
+  }
+}
+
 .post-list {
-  li {
+  > li {
     padding-bottom: 20px;
     border-bottom: 1px solid #e8e8e8;
   }
@@ -48,4 +66,18 @@ h3, .post-content h3 {
 
 p {
   margin-bottom: 20px;
+}
+
+body {
+  margin: 0 auto;
+  max-width: $content-width;
+  background-color: #252525;
+}
+
+main {
+  background-color: #f8f8f8;
+}
+
+time {
+  text-transform: uppercase;
 }

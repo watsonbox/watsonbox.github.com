@@ -14,9 +14,24 @@ plugins:
   - jekyll-feed
 header_pages:
   - index.md
+  - tags.md
+  - about.md
 timezone: "Europe/Paris"
 show_excerpts: true
 excerpt_separator: <!--more-->
+disqus:
+  shortname: watsonbox
+
+# https://jekyllrb.com/docs/configuration/front-matter-defaults/
+defaults:
+  -
+    scope:
+      path: "" # All files in the project
+      type: "posts"
+    values:
+      author: "Howard Wilson"
+      categories: "posts"
+      comments: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.

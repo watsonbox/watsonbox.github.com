@@ -1,13 +1,15 @@
 ---
 layout: post
-title:  "Discovering MSW"
-date:   2020-11-25 09:42:58 +0100
-categories: javascript, react, exportify
+title: "Discovering MSW"
+date: 2020-11-25 09:42:58 +0100
+tags: [Javascript, React, Exportify]
 ---
 
 Recently, as part of a [development stack refresh](https://github.com/watsonbox/exportify/pull/72) for Exportify, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite.
 
 I needed something that would play nicely with [Jest](https://jestjs.io/), since the project is React, allow me to mock requests at the transport layer so my test could be de-coupled from the HTTP request library I choose to use, as well as of course providing a convenient API for writing the tests themselves.
+
+<!--more-->
 
 Previously I'd written my tests using [CasperJS](https://www.casperjs.org/), and [Mockjax](https://github.com/jakerella/jquery-mockjax) for the request mocking. I'd found the test runs to be a little unreliable, plus CasperJS is no longer actively maintained and Mockjax only actually mocks the jQuery request API, which I wanted to replace during the refresh.
 
@@ -21,7 +23,7 @@ This post isn't a tutorial on how to use MSW: see the [documentation](https://ms
 
 ## Setting up the Suite
 
-At this point, if you're curious and you'd like to skip ahead, you could check out `[PlaylistTable.test.jsx](https://github.com/watsonbox/exportify/blob/master/src/components/PlaylistTable.test.jsx)` for a complete example of how I set up the tests for the main React component in Exportify.
+At this point, if you're curious and you'd like to skip ahead, you could check out [`PlaylistTable.test.jsx`](https://github.com/watsonbox/exportify/blob/master/src/components/PlaylistTable.test.jsx) for a complete example of how I set up the tests for the main React component in Exportify.
 
 The general setup there is:
 
@@ -102,7 +104,7 @@ Great!
 
 After testing the "happy path" behavior, I'll typically want to set up a more exceptional response from the API. This is often the case when fixing bugs with a test to guard against regressions.
 
-A real example of this is needing to test a bug which only occurs when a Spotify playlist contains an item with a `null` track. The [full commit is here](https://github.com/watsonbox/exportify/commit/032ec7f246308a8acb74de2f70ba706141ad9fda) but the approach was to use a *[runtime request handler](https://mswjs.io/docs/api/setup-server/use)* ([released in May](https://github.com/mswjs/msw/releases/tag/v0.18.0) 😌) to handle a request to `[https://api.spotify.com/v1/me](https://api.spotify.com/v1/me)` differently for a single spec, as follows:
+A real example of this is needing to test a bug which only occurs when a Spotify playlist contains an item with a `null` track. The [full commit is here](https://github.com/watsonbox/exportify/commit/032ec7f246308a8acb74de2f70ba706141ad9fda) but the approach was to use a *[runtime request handler](https://mswjs.io/docs/api/setup-server/use)* ([released in May](https://github.com/mswjs/msw/releases/tag/v0.18.0) 😌) to handle a request to [`https://api.spotify.com/v1/me`](https://api.spotify.com/v1/me) differently for a single spec, as follows:
 
 ```jsx
 // At the top level
