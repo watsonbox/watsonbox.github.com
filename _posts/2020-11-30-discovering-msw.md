@@ -1,25 +1,23 @@
 ---
 layout: post
 title: "Discovering MSW"
-date: 2020-11-25 09:42:58 +0100
+date: 2020-11-30 19:42:58 +0100
 tags: [Javascript, React, Exportify]
 ---
 
 Recently, as part of a [development stack refresh](https://github.com/watsonbox/exportify/pull/72) for Exportify, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite.
 
-I needed something that would play nicely with [Jest](https://jestjs.io/), since the project is React, allow me to mock requests at the transport layer so my test could be de-coupled from the HTTP request library I choose to use, as well as of course providing a convenient API for writing the tests themselves.
+I needed something that would play nicely with [Jest](https://jestjs.io/), since the project is React, allow me to mock requests at the transport layer so my test could be de-coupled from the HTTP request library I choose to use, as well as of course providing a convenient DSL for writing the tests themselves.
 
 <!--more-->
 
-Previously I'd written my tests using [CasperJS](https://www.casperjs.org/), and [Mockjax](https://github.com/jakerella/jquery-mockjax) for the request mocking. I'd found the test runs to be a little unreliable, plus CasperJS is no longer actively maintained and Mockjax only actually mocks the jQuery request API, which I wanted to replace during the refresh.
+Previously I'd written my tests using [CasperJS](https://www.casperjs.org/), and [Mockjax](https://github.com/jakerella/jquery-mockjax) for the request mocking. I'd found the test runs to be a little unreliable, plus CasperJS is no longer actively maintained and Mockjax only actually mocks the jQuery request API, which I also planned to replace during the refresh.
 
 ## Enter MSW
 
-I came across [MSW](https://mswjs.io/) (Mock Service Worker), which seemed to be the answer to my problems. It comes  by default with React Testing Library, so I didn't have to look very far 🙂.
+I came across [MSW](https://mswjs.io/) (Mock Service Worker), which seemed to be the answer to my problems. It comes  by default with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro), so I didn't have to look very far 🙂.
 
-This post isn't a tutorial on how to use MSW: see the [documentation](https://mswjs.io/docs/) for that. Rather, it's a collection of short descriptions of what worked well (and didn't!) for me.
-
-**Disclaimer**: it's likely that this article will drift out of sync with some of the code I've linked. I've copied the relevant parts in here directly so hopefully that won't cause too much confusion.
+This post isn't a tutorial on how to use MSW: see the [documentation](https://mswjs.io/docs/) for that. Rather, it's a collection of short summaries of what worked well (and didn't!) for me.
 
 ## Setting up the Suite
 
@@ -85,7 +83,7 @@ server.listen({
 })
 ```
 
-Okay, this will warn rather than raise, but [there are other options available](https://mswjs.io/docs/api/setup-server/listen#onunhandledrequest). If the example handler above were omitted, the output would be something like the following, and as expected it helps with writing the mocks themselves:
+Okay, this will warn rather than raise an error, but [there are other options available](https://mswjs.io/docs/api/setup-server/listen#onunhandledrequest). If the example handler above were omitted, the output would be something like the following, and as expected it helps with writing the mocks themselves:
 
 ```bash
 console.warn
@@ -104,7 +102,7 @@ Great!
 
 After testing the "happy path" behavior, I'll typically want to set up a more exceptional response from the API. This is often the case when fixing bugs with a test to guard against regressions.
 
-A real example of this is needing to test a bug which only occurs when a Spotify playlist contains an item with a `null` track. The [full commit is here](https://github.com/watsonbox/exportify/commit/032ec7f246308a8acb74de2f70ba706141ad9fda) but the approach was to use a *[runtime request handler](https://mswjs.io/docs/api/setup-server/use)* ([released in May](https://github.com/mswjs/msw/releases/tag/v0.18.0) 😌) to handle a request to [`https://api.spotify.com/v1/me`](https://api.spotify.com/v1/me) differently for a single spec, as follows:
+A real example of this is needing to test a bug which only occurs when a Spotify playlist contains an item with a `null` track. The [full commit is here](https://github.com/watsonbox/exportify/commit/032ec7f246308a8acb74de2f70ba706141ad9fda) but the approach was to use a *[runtime request handler](https://mswjs.io/docs/api/setup-server/use)* ([released in May](https://github.com/mswjs/msw/releases/tag/v0.18.0) 😌) to handle a request to `https://api.spotify.com/v1/me` differently for a single spec, as follows:
 
 ```jsx
 // At the top level
