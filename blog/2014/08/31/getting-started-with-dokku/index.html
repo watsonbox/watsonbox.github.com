@@ -10,15 +10,17 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="UPDATE: Some recent changes to ohardy/dokku-mariadb have resolved the problems with losing DB links on reboot. I decided to jump in and set up my own mini-Heroku with Docker and Dokku as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3. I installed Dokku on Digital Ocean. It doesn’t have to be Digital Ocean but they certainly make it easy. Then added some swap space, too. Save some typing by setting up an alias: $ alias dokku=&#39;ssh -t dokku@yourvps.tld" />
 <meta property="og:description" content="UPDATE: Some recent changes to ohardy/dokku-mariadb have resolved the problems with losing DB links on reboot. I decided to jump in and set up my own mini-Heroku with Docker and Dokku as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3. I installed Dokku on Digital Ocean. It doesn’t have to be Digital Ocean but they certainly make it easy. Then added some swap space, too. Save some typing by setting up an alias: $ alias dokku=&#39;ssh -t dokku@yourvps.tld" />
+<link rel="canonical" href="https://watsonbox.github.io/blog/2014/08/31/getting-started-with-dokku/" />
+<meta property="og:url" content="https://watsonbox.github.io/blog/2014/08/31/getting-started-with-dokku/" />
 <meta property="og:site_name" content="Watsonbox" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2014-08-31T14:35:02+02:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Getting Started with Dokku" />
 <script type="application/ld+json">
-{"url":"/blog/2014/08/31/getting-started-with-dokku/","headline":"Getting Started with Dokku","dateModified":"2014-08-31T14:35:02+02:00","datePublished":"2014-08-31T14:35:02+02:00","author":{"@type":"Person","name":"Howard Wilson"},"mainEntityOfPage":{"@type":"WebPage","@id":"/blog/2014/08/31/getting-started-with-dokku/"},"description":"UPDATE: Some recent changes to ohardy/dokku-mariadb have resolved the problems with losing DB links on reboot. I decided to jump in and set up my own mini-Heroku with Docker and Dokku as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3. I installed Dokku on Digital Ocean. It doesn’t have to be Digital Ocean but they certainly make it easy. Then added some swap space, too. Save some typing by setting up an alias: $ alias dokku=&#39;ssh -t dokku@yourvps.tld","@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"https://watsonbox.github.io/blog/2014/08/31/getting-started-with-dokku/","headline":"Getting Started with Dokku","dateModified":"2014-08-31T14:35:02+02:00","datePublished":"2014-08-31T14:35:02+02:00","author":{"@type":"Person","name":"Howard Wilson"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://watsonbox.github.io/blog/2014/08/31/getting-started-with-dokku/"},"description":"UPDATE: Some recent changes to ohardy/dokku-mariadb have resolved the problems with losing DB links on reboot. I decided to jump in and set up my own mini-Heroku with Docker and Dokku as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3. I installed Dokku on Digital Ocean. It doesn’t have to be Digital Ocean but they certainly make it easy. Then added some swap space, too. Save some typing by setting up an alias: $ alias dokku=&#39;ssh -t dokku@yourvps.tld","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Watsonbox" />
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://watsonbox.github.io/feed.xml" title="Watsonbox" />
 </head>
 <body><header class="site-header" role="banner">
 
@@ -112,8 +114,8 @@
   </div><div id="disqus_thread"></div>
   <script>
     var disqus_config = function () {
-      this.page.url = '/blog/2014/08/31/getting-started-with-dokku/';
-      this.page.identifier = '/blog/2014/08/31/getting-started-with-dokku/';
+      this.page.url = 'https://watsonbox.github.io/blog/2014/08/31/getting-started-with-dokku/';
+      this.page.identifier = 'https://watsonbox.github.io/blog/2014/08/31/getting-started-with-dokku/';
     };
 
     (function() {
