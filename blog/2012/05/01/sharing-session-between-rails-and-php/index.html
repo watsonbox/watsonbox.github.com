@@ -1,430 +1,172 @@
-
 <!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<head>
+<html lang="en"><head>
   <meta charset="utf-8">
-  <title>Sharing Session Between Rails and PHP - Watsonbox</title>
-  <meta name="author" content="Howard Wilson">
-
-  
-  <meta name="description" content="Update: Here&rsquo;s a more elegant solution which uses Dalli instead of memcache-client. Sometimes Rails and PHP applications must live side by side &hellip;">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Watsonbox" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<script type="text/javascript">
-  document.base_document_write = document.write;
-
-  document.write = function(html) {
-    if (html.match(/^<link rel="stylesheet".+gist\.github\.com\/assets\/embed.*/) == null) {
-      document.base_document_write(html);
-    }
-  }
-</script>
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-31898875-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
-
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>FB Canvas Apps #1: Dialog Positioning | Watsonbox</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="FB Canvas Apps #1: Dialog Positioning" />
+<meta name="author" content="Howard Wilson" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Having worked on several Facebook applications, I’ve built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame. The problem is caused by Facebook resizing the canvas iFrame to accommodate the entire page. When a dialog is displayed inside the canvas application, it is displayed vertically centered inside that iFrame, which can cause the current browser scroll position to jump up or down accordingly. The fix is to call Facebook’s FB.Canvas.getPageInfo JS API method, to position the dialog relative to the user’s current browser scroll position. Here is an implementation which uses CoffeeScript and extends the jQuery UI dialog widget. $ -&gt; # Async Facebook initialisation window.fbAsyncInit = -&gt; FB.init({ appId: &#39;APP_ID&#39;, status: true, cookie: true, xfbml: true }) FB.Canvas.setAutoGrow() # Allows other components to hook into this event with $(document).on(&#39;fb:initialized&#39;, -&gt; ...) $(document).trigger(&#39;fb:initialized&#39;) CanvasDialog = # Some example default dialog options options: { width: 600, modal: true, autoOpen: true } _init: -&gt; if @_inCanvas if this._fbLoaded() this._showDialogInCanvas() else $(document).on &#39;fb:initialized&#39;, =&gt; this._showDialogInCanvas() else this._showDialog() # Displays the dialog positioned correctly inside the FB canvas iFrame _showDialogInCanvas: -&gt; FB.Canvas.getPageInfo (info) =&gt; @options.position = [&#39;center&#39;, info.scrollTop + 50] this._showDialog() # Calls the jQuery UI dialog&#39;s original init method _showDialog: -&gt; $.ui.dialog.prototype._init.apply(this, arguments) # True if dialog is being loading inside the FB iFrame (any iFrame for that matter) _inCanvas: top != self # True if FB javascript API has been loaded _fbLoaded: -&gt; typeof FB != &#39;undefined&#39; $.widget &quot;ui.canvasDialog&quot;, $.ui.dialog, CanvasDialog $(&#39;#canvasDialog&#39;).canvasDialog() Notes By triggering an event when Facebook is initialized, the CanvasDialog is able to wait for the Facebook JS API to become available if it has not yet been loaded. In development it can be useful to work outside the Facebook environment. The CanvasDialog detects this and shows the dialog without attempting to call the Facebook API. In the past I’ve often used the excellent and well maintained ColorBox library for dialogs. I note that it too has been updated with similar functionalilty." />
+<meta property="og:description" content="Having worked on several Facebook applications, I’ve built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame. The problem is caused by Facebook resizing the canvas iFrame to accommodate the entire page. When a dialog is displayed inside the canvas application, it is displayed vertically centered inside that iFrame, which can cause the current browser scroll position to jump up or down accordingly. The fix is to call Facebook’s FB.Canvas.getPageInfo JS API method, to position the dialog relative to the user’s current browser scroll position. Here is an implementation which uses CoffeeScript and extends the jQuery UI dialog widget. $ -&gt; # Async Facebook initialisation window.fbAsyncInit = -&gt; FB.init({ appId: &#39;APP_ID&#39;, status: true, cookie: true, xfbml: true }) FB.Canvas.setAutoGrow() # Allows other components to hook into this event with $(document).on(&#39;fb:initialized&#39;, -&gt; ...) $(document).trigger(&#39;fb:initialized&#39;) CanvasDialog = # Some example default dialog options options: { width: 600, modal: true, autoOpen: true } _init: -&gt; if @_inCanvas if this._fbLoaded() this._showDialogInCanvas() else $(document).on &#39;fb:initialized&#39;, =&gt; this._showDialogInCanvas() else this._showDialog() # Displays the dialog positioned correctly inside the FB canvas iFrame _showDialogInCanvas: -&gt; FB.Canvas.getPageInfo (info) =&gt; @options.position = [&#39;center&#39;, info.scrollTop + 50] this._showDialog() # Calls the jQuery UI dialog&#39;s original init method _showDialog: -&gt; $.ui.dialog.prototype._init.apply(this, arguments) # True if dialog is being loading inside the FB iFrame (any iFrame for that matter) _inCanvas: top != self # True if FB javascript API has been loaded _fbLoaded: -&gt; typeof FB != &#39;undefined&#39; $.widget &quot;ui.canvasDialog&quot;, $.ui.dialog, CanvasDialog $(&#39;#canvasDialog&#39;).canvasDialog() Notes By triggering an event when Facebook is initialized, the CanvasDialog is able to wait for the Facebook JS API to become available if it has not yet been loaded. In development it can be useful to work outside the Facebook environment. The CanvasDialog detects this and shows the dialog without attempting to call the Facebook API. In the past I’ve often used the excellent and well maintained ColorBox library for dialogs. I note that it too has been updated with similar functionalilty." />
+<meta property="og:site_name" content="Watsonbox" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2012-09-25T16:33:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="FB Canvas Apps #1: Dialog Positioning" />
+<script type="application/ld+json">
+{"url":"/blog/2012/05/01/sharing-session-between-rails-and-php/","headline":"FB Canvas Apps #1: Dialog Positioning","dateModified":"2012-09-25T16:33:00+02:00","datePublished":"2012-09-25T16:33:00+02:00","author":{"@type":"Person","name":"Howard Wilson"},"mainEntityOfPage":{"@type":"WebPage","@id":"/blog/2012/05/01/sharing-session-between-rails-and-php/"},"description":"Having worked on several Facebook applications, I’ve built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame. The problem is caused by Facebook resizing the canvas iFrame to accommodate the entire page. When a dialog is displayed inside the canvas application, it is displayed vertically centered inside that iFrame, which can cause the current browser scroll position to jump up or down accordingly. The fix is to call Facebook’s FB.Canvas.getPageInfo JS API method, to position the dialog relative to the user’s current browser scroll position. Here is an implementation which uses CoffeeScript and extends the jQuery UI dialog widget. $ -&gt; # Async Facebook initialisation window.fbAsyncInit = -&gt; FB.init({ appId: &#39;APP_ID&#39;, status: true, cookie: true, xfbml: true }) FB.Canvas.setAutoGrow() # Allows other components to hook into this event with $(document).on(&#39;fb:initialized&#39;, -&gt; ...) $(document).trigger(&#39;fb:initialized&#39;) CanvasDialog = # Some example default dialog options options: { width: 600, modal: true, autoOpen: true } _init: -&gt; if @_inCanvas if this._fbLoaded() this._showDialogInCanvas() else $(document).on &#39;fb:initialized&#39;, =&gt; this._showDialogInCanvas() else this._showDialog() # Displays the dialog positioned correctly inside the FB canvas iFrame _showDialogInCanvas: -&gt; FB.Canvas.getPageInfo (info) =&gt; @options.position = [&#39;center&#39;, info.scrollTop + 50] this._showDialog() # Calls the jQuery UI dialog&#39;s original init method _showDialog: -&gt; $.ui.dialog.prototype._init.apply(this, arguments) # True if dialog is being loading inside the FB iFrame (any iFrame for that matter) _inCanvas: top != self # True if FB javascript API has been loaded _fbLoaded: -&gt; typeof FB != &#39;undefined&#39; $.widget &quot;ui.canvasDialog&quot;, $.ui.dialog, CanvasDialog $(&#39;#canvasDialog&#39;).canvasDialog() Notes By triggering an event when Facebook is initialized, the CanvasDialog is able to wait for the Facebook JS API to become available if it has not yet been loaded. In development it can be useful to work outside the Facebook environment. The CanvasDialog detects this and shows the dialog without attempting to call the Facebook API. In the past I’ve often used the excellent and well maintained ColorBox library for dialogs. I note that it too has been updated with similar functionalilty.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Watsonbox" />
 </head>
+<body><header class="site-header" role="banner">
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Watsonbox</a></h1>
-  
-    <h2>Developer's notes.</h2>
-  
-</hgroup>
+  <div class="wrapper"><a class="site-title" rel="author" href="/">
+      <img src="/assets/images/watsonbox.png" />
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
 
-<a href="https://github.com/watsonbox"><img style="position: absolute; top: 0; right: 0; border: 0; width: 120px; height: 120px" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+        <div class="trigger"><a class="page-link" href="/">Blog</a><a class="page-link" href="/tags/">Tags</a><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
 </header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:watsonbox.github.com" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/categories/ruby">Ruby</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="https://github.com/watsonbox/cv/blob/master/cv.pdf?raw=true">Resume</a></li>
-</ul>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-</nav>
-  <div id="main">
-    <div id="content">
-      <div>
-<article class="hentry" role="article">
-  
-  <header>
-    
-      <h1 class="entry-title">Sharing Session Between Rails and PHP</h1>
-    
-    
-      <p class="meta">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">FB Canvas Apps #1: Dialog Positioning</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2012-09-25T16:33:00+02:00" itemprop="datePublished">
+        Sep 25, 2012
+      </time> |
         
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-05-01T13:07:00+02:00" pubdate data-updated="true">May 1<span>st</span>, 2012</time>
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#facebook">Facebook</a></code>
         
-      </p>
-    
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#jquery">jQuery</a></code>
+        
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#coffeescript">CoffeeScript</a></code>
+        
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#colorbox">ColorBox</a></code>
+        
+      • 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Howard Wilson</span></span></p>
   </header>
 
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Having worked on several Facebook applications, I’ve built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame.</p>
 
-<div class="entry-content"><p><em>Update: Here&rsquo;s a <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">more elegant solution</a> which uses Dalli instead of memcache-client.</em></p>
+<p>The problem is caused by Facebook resizing the canvas iFrame to accommodate the entire page. When a dialog is displayed inside the canvas application, it is displayed vertically centered inside that iFrame, which can cause the current browser scroll position to jump up or down accordingly.</p>
 
-<p>Sometimes Rails and PHP applications must live side by side in harmony, which can mean sharing session data between them. Here&rsquo;s one way this can be achieved with very little modification on the PHP side. First make sure your PHP application is using <a href="http://memcached.org/">memcached</a> for session storage:</p>
+<p>The fix is to call Facebook’s <a href="http://developers.facebook.com/docs/reference/javascript/FB.Canvas.getPageInfo/"><code class="language-plaintext highlighter-rouge">FB.Canvas.getPageInfo</code></a> JS API method, to position the dialog relative to the user’s current browser scroll position.</p>
 
-<figure class='code'><figcaption><span>php.ini</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ini'><span class='line'><span class="na">session.save_handler</span> <span class="o">=</span> <span class="s">memcache</span>
-</span><span class='line'><span class="na">session.save_path</span> <span class="o">=</span> <span class="s">&quot;tcp://localhost:11211&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>Here is an implementation which uses <a href="http://coffeescript.org/">CoffeeScript</a> and extends the <a href="http://jqueryui.com/demos/dialog/">jQuery UI dialog widget</a>.</p>
 
+<div class="language-coffeescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span> <span class="o">-&gt;</span>
+  <span class="c1"># Async Facebook initialisation</span>
+  <span class="nb">window</span><span class="p">.</span><span class="na">fbAsyncInit</span> <span class="o">=</span> <span class="o">-&gt;</span>
+    <span class="nx">FB</span><span class="p">.</span><span class="na">init</span><span class="p">({</span> <span class="na">appId</span><span class="o">:</span> <span class="s">'APP_ID'</span><span class="p">,</span> <span class="na">status</span><span class="o">:</span> <span class="no">true</span><span class="p">,</span> <span class="na">cookie</span><span class="o">:</span> <span class="no">true</span><span class="p">,</span> <span class="na">xfbml</span><span class="o">:</span> <span class="no">true</span> <span class="p">})</span>
+    <span class="nx">FB</span><span class="p">.</span><span class="na">Canvas</span><span class="p">.</span><span class="na">setAutoGrow</span><span class="p">()</span>
 
-<p>If you&rsquo;re interested in seeing how the PHP data gets serialized, take the value of the <code>PHPSESSID</code> cookie and perform a <code>GET</code> request in a memcached telnet session:</p>
+    <span class="c1"># Allows other components to hook into this event with $(document).on('fb:initialized', -&gt; ...)</span>
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="na">trigger</span><span class="p">(</span><span class="s">'fb:initialized'</span><span class="p">)</span>
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>telnet localhost 11211
-</span><span class='line'>Trying ::1...
-</span><span class='line'>Connected to localhost.
-</span><span class='line'>Escape character is <span class="s1">&#39;^]&#39;</span>.
-</span><span class='line'>get a29ajb8go3bkm6r6k2qu4hv3d5
-</span><span class='line'>VALUE a29ajb8go3bkm6r6k2qu4hv3d5 0 298
-</span><span class='line'>state|s:32:<span class="s2">&quot;hgc8cf6e737b4f28ca9872ghe059577b&quot;</span>;access_token|s:113:<span class="s2">&quot;AAACldPr8ZAokBAFmih7MCYhTlrOSmz7Ro3wJrZCVLeZCkrpQGhSL5hy4dRjYXikOjaBWbt2GJkjcpQj6MpJIopZBU3vURpVfJZBHKZAb7MyQZDZD&quot;</span>;user_id|i:100000123456789;LAST_FACEBOOK_IDENTITY_CHECK|s:10:<span class="s2">&quot;1334154070&quot;</span>;LAST_FACEBOOK_OAUTH_CHECK|s:10:<span class="s2">&quot;1334154070&quot;</span>;
-</span><span class='line'>END
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-coffeescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">CanvasDialog</span> <span class="o">=</span>
+  <span class="c1"># Some example default dialog options</span>
+  <span class="na">options</span><span class="o">:</span> <span class="p">{</span>
+    <span class="na">width</span><span class="o">:</span> <span class="mi">600</span><span class="p">,</span>
+    <span class="na">modal</span><span class="o">:</span> <span class="no">true</span><span class="p">,</span>
+    <span class="na">autoOpen</span><span class="o">:</span> <span class="no">true</span>
+  <span class="p">}</span>
 
+  <span class="na">_init</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="k">if</span> <span class="vi">@</span><span class="na">_inCanvas</span>
+      <span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="na">_fbLoaded</span><span class="p">()</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">_showDialogInCanvas</span><span class="p">()</span>
+      <span class="k">else</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="na">on</span> <span class="s">'fb:initialized'</span><span class="p">,</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="na">_showDialogInCanvas</span><span class="p">()</span>
+    <span class="k">else</span>
+      <span class="k">this</span><span class="p">.</span><span class="na">_showDialog</span><span class="p">()</span>
 
-<p>There are a few Ruby libraries out there which can speak the language of PHP serialization. I&rsquo;ve chosen Thomas Hurst&rsquo;s <a href="https://github.com/watsonbox/php-serialize">php-serialize</a>. Note that I&rsquo;ve linked to my fork which also supports <code>.</code> characters in array keys. Add that to your Gemfile, and then include the following middleware in your Rails application.</p>
+  <span class="c1"># Displays the dialog positioned correctly inside the FB canvas iFrame</span>
+  <span class="na">_showDialogInCanvas</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="nx">FB</span><span class="p">.</span><span class="na">Canvas</span><span class="p">.</span><span class="na">getPageInfo</span> <span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="vi">@</span><span class="na">options</span><span class="p">.</span><span class="na">position</span> <span class="o">=</span> <span class="p">[</span><span class="s">'center'</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="na">scrollTop</span> <span class="o">+</span> <span class="mi">50</span><span class="p">]</span>
+      <span class="k">this</span><span class="p">.</span><span class="na">_showDialog</span><span class="p">()</span>
 
-<div><script src='https://gist.github.com/2367946.js'></script>
-<noscript><pre><code># Overrides functionality in Rack::Session::Memcache from Rack 1.4.1 to support sharing PHP sessions
-# - PHP side is 5.3.6 configured with session.save_handler = memcache
-# - Requires php-serialize gem for serialization: https://github.com/jqr/php-serialize
+  <span class="c1"># Calls the jQuery UI dialog's original init method</span>
+  <span class="na">_showDialog</span><span class="o">:</span> <span class="o">-&gt;</span> <span class="nx">$</span><span class="p">.</span><span class="na">ui</span><span class="p">.</span><span class="na">dialog</span><span class="p">.</span><span class="na">prototype</span><span class="p">.</span><span class="na">_init</span><span class="p">.</span><span class="na">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span>
 
-module ActionDispatch
-  module Session
-    class PhpSessionStore &lt; ActionDispatch::Session::MemCacheStore
-      require 'php_serialize'
-      
-      def initialize(app, options = {})
-        require 'memcache'
-        options[:expire_after] ||= options[:expires]
-        
-        # Default to no namespace and cookie name matching PHP settings
-        super(app, options.merge(:namespace =&gt; nil, :key =&gt; 'PHPSESSID'))
-      end
-      
-      def get_session(env, sid)
-        with_lock(env, [nil, {}]) do
-          unless session = deserialize_session(sid)
-            sid, session = generate_sid, {}
-            
-            unless /^STORED/ =~ @pool.add(sid, PHP.serialize_session(session), 0, true)
-              raise &quot;Session collision on '#{sid.inspect}'&quot;
-            end
-          end
-          [sid, session]
-        end
-      end
-      
-      def set_session(env, session_id, new_session, options)
-        expiry = options[:expire_after]
-        expiry = expiry.nil? ? 0 : expiry + 1
+  <span class="c1"># True if dialog is being loading inside the FB iFrame (any iFrame for that matter)</span>
+  <span class="na">_inCanvas</span><span class="o">:</span> <span class="nx">top</span> <span class="o">!=</span> <span class="nx">self</span>
 
-        with_lock(env, false) do
-          @pool.set session_id, PHP.serialize_session(new_session), expiry, true
-          session_id
-        end
-      end
-
-      protected
-
-      def deserialize_session(session_id)
-        if session_id
-          raw_session = @pool.get(session_id, true)
-
-          if raw_session &amp;&amp; raw_session != ''
-            PHP.unserialize(raw_session)
-          end
-        end
-      end
-    end
-  end
-end</code></pre></noscript></div>
+  <span class="c1"># True if FB javascript API has been loaded</span>
+  <span class="na">_fbLoaded</span><span class="o">:</span> <span class="o">-&gt;</span> <span class="k">typeof</span> <span class="nx">FB</span> <span class="o">!=</span> <span class="s">'undefined'</span>
 
 
-<p>Now you can use this session store in <code>session_store.rb</code>:</p>
+<span class="nx">$</span><span class="p">.</span><span class="na">widget</span> <span class="s">"ui.canvasDialog"</span><span class="p">,</span> <span class="nx">$</span><span class="p">.</span><span class="na">ui</span><span class="p">.</span><span class="na">dialog</span><span class="p">,</span> <span class="nx">CanvasDialog</span>
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>YourApp::Application.config.session_store :php_session_store, :expire_after <span class="o">=</span>&gt; 10.minutes
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-coffeescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="s">'#canvasDialog'</span><span class="p">).</span><span class="na">canvasDialog</span><span class="p">()</span>
+</code></pre></div></div>
 
+<h3 id="notes">Notes</h3>
 
-<p>That&rsquo;s it, your applications should both now be able to seamlessly access the same session data.</p>
-</div>
+<ul>
+  <li>
+    <p>By triggering an event when Facebook is initialized, the <code class="language-plaintext highlighter-rouge">CanvasDialog</code> is able to wait for the Facebook JS API to become available if it has not yet been loaded.</p>
+  </li>
+  <li>
+    <p>In development it can be useful to work outside the Facebook environment. The <code class="language-plaintext highlighter-rouge">CanvasDialog</code> detects this and shows the dialog without attempting to call the Facebook API.</p>
+  </li>
+  <li>
+    <p>In the past I’ve often used the excellent and well maintained <a href="http://www.jacklmoore.com/colorbox">ColorBox</a> library for dialogs. I note that it too has been <a href="https://github.com/jackmoore/colorbox/pull/93">updated</a> with similar functionalilty.</p>
+  </li>
+</ul>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-<span class="byline author vcard">Posted by <span class="fn">Howard Wilson</span></span>
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-05-01T13:07:00+02:00" pubdate data-updated="true">May 1<span>st</span>, 2012</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/php/'>PHP</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/" data-via="" data-counturl="http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-      
-        <a class="basic-alignment right" href="/blog/2012/05/19/confreaks-xbmc-addon/" title="Next Post: Confreaks XBMC Addon">Confreaks XBMC Addon &raquo;</a>
-      
-    </p>
-  </footer>
+  </div><a class="u-url" href="/blog/2012/05/01/sharing-session-between-rails-and-php/" hidden></a>
 </article>
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-  </section>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
 
-</div>
+  <div class="wrapper">
 
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015/02/16/googleplacesautocomplete-cocoapod/">GooglePlacesAutocomplete CocoaPod</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/10/24/ruby-speech-recognition-with-pocketsphinx/">Ruby Speech Recognition With Pocketsphinx</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/09/22/mean-dot-io-on-dokku/">Mean.io on Dokku</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/08/31/getting-started-with-dokku/">Getting Started With Dokku</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/06/23/aggregation-for-ember-data-async-relationships/">Aggregation for Ember Data Async Relationships</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/06/13/lazy-and-partial-data-loading-with-ember-dot-js-and-rails/">Lazy and Partial Data Loading With Ember.js and Rails</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/confreaks-xbmc-addon-0-dot-3-0/">Confreaks XBMC Addon 0.3.0</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/">FB Canvas Apps #2: Fixed Positioning</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning/">FB Canvas Apps #1: Dialog Positioning</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">Rails &amp; PHP Session Sharing #2</a>
-      </li>
-    
-  </ul>
-</section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating...</li>
-  </ul>
-  
-  <a href="https://github.com/watsonbox">@watsonbox</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'watsonbox',
-            count: 10,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-
-
-
-  
-</aside>
-
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Howard Wilson -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+        <ul class="contact-list">
+          <li class="p-name">Howard Wilson</li>
+          <li><a class="u-email" href="mailto:howard@watsonbox.net">howard@watsonbox.net</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>Watsonbox Blog
 </p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jekyllrb" title="jekyllrb"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
 
 </footer>
-  
-
-<script type="text/javascript">
-      var disqus_shortname = 'watsonbox';
-      
-        
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/';
-        var disqus_url = 'http://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/';
-        var disqus_script = 'embed.js';
-      
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
-
-
-
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
-
 </body>
+
 </html>

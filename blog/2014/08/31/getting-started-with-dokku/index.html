@@ -1,390 +1,149 @@
-
 <!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<head>
+<html lang="en"><head>
   <meta charset="utf-8">
-  <title>Getting Started With Dokku - Watsonbox</title>
-  <meta name="author" content="Howard Wilson">
-
-  
-  <meta name="description" content="UPDATE: Some recent changes to ohardy/dokku-mariadb have resolved the problems with losing DB links on reboot. I decided to jump in and set up my own &hellip;">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Watsonbox" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<script type="text/javascript">
-  document.base_document_write = document.write;
-
-  document.write = function(html) {
-    if (html.match(/^<link rel="stylesheet".+gist\.github\.com\/assets\/embed.*/) == null) {
-      document.base_document_write(html);
-    }
-  }
-</script>
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-31898875-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
-
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Getting Started with Dokku | Watsonbox</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Getting Started with Dokku" />
+<meta name="author" content="Howard Wilson" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="UPDATE: Some recent changes to ohardy/dokku-mariadb have resolved the problems with losing DB links on reboot. I decided to jump in and set up my own mini-Heroku with Docker and Dokku as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3. I installed Dokku on Digital Ocean. It doesn’t have to be Digital Ocean but they certainly make it easy. Then added some swap space, too. Save some typing by setting up an alias: $ alias dokku=&#39;ssh -t dokku@yourvps.tld" />
+<meta property="og:description" content="UPDATE: Some recent changes to ohardy/dokku-mariadb have resolved the problems with losing DB links on reboot. I decided to jump in and set up my own mini-Heroku with Docker and Dokku as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3. I installed Dokku on Digital Ocean. It doesn’t have to be Digital Ocean but they certainly make it easy. Then added some swap space, too. Save some typing by setting up an alias: $ alias dokku=&#39;ssh -t dokku@yourvps.tld" />
+<meta property="og:site_name" content="Watsonbox" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-08-31T14:35:02+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Getting Started with Dokku" />
+<script type="application/ld+json">
+{"url":"/blog/2014/08/31/getting-started-with-dokku/","headline":"Getting Started with Dokku","dateModified":"2014-08-31T14:35:02+02:00","datePublished":"2014-08-31T14:35:02+02:00","author":{"@type":"Person","name":"Howard Wilson"},"mainEntityOfPage":{"@type":"WebPage","@id":"/blog/2014/08/31/getting-started-with-dokku/"},"description":"UPDATE: Some recent changes to ohardy/dokku-mariadb have resolved the problems with losing DB links on reboot. I decided to jump in and set up my own mini-Heroku with Docker and Dokku as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3. I installed Dokku on Digital Ocean. It doesn’t have to be Digital Ocean but they certainly make it easy. Then added some swap space, too. Save some typing by setting up an alias: $ alias dokku=&#39;ssh -t dokku@yourvps.tld","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Watsonbox" />
 </head>
+<body><header class="site-header" role="banner">
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Watsonbox</a></h1>
-  
-    <h2>Developer's notes.</h2>
-  
-</hgroup>
+  <div class="wrapper"><a class="site-title" rel="author" href="/">
+      <img src="/assets/images/watsonbox.png" />
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
 
-<a href="https://github.com/watsonbox"><img style="position: absolute; top: 0; right: 0; border: 0; width: 120px; height: 120px" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+        <div class="trigger"><a class="page-link" href="/">Blog</a><a class="page-link" href="/tags/">Tags</a><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
 </header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:watsonbox.github.com" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/categories/ruby">Ruby</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="https://github.com/watsonbox/cv/blob/master/cv.pdf?raw=true">Resume</a></li>
-</ul>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-</nav>
-  <div id="main">
-    <div id="content">
-      <div>
-<article class="hentry" role="article">
-  
-  <header>
-    
-      <h1 class="entry-title">Getting Started With Dokku</h1>
-    
-    
-      <p class="meta">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Getting Started with Dokku</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2014-08-31T14:35:02+02:00" itemprop="datePublished">
+        Aug 31, 2014
+      </time> |
         
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-31T14:35:02+02:00" pubdate data-updated="true">Aug 31<span>st</span>, 2014</time>
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#docker">Docker</a></code>
         
-      </p>
-    
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#dokku">Dokku</a></code>
+        
+      • 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Howard Wilson</span></span></p>
   </header>
 
-
-<div class="entry-content"><p><em>UPDATE: Some recent changes to <a href="https://github.com/ohardy/dokku-mariadb">ohardy/dokku-mariadb</a> have resolved the problems with losing DB links on reboot.</em></p>
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><em>UPDATE: Some recent changes to <a href="https://github.com/ohardy/dokku-mariadb">ohardy/dokku-mariadb</a> have resolved the problems with losing DB links on reboot.</em></p>
 
 <p>I decided to jump in and set up my own mini-Heroku with <a href="https://www.docker.com/">Docker</a> and <a href="https://github.com/progrium/dokku">Dokku</a> as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3.</p>
 
-<p>I <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-dokku-application">installed Dokku on Digital Ocean</a>. It doesn&rsquo;t have to be Digital Ocean but they certainly make it easy. Then <a href="https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04">added some swap space</a>, too. Save some typing by setting up an alias:</p>
+<p>I <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-dokku-application">installed Dokku on Digital Ocean</a>. It doesn’t have to be Digital Ocean but they certainly make it easy. Then <a href="https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04">added some swap space</a>, too. Save some typing by setting up an alias:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">alias </span><span class="nv">dokku</span><span class="o">=</span><span class="err">&#39;</span>ssh -t dokku@yourvps.tld
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">alias </span><span class="nv">dokku</span><span class="o">=</span><span class="s1">'ssh -t dokku@yourvps.tld
+</span></code></pre></div></div>
 
+<!--more-->
 
-<h2>Configuration Variables</h2>
+<h2 id="configuration-variables">Configuration Variables</h2>
 
 <p>Dokku allows applications to be configured using enviornment variables as described in the twelve-factor app:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku config:set acme <span class="nv">company_name</span><span class="o">=</span><span class="s2">&quot;Acme Corporation&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>dokku config:set acme <span class="nv">company_name</span><span class="o">=</span><span class="s2">"Acme Corporation"</span>
+</code></pre></div></div>
 
+<p>That won’t work though, because Dokku’s command line app <a href="https://github.com/progrium/dokku/issues/482">doesn’t support spaces in config variables</a>. You can get around this by setting the configuration directly in <code class="language-plaintext highlighter-rouge">/home/dokku/acme/ENV</code>:</p>
 
-<p>That won&rsquo;t work though, because Dokku&rsquo;s command line app <a href="https://github.com/progrium/dokku/issues/482">doesn&rsquo;t support spaces in config variables</a>. You can get around this by setting the configuration directly in <code>/home/dokku/acme/ENV</code>:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">company_name</span><span class="o">=</span><span class="s2">"Acme Corporation"</span>
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span>/home/dokku/acme/ENV</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">company_name</span><span class="o">=</span><span class="s2">&quot;Acme Corporation&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>They won’t be correctly reported by <code class="language-plaintext highlighter-rouge">dokku config acme</code>, but they’ll work.</p>
 
+<h2 id="configuration-backup">Configuration Backup</h2>
 
-<p>They won&rsquo;t be correctly reported by <code>dokku config acme</code>, but they&rsquo;ll work.</p>
+<p>You can backup Dokku’s configuration (including application configuration) with:</p>
 
-<h2>Configuration Backup</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>dokku backup:export <span class="o">[</span>FILE]
+</code></pre></div></div>
 
-<p>You can backup Dokku&rsquo;s configuration (including application configuration) with:</p>
+<p>This will place the backup in <code class="language-plaintext highlighter-rouge">/home/dokku/[FILE]</code>.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>dokku backup:export <span class="o">[</span>FILE<span class="o">]</span><span class="sb">`</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will place the backup in <code>/home/dokku/[FILE]</code>.</p>
-
-<h2>Multiple Domains and Basic Auth</h2>
+<h2 id="multiple-domains-and-basic-auth">Multiple Domains and Basic Auth</h2>
 
 <p>I installed a couple of plugins which worked well out of the box:</p>
 
-<p><a href="https://github.com/matto1990/dokku-secure-apps">https://github.com/matto1990/dokku-secure-apps</a><br/>Secures an individual app with HTTP Basic authentication. Dead simple to use and useful when deploying apps for testing or private use only.</p>
+<p><a href="https://github.com/matto1990/dokku-secure-apps">https://github.com/matto1990/dokku-secure-apps</a><br />Secures an individual app with HTTP Basic authentication. Dead simple to use and useful when deploying apps for testing or private use only.</p>
 
-<p><a href="https://github.com/neam/dokku-custom-domains">https://github.com/neam/dokku-custom-domains</a><br/>Configure additional custom domains for your dokku app.</p>
+<p><a href="https://github.com/neam/dokku-custom-domains">https://github.com/neam/dokku-custom-domains</a><br />Configure additional custom domains for your dokku app.</p>
 
-<h2>Persistent Storage</h2>
+<h2 id="persistent-storage">Persistent Storage</h2>
 
 <p>Dokku has plenty of <a href="https://github.com/progrium/dokku/wiki/Plugins#datastores">plugins for different data stores</a>. I decided to work with <a href="https://github.com/ohardy/dokku-mariadb">ohardy/dokku-mariadb</a> since on a VPS with farily limited memory, I preferred to only run one container and a single instance of MariaDB.</p>
 
-<p>The main problem I faced here was keeping database connections working after a reboot. On reboot, docker containers are restarted and will receive a new private IP. This means that the <code>DATABASE_URL</code> used by the apps, e.g. <code>mysql://[PRIVATE_IP]:3306/[database]</code> will change and break database connections. Despite some <a href="https://github.com/Kloadut/dokku-pg-plugin/issues/12">discussion</a> and <a href="https://github.com/Kloadut/dokku-md-plugin/commit/de26c1e10f1e30c059ae827fff65b4a132ccc2ed">attempted fixes</a>, the multiple container dokku MariaDB plugin (<a href="https://github.com/Kloadut/dokku-md-plugin">kloadut/dokku-md-plugin</a>) uses a dynamic port for each container, which also changes on reboot, so suffers from the same problem.</p>
+<p>The main problem I faced here was keeping database connections working after a reboot. On reboot, docker containers are restarted and will receive a new private IP. This means that the <code class="language-plaintext highlighter-rouge">DATABASE_URL</code> used by the apps, e.g. <code class="language-plaintext highlighter-rouge">mysql://[PRIVATE_IP]:3306/[database]</code> will change and break database connections. Despite some <a href="https://github.com/Kloadut/dokku-pg-plugin/issues/12">discussion</a> and <a href="https://github.com/Kloadut/dokku-md-plugin/commit/de26c1e10f1e30c059ae827fff65b4a132ccc2ed">attempted fixes</a>, the multiple container dokku MariaDB plugin (<a href="https://github.com/Kloadut/dokku-md-plugin">kloadut/dokku-md-plugin</a>) uses a dynamic port for each container, which also changes on reboot, so suffers from the same problem.</p>
 
 <p>I fixed this issue in <a href="https://github.com/watsonbox/dokku-mariadb/commit/ab724e99f49968695da3a0ce09fe7582bf735328">watsonbox/dokku-mariadb:reboot-persist-connections</a> by patching ohardy/dokku-mariadb to use a fixed IP address. It also uses a fixed port (3306), since only one container/instance is created.</p>
 
-<p>Worth noting that ohardy/dokku-mariadb stores persistent DB data on the host in <code>/home/dokku/.o_mariadb</code> (kloadut/dokku-md-plugin in <code>/home/dokku/.mariadb</code>).</p>
-</div>
+<p>Worth noting that ohardy/dokku-mariadb stores persistent DB data on the host in <code class="language-plaintext highlighter-rouge">/home/dokku/.o_mariadb</code> (kloadut/dokku-md-plugin in <code class="language-plaintext highlighter-rouge">/home/dokku/.mariadb</code>).</p>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-<span class="byline author vcard">Posted by <span class="fn">Howard Wilson</span></span>
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-31T14:35:02+02:00" pubdate data-updated="true">Aug 31<span>st</span>, 2014</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/docker/'>Docker</a>, <a class='category' href='/blog/categories/dokku/'>Dokku</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku/" data-via="" data-counturl="http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku/" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2014/06/23/aggregation-for-ember-data-async-relationships/" title="Previous Post: Aggregation for Ember Data Async Relationships">&laquo; Aggregation for Ember Data Async Relationships</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2014/09/22/mean-dot-io-on-dokku/" title="Next Post: Mean.io on Dokku">Mean.io on Dokku &raquo;</a>
-      
-    </p>
-  </footer>
+  </div><a class="u-url" href="/blog/2014/08/31/getting-started-with-dokku/" hidden></a>
 </article>
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-  </section>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
 
-</div>
+  <div class="wrapper">
 
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015/02/16/googleplacesautocomplete-cocoapod/">GooglePlacesAutocomplete CocoaPod</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/10/24/ruby-speech-recognition-with-pocketsphinx/">Ruby Speech Recognition With Pocketsphinx</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/09/22/mean-dot-io-on-dokku/">Mean.io on Dokku</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/08/31/getting-started-with-dokku/">Getting Started With Dokku</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/06/23/aggregation-for-ember-data-async-relationships/">Aggregation for Ember Data Async Relationships</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/06/13/lazy-and-partial-data-loading-with-ember-dot-js-and-rails/">Lazy and Partial Data Loading With Ember.js and Rails</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/confreaks-xbmc-addon-0-dot-3-0/">Confreaks XBMC Addon 0.3.0</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/23/fb-canvas-apps-2-fixed-positioning/">FB Canvas Apps #2: Fixed Positioning</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/09/25/fb-canvas-apps-1-dialog-positioning/">FB Canvas Apps #1: Dialog Positioning</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/24/rails-and-php-session-sharing-number-2/">Rails &amp; PHP Session Sharing #2</a>
-      </li>
-    
-  </ul>
-</section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating...</li>
-  </ul>
-  
-  <a href="https://github.com/watsonbox">@watsonbox</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'watsonbox',
-            count: 10,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-
-
-
-  
-</aside>
-
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Howard Wilson -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+        <ul class="contact-list">
+          <li class="p-name">Howard Wilson</li>
+          <li><a class="u-email" href="mailto:howard@watsonbox.net">howard@watsonbox.net</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>Watsonbox Blog
 </p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jekyllrb" title="jekyllrb"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
 
 </footer>
-  
-
-<script type="text/javascript">
-      var disqus_shortname = 'watsonbox';
-      
-        
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku/';
-        var disqus_url = 'http://watsonbox.github.com/blog/2014/08/31/getting-started-with-dokku/';
-        var disqus_script = 'embed.js';
-      
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
-
-
-
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
-
 </body>
+
 </html>
