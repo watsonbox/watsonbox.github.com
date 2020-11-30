@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Tags"
-description: "Posts indexed by tags"
+description: "Posts indexed by tag"
 permalink: /tags/
 ---
 
@@ -13,7 +13,7 @@ permalink: /tags/
       <code class="highlighter-rouge"><a class="post-tag" href="/tags/#{{ tag[0] | slugify }}">{{ tag[0] }}</a></code>
     {% endfor %}
     </p>
-  <h2>Posts by tags</h2>
+  <h2>Posts by tag</h2>
   {% for tag in sorted_tags %}
     <div id="{{ tag[0] | slugify }}">
       <h3>{{ tag[0] }}</h3>

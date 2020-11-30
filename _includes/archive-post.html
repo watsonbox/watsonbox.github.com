@@ -1,0 +1,16 @@
+<h1><a href="{{ root_url }}{{ post.url }}">{{ post.title }}</a></h1>
+<time datetime="{{ post.date | datetime | date_to_xmlschema }}" pubdate>{{ post.date | date: "<span class='month'>%b</span> <span class='day'>%d</span> <span class='year'>%Y</span>"}}</time>
+<footer>
+  {% if post.tags %}
+    {% for tag in post.tags %}
+      <code class="highlighter-rouge"><a class="post-tag" href="/tags/#{{ tag | slugify }}">{{ tag }}</a></code>
+    {% endfor %}
+  {% endif %}
+  {%- if post.author -%}
+    • {% for author in post.author %}
+      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-author h-card" itemprop="name">{{ author }}</span></span>
+        {%- if forloop.last == false %}, {% endif -%}
+    {% endfor %}
+  {%- endif -%}
+</footer>
