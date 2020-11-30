@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Discovering MSW | Watsonbox</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Discovering MSW" />
+<meta name="author" content="Howard Wilson" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Recently, as part of a development stack refresh for Exportify, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite. I needed something that would play nicely with Jest, since the project is React, allow me to mock requests at the transport layer so my test could be de-coupled from the HTTP request library I choose to use, as well as of course providing a convenient DSL for writing the tests themselves." />
+<meta property="og:description" content="Recently, as part of a development stack refresh for Exportify, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite. I needed something that would play nicely with Jest, since the project is React, allow me to mock requests at the transport layer so my test could be de-coupled from the HTTP request library I choose to use, as well as of course providing a convenient DSL for writing the tests themselves." />
+<link rel="canonical" href="https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html" />
+<meta property="og:url" content="https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html" />
+<meta property="og:site_name" content="Watsonbox" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-11-30T19:42:58+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Discovering MSW" />
+<script type="application/ld+json">
+{"url":"https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html","headline":"Discovering MSW","dateModified":"2020-11-30T19:42:58+01:00","datePublished":"2020-11-30T19:42:58+01:00","author":{"@type":"Person","name":"Howard Wilson"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html"},"description":"Recently, as part of a development stack refresh for Exportify, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite. I needed something that would play nicely with Jest, since the project is React, allow me to mock requests at the transport layer so my test could be de-coupled from the HTTP request library I choose to use, as well as of course providing a convenient DSL for writing the tests themselves.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://watsonbox.github.com/feed.xml" title="Watsonbox" /><!-- From https://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+<link rel="mask-icon" href="/assets/images/favicon/safari-pinned-tab.svg" color="#3c3c3c">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<meta name="msapplication-TileColor" content="#3c3c3c">
+<meta name="msapplication-config" content="/assets/images/favicon/browserconfig.xml">
+<meta name="theme-color" content="#3c3c3c">
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">
+      <img src="/assets/images/watsonbox.png" />
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/">Blog</a><a class="page-link" href="/archive/">Archive</a><a class="page-link" href="/tags/">Tags</a><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Discovering MSW</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2020-11-30T19:42:58+01:00" itemprop="datePublished">
+        Nov 30, 2020
+      </time> |
+        
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#javascript">Javascript</a></code>
+        
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#react">React</a></code>
+        
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#exportify">Exportify</a></code>
+        
+      • 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Howard Wilson</span></span></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Recently, as part of a <a href="https://github.com/watsonbox/exportify/pull/72">development stack refresh</a> for Exportify, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite.</p>
+
+<p>I needed something that would play nicely with <a href="https://jestjs.io/">Jest</a>, since the project is React, allow me to mock requests at the transport layer so my test could be de-coupled from the HTTP request library I choose to use, as well as of course providing a convenient DSL for writing the tests themselves.</p>
+
+<!--more-->
+
+<p>Previously I’d written my tests using <a href="https://www.casperjs.org/">CasperJS</a>, and <a href="https://github.com/jakerella/jquery-mockjax">Mockjax</a> for the request mocking. I’d found the test runs to be a little unreliable, plus CasperJS is no longer actively maintained and Mockjax only actually mocks the jQuery request API, which I also planned to replace during the refresh.</p>
+
+<h2 id="enter-msw">Enter MSW</h2>
+
+<p>I came across <a href="https://mswjs.io/">MSW</a> (Mock Service Worker), which seemed to be the answer to my problems. It comes  by default with <a href="https://testing-library.com/docs/react-testing-library/intro">React Testing Library</a>, so I didn’t have to look very far 🙂.</p>
+
+<p>This post isn’t a tutorial on how to use MSW: see the <a href="https://mswjs.io/docs/">documentation</a> for that. Rather, it’s a collection of short summaries of what worked well (and didn’t!) for me.</p>
+
+<h2 id="setting-up-the-suite">Setting up the Suite</h2>
+
+<p>At this point, if you’re curious and you’d like to skip ahead, you could check out <a href="https://github.com/watsonbox/exportify/blob/master/src/components/PlaylistTable.test.jsx"><code class="language-plaintext highlighter-rouge">PlaylistTable.test.jsx</code></a> for a complete example of how I set up the tests for the main React component in Exportify.</p>
+
+<p>The general setup there is:</p>
+
+<ol>
+  <li>
+    <p>Set up the server which handles mocking</p>
+
+    <div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">import</span> <span class="p">{</span> <span class="nx">setupServer</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">msw/node</span><span class="dl">"</span>
+ <span class="k">import</span> <span class="p">{</span> <span class="nx">handlers</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../mocks/handlers</span><span class="dl">"</span>
+
+ <span class="kd">const</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">setupServer</span><span class="p">(...</span><span class="nx">handlers</span><span class="p">)</span>
+
+ <span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Restore Jest mocks and MSW handlers after each test. This ensures that any contextual changes made for any specific test will be reset.</p>
+
+    <div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nx">afterEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="nx">jest</span><span class="p">.</span><span class="nx">restoreAllMocks</span><span class="p">()</span>
+   <span class="nx">server</span><span class="p">.</span><span class="nx">resetHandlers</span><span class="p">()</span>
+ <span class="p">})</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create <code class="language-plaintext highlighter-rouge">mocks/handlers.jsx</code> with some request handlers, for example:</p>
+
+    <div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">export</span> <span class="kd">const</span> <span class="nx">handlers</span> <span class="o">=</span> <span class="p">[</span>
+   <span class="nx">rest</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://api.spotify.com/v1/me</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+     <span class="k">return</span> <span class="nx">res</span><span class="p">(</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span>
+       <span class="p">{</span>
+         <span class="dl">"</span><span class="s2">display_name</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">watsonbox</span><span class="dl">"</span><span class="p">,</span>
+         <span class="dl">"</span><span class="s2">external_urls</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+           <span class="dl">"</span><span class="s2">spotify</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">https://open.spotify.com/user/watsonbox</span><span class="dl">"</span>
+         <span class="p">},</span>
+         <span class="dl">"</span><span class="s2">followers</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+           <span class="dl">"</span><span class="s2">href</span><span class="dl">"</span> <span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+           <span class="dl">"</span><span class="s2">total</span><span class="dl">"</span> <span class="p">:</span> <span class="mi">6</span>
+         <span class="p">},</span>
+         <span class="dl">"</span><span class="s2">href</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">https://api.spotify.com/v1/users/watsonbox</span><span class="dl">"</span><span class="p">,</span>
+         <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">watsonbox</span><span class="dl">"</span><span class="p">,</span>
+         <span class="dl">"</span><span class="s2">images</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">],</span>
+         <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">user</span><span class="dl">"</span><span class="p">,</span>
+         <span class="dl">"</span><span class="s2">uri</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">spotify:user:watsonbox</span><span class="dl">"</span>
+       <span class="p">}</span>
+     <span class="p">))</span>
+   <span class="p">})</span>
+ <span class="p">]</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="catching-unmocked-requests">Catching Unmocked Requests</h2>
+
+<p>Most of my experience with mocking requests in test suites these days is using <a href="https://github.com/bblimke/webmock">WebMock</a> with Ruby on the back end. More often than not, I want to ensure that no “live” requests are made. That is to say, I’d like like an unmocked request to be a test failure. In fact, I often use this as a process for writing the mocks themselves - running the test suite and mocking out one request at a time, validating that they make sense as I go.</p>
+
+<p>As luck would have it, <a href="https://github.com/mswjs/msw/issues/191">this feature</a> was <a href="https://github.com/mswjs/msw/pull/257">merged</a> in July this year, and can be switched on by updating the call to <code class="language-plaintext highlighter-rouge">server.listen</code>:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">({</span>
+  <span class="na">onUnhandledRequest</span><span class="p">:</span> <span class="dl">'</span><span class="s1">warn</span><span class="dl">'</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>Okay, this will warn rather than raise an error, but <a href="https://mswjs.io/docs/api/setup-server/listen#onunhandledrequest">there are other options available</a>. If the example handler above were omitted, the output would be something like the following, and as expected it helps with writing the mocks themselves:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>console.warn
+  <span class="o">[</span>MSW] Warning: captured a GET https://api.spotify.com/v1/me request without a corresponding request handler.
+
+    If you wish to intercept this request, consider creating a request handler <span class="k">for </span>it:
+
+    rest.get<span class="o">(</span><span class="s1">'https://api.spotify.com/v1/me'</span>, <span class="o">(</span>req, res, ctx<span class="o">)</span> <span class="o">=&gt;</span> <span class="o">{</span>
+      <span class="k">return </span>res<span class="o">(</span>ctx.text<span class="o">(</span><span class="s1">'body'</span><span class="o">))</span>
+    <span class="o">})</span>
+</code></pre></div></div>
+
+<p>Great!</p>
+
+<h2 id="contextual-mocks">Contextual Mocks</h2>
+
+<p>After testing the “happy path” behavior, I’ll typically want to set up a more exceptional response from the API. This is often the case when fixing bugs with a test to guard against regressions.</p>
+
+<p>A real example of this is needing to test a bug which only occurs when a Spotify playlist contains an item with a <code class="language-plaintext highlighter-rouge">null</code> track. The <a href="https://github.com/watsonbox/exportify/commit/032ec7f246308a8acb74de2f70ba706141ad9fda">full commit is here</a> but the approach was to use a <em><a href="https://mswjs.io/docs/api/setup-server/use">runtime request handler</a></em> (<a href="https://github.com/mswjs/msw/releases/tag/v0.18.0">released in May</a> 😌) to handle a request to <code class="language-plaintext highlighter-rouge">https://api.spotify.com/v1/me</code> differently for a single spec, as follows:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// At the top level</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">handlers</span><span class="p">,</span> <span class="nx">nullTrackHandlers</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../mocks/handlers</span><span class="dl">"</span>
+
+<span class="c1">// New test</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">"</span><span class="s2">playlist with null track skips null track</span><span class="dl">"</span><span class="p">,</span> <span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">server</span><span class="p">.</span><span class="nx">use</span><span class="p">(...</span><span class="nx">nullTrackHandlers</span><span class="p">)</span>
+
+  <span class="c1">// The test body</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>In fact, this is the reason for the <code class="language-plaintext highlighter-rouge">resetHandlers()</code> call in the <code class="language-plaintext highlighter-rouge">afterEach</code> callback above. It ensures that the runtime handler is removed after each test.</p>
+
+<p>Finally the mock itself must be added to <code class="language-plaintext highlighter-rouge">handlers.jsx</code>:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">const</span> <span class="nx">nullTrackHandlers</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="nx">rest</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://api.spotify.com/v1/playlists/4XOGDpHMrVoH33uJEwHWU5/tracks?offset=0&amp;limit=10</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">res</span><span class="p">(</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span>
+      <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">href</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">https://api.spotify.com/v1/playlists/4XOGDpHMrVoH33uJEwHWU5/tracks?offset=0&amp;limit=100</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">items</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">added_at</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">2020-11-08T22:12:50Z</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">added_by</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+              <span class="dl">"</span><span class="s2">external_urls</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+                <span class="dl">"</span><span class="s2">spotify</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">https://open.spotify.com/user/</span><span class="dl">"</span>
+              <span class="p">},</span>
+              <span class="dl">"</span><span class="s2">href</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">https://api.spotify.com/v1/users/</span><span class="dl">"</span><span class="p">,</span>
+              <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">""</span><span class="p">,</span>
+              <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">user</span><span class="dl">"</span><span class="p">,</span>
+              <span class="dl">"</span><span class="s2">uri</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">spotify:user:</span><span class="dl">"</span>
+            <span class="p">},</span>
+            <span class="dl">"</span><span class="s2">is_local</span><span class="dl">"</span> <span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">primary_color</span><span class="dl">"</span> <span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">track</span><span class="dl">"</span> <span class="p">:</span> <span class="kc">null</span><span class="p">,</span> <span class="c1">// The exceptional case</span>
+            <span class="dl">"</span><span class="s2">video_thumbnail</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+              <span class="dl">"</span><span class="s2">url</span><span class="dl">"</span> <span class="p">:</span> <span class="kc">null</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">))</span>
+  <span class="p">})</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="asserting-request-counts">Asserting Request Counts</h2>
+
+<p>The next thing I came up against was wanting to know how many times a given API endpoint had been called. Setting up mocked responses and checking the results was already great, but how could I be sure that duplicate requests weren’t accidentally being fired resulting in the same behavior but with a performance overhead and exasperating rate limiting problems?</p>
+
+<p>Well, I couldn’t find anything out of the box so decided to use a pattern relying on <a href="https://jestjs.io/docs/en/mock-functions">standard Jest mock functions</a> which can be used with any <a href="https://jestjs.io/docs/en/expect">expectation matchers</a>.</p>
+
+<p>First add a mock to the handlers file and call it in each mock body:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">const</span> <span class="nx">handlerCalled</span> <span class="o">=</span> <span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">()</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">handlers</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="nx">rest</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://api.spotify.com/v1/me</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">handlerCalled</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
+
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>This can then be imported and used in the tests:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">handlerCalled</span><span class="p">,</span> <span class="nx">handlers</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../mocks/handlers</span><span class="dl">"</span>
+
+<span class="nx">expect</span><span class="p">(</span><span class="nx">handlerCalled</span><span class="p">.</span><span class="nx">toHaveBeenCalledTimes</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Actually, in my case I wanted to be sure that and API call had been called once <em>for a specific URL</em>, so to avoid setting up a “call mock” for each mocked request, I typically ended up setting expectations this way:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">expect</span><span class="p">(</span><span class="nx">handlerCalled</span><span class="p">.</span><span class="nx">mock</span><span class="p">.</span><span class="nx">calls</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">([</span> <span class="c1">// Ensure API call order and no duplicates</span>
+  <span class="p">[</span> <span class="dl">'</span><span class="s1">https://api.spotify.com/v1/me</span><span class="dl">'</span> <span class="p">],</span>
+  <span class="p">[</span> <span class="dl">'</span><span class="s1">https://api.spotify.com/v1/users/watsonbox/playlists</span><span class="dl">'</span> <span class="p">],</span>
+  <span class="p">[</span> <span class="dl">'</span><span class="s1">https://api.spotify.com/v1/users/watsonbox/tracks</span><span class="dl">'</span> <span class="p">],</span>
+  <span class="p">[</span> <span class="dl">'</span><span class="s1">https://api.spotify.com/v1/me/tracks?offset=0&amp;limit=20</span><span class="dl">'</span> <span class="p">]</span>
+<span class="p">])</span>
+</code></pre></div></div>
+
+<h2 id="matching-requests">Matching Requests</h2>
+
+<p>Overall, my experience using Jest and MSW has been great, and I feel like I’m hitting the project at the right time since some of the features I’ve needed haven’t been available for long!</p>
+
+<p>Probably the only niggle I had came in the restrictions when setting up the matching of mocked requests. As far as I can tell, setting up a mock like this:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">rest</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://api.spotify.com/v1/playlists/4XOGDpHMrVoH33uJEwHWU5/tracks?offset=0&amp;limit=10</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</code></pre></div></div>
+
+<p>Is equivalent to this (without query params):</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">rest</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://api.spotify.com/v1/playlists/4XOGDpHMrVoH33uJEwHWU5/tracks</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</code></pre></div></div>
+
+<p>In addition to certain parameters, I’d also love to be able to set up mocks which only match certain headers. That way I could set up all the mocks to match the correct Bearer token, and get warnings if that was for some reason not the case, plus perhaps set up some specific 401 responses for testing that behavior.</p>
+
+  </div><div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html';
+      this.page.identifier = 'https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://watsonbox.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><a class="u-url" href="/posts/2020/11/30/discovering-msw.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+        <ul class="contact-list">
+          <li class="p-name">Howard Wilson</li>
+          <li><a class="u-email" href="mailto:howard@watsonbox.net">howard@watsonbox.net</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>Watsonbox Blog
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/jekyllrb" title="jekyllrb"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

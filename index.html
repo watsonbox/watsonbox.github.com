@@ -51,6 +51,22 @@
         <div class="home">
   
 <ul class="post-list"><li><span class="post-meta">
+          <time class="dt-published" datetime="2020-11-30T19:42:58+01:00" itemprop="datePublished">
+            Nov 30, 2020
+          </time>
+        </span>
+        <h3>
+          <a class="post-link" href="/posts/2020/11/30/discovering-msw.html">
+            Discovering MSW
+          </a>
+        </h3><p>Recently, as part of a <a href="https://github.com/watsonbox/exportify/pull/72">development stack refresh</a> for Exportify, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite.</p>
+
+<p>I needed something that would play nicely with <a href="https://jestjs.io/">Jest</a>, since the project is React, allow me to mock requests at the transport layer so my test could be de-coupled from the HTTP request library I choose to use, as well as of course providing a convenient DSL for writing the tests themselves.</p>
+
+
+          
+            <a href="/posts/2020/11/30/discovering-msw.html">Read More</a>
+          </li><li><span class="post-meta">
           <time class="dt-published" datetime="2015-02-16T17:45:42+01:00" itemprop="datePublished">
             Feb 16, 2015
           </time>
@@ -129,46 +145,6 @@
 
           
             <a href="/blog/2014/08/31/getting-started-with-dokku/">Read More</a>
-          </li><li><span class="post-meta">
-          <time class="dt-published" datetime="2014-06-23T17:12:21+02:00" itemprop="datePublished">
-            Jun 23, 2014
-          </time>
-        </span>
-        <h3>
-          <a class="post-link" href="/blog/2014/06/23/aggregation-for-ember-data-async-relationships/">
-            Aggregation for Ember Data Async Relationships
-          </a>
-        </h3><p>Ember.js has <a href="http://emberjs.com/guides/object-model/computed-properties-and-aggregate-data/">computed properties</a> for aggregating data which are automatically re-calculated when the source data set changes. But what if we want to display aggregate data from an async relationship in a list view? We might have the following:</p>
-
-<div class="language-coffeescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">App</span><span class="p">.</span><span class="na">Invoice</span> <span class="o">=</span> <span class="nx">DS</span><span class="p">.</span><span class="na">Model</span><span class="p">.</span><span class="na">extend</span>
-  <span class="na">lineItems</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">hasMany</span><span class="p">(</span><span class="s">'lineItem'</span><span class="p">,</span> <span class="p">{</span> <span class="na">async</span><span class="o">:</span> <span class="no">true</span> <span class="p">})</span>
-
-  <span class="na">lineItemAmounts</span><span class="o">:</span> <span class="nx">Ember</span><span class="p">.</span><span class="na">computed</span><span class="p">.</span><span class="na">mapBy</span><span class="p">(</span><span class="s">'lineItems'</span><span class="p">,</span> <span class="s">'amount'</span><span class="p">)</span>
-  <span class="na">amount</span><span class="o">:</span> <span class="nx">Ember</span><span class="p">.</span><span class="na">computed</span><span class="p">.</span><span class="na">sum</span><span class="p">(</span><span class="s">'lineItemAmounts'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>Each <code class="language-plaintext highlighter-rouge">App.Invoice</code> has a bunch of <code class="language-plaintext highlighter-rouge">App.LineItem</code>s, and calculates its own amount by summing up their individual amounts. However, each time an invoice is rendered, all of the line items will be fetched from the server in order to make this calculation.</p>
-
-<p>What we can do instead is send the aggregate figure from the server along with the invoice. It might be calculated on the fly (with a <code class="language-plaintext highlighter-rouge">group by</code> query, for example), or maintained along with the invoice. Here’s an approach that does exactly this, but will switch to using the real ember data objects once they have been loaded:</p>
-
-<div class="language-coffeescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">App</span><span class="p">.</span><span class="na">Invoice</span> <span class="o">=</span> <span class="nx">DS</span><span class="p">.</span><span class="na">Model</span><span class="p">.</span><span class="na">extend</span>
-  <span class="na">subtotal</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">attr</span><span class="p">(</span><span class="s">'number'</span><span class="p">)</span>
-  <span class="na">lineItems</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">hasMany</span><span class="p">(</span><span class="s">'lineItem'</span><span class="p">,</span> <span class="p">{</span> <span class="na">async</span><span class="o">:</span> <span class="no">true</span> <span class="p">})</span>
-
-  <span class="na">lineItemAmounts</span><span class="o">:</span> <span class="nx">Ember</span><span class="p">.</span><span class="na">computed</span><span class="p">.</span><span class="na">mapBy</span><span class="p">(</span><span class="s">'lineItems'</span><span class="p">,</span> <span class="s">'amount'</span><span class="p">)</span>
-  <span class="na">lineItemAmountsSum</span><span class="o">:</span> <span class="nx">Ember</span><span class="p">.</span><span class="na">computed</span><span class="p">.</span><span class="na">sum</span><span class="p">(</span><span class="s">'lineItemAmounts'</span><span class="p">)</span>
-
-  <span class="c1"># Uses subtotal until async lineItems become available</span>
-  <span class="na">amount</span><span class="o">:</span> <span class="p">(</span><span class="o">-&gt;</span>
-    <span class="k">if</span> <span class="vi">@</span><span class="na">cacheFor</span><span class="p">(</span><span class="s">'lineItems'</span><span class="p">)</span>
-      <span class="vi">@</span><span class="na">get</span><span class="p">(</span><span class="s">'lineItemAmountsSum'</span><span class="p">)</span>
-    <span class="k">else</span>
-      <span class="vi">@</span><span class="na">get</span><span class="p">(</span><span class="s">'subtotal'</span><span class="p">)</span>
-  <span class="p">).</span><span class="na">property</span><span class="p">(</span><span class="s">'lineItems.@each.amount'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>In this case <code class="language-plaintext highlighter-rouge">subtotal</code> is the aggregated amount from the server.</p>
-
           </li></ul></div>
 
       </div>
