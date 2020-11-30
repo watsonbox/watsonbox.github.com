@@ -21,7 +21,7 @@ show_excerpts: true
 excerpt_separator: <!--more-->
 disqus:
   shortname: watsonbox
-url: https://watsonbox.github.io
+url: https://watsonbox.github.com
 
 # https://jekyllrb.com/docs/configuration/front-matter-defaults/
 defaults:
