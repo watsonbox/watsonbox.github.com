@@ -23,6 +23,7 @@ excerpt_separator: <!--more-->
 disqus:
   shortname: watsonbox
 url: https://watsonbox.github.com
+google_analytics: UA-31898875-1
 
 # https://jekyllrb.com/docs/configuration/front-matter-defaults/
 defaults:
