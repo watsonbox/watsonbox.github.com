@@ -5,7 +5,7 @@ date: 2020-11-30 19:42:58 +0100
 tags: [Javascript, React, Exportify]
 ---
 
-Recently, as part of a [development stack refresh](https://github.com/watsonbox/exportify/pull/72) for Exportify, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite.
+Recently, as part of a [development stack refresh](https://github.com/watsonbox/exportify/pull/72) for [Exportify](https://github.com/watsonbox/exportify), I found myself digging around for the best approach to mocking HTTP requests in a JS test suite.
 
 I needed something that would play nicely with [Jest](https://jestjs.io/), since the project is React, allow me to mock requests at the transport layer so my test could be de-coupled from the HTTP request library I choose to use, as well as of course providing a convenient DSL for writing the tests themselves.
 
