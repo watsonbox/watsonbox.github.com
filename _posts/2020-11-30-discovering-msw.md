@@ -7,7 +7,7 @@ tags: [Javascript, React, Exportify]
 
 Recently, as part of a [development stack refresh](https://github.com/watsonbox/exportify/pull/72) for [Exportify](https://github.com/watsonbox/exportify), I found myself digging around for the best approach to mocking HTTP requests in a JS test suite.
 
-I needed something that would play nicely with [Jest](https://jestjs.io/), since the project is React, allow me to mock requests at the transport layer so my test could be de-coupled from the HTTP request library I choose to use, as well as of course providing a convenient DSL for writing the tests themselves.
+I needed something that would play nicely with [Jest](https://jestjs.io/) and React, allow me to mock requests at the transport layer so my tests could be de-coupled from the HTTP request library I chose to use, as well as of course providing a convenient DSL for writing the tests themselves.
 
 <!--more-->
 
@@ -15,7 +15,7 @@ Previously I'd written my tests using [CasperJS](https://www.casperjs.org/), and
 
 ## Enter MSW
 
-I came across [MSW](https://mswjs.io/) (Mock Service Worker), which seemed to be the answer to my problems. It comes  by default with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro), so I didn't have to look very far 🙂.
+I came across [MSW](https://mswjs.io/) (Mock Service Worker), which seemed to be the answer to my problems. It comes by default with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro), so I didn't have to look very far 🙂.
 
 This post isn't a tutorial on how to use MSW: see the [documentation](https://mswjs.io/docs/) for that. Rather, it's a collection of short summaries of what worked well (and didn't!) for me.
 
@@ -23,7 +23,7 @@ This post isn't a tutorial on how to use MSW: see the [documentation](https://ms
 
 At this point, if you're curious and you'd like to skip ahead, you could check out [`PlaylistTable.test.jsx`](https://github.com/watsonbox/exportify/blob/master/src/components/PlaylistTable.test.jsx) for a complete example of how I set up the tests for the main React component in Exportify.
 
-The general setup there is:
+The general approach there is:
 
 1. Set up the server which handles mocking
 
