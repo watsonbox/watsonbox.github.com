@@ -8,8 +8,8 @@
 <meta property="og:title" content="Discovering MSW" />
 <meta name="author" content="Howard Wilson" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Recently, as part of a development stack refresh for Exportify, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite. I needed something that would play nicely with Jest and React, allow me to mock requests at the transport layer so my tests could be de-coupled from the HTTP request library I chose to use, as well as of course providing a convenient DSL for writing the tests themselves." />
-<meta property="og:description" content="Recently, as part of a development stack refresh for Exportify, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite. I needed something that would play nicely with Jest and React, allow me to mock requests at the transport layer so my tests could be de-coupled from the HTTP request library I chose to use, as well as of course providing a convenient DSL for writing the tests themselves." />
+<meta name="description" content="As part of a development stack refresh for Exportify, I came across MSW (Mock Service Worker). This post isn’t a tutorial on how to use MSW. Rather, it’s a collection of short summaries of what worked well (and didn’t!) for me." />
+<meta property="og:description" content="As part of a development stack refresh for Exportify, I came across MSW (Mock Service Worker). This post isn’t a tutorial on how to use MSW. Rather, it’s a collection of short summaries of what worked well (and didn’t!) for me." />
 <link rel="canonical" href="https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html" />
 <meta property="og:url" content="https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html" />
 <meta property="og:site_name" content="Watsonbox" />
@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Discovering MSW" />
 <script type="application/ld+json">
-{"url":"https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html","headline":"Discovering MSW","dateModified":"2020-11-30T19:42:58+01:00","datePublished":"2020-11-30T19:42:58+01:00","author":{"@type":"Person","name":"Howard Wilson"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html"},"description":"Recently, as part of a development stack refresh for Exportify, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite. I needed something that would play nicely with Jest and React, allow me to mock requests at the transport layer so my tests could be de-coupled from the HTTP request library I chose to use, as well as of course providing a convenient DSL for writing the tests themselves.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html","datePublished":"2020-11-30T19:42:58+01:00","dateModified":"2020-11-30T19:42:58+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html"},"author":{"@type":"Person","name":"Howard Wilson"},"description":"As part of a development stack refresh for Exportify, I came across MSW (Mock Service Worker). This post isn’t a tutorial on how to use MSW. Rather, it’s a collection of short summaries of what worked well (and didn’t!) for me.","@type":"BlogPosting","headline":"Discovering MSW","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://watsonbox.github.com/feed.xml" title="Watsonbox" /><script async src="https://www.googletagmanager.com/gtag/js?id=UA-31898875-1"></script>
 <script>
