@@ -1,6 +1,8 @@
 ---
 layout: post
 title: "Discovering MSW"
+description:
+  As part of a development stack refresh for Exportify, I came across MSW (Mock Service Worker). This post isn’t a tutorial on how to use MSW. Rather, it’s a collection of short summaries of what worked well (and didn’t!) for me.
 date: 2020-11-30 19:42:58 +0100
 tags: [Javascript, React, Exportify]
 ---
