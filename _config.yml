@@ -16,7 +16,6 @@ header_pages:
   - index.md
   - archive.md
   - tags.md
-  - about.md
 timezone: "Europe/Paris"
 show_excerpts: true
 excerpt_separator: <!--more-->
