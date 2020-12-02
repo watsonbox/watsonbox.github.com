@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Exportify Refresh | Watsonbox</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Exportify Refresh" />
+<meta name="author" content="Howard Wilson" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="An overview of new Exportify features, fixed bugs and improved robustness, as well as a complete overhaul of the React dev stack" />
+<meta property="og:description" content="An overview of new Exportify features, fixed bugs and improved robustness, as well as a complete overhaul of the React dev stack" />
+<link rel="canonical" href="https://watsonbox.github.com/posts/2020/12/02/exportify-refresh.html" />
+<meta property="og:url" content="https://watsonbox.github.com/posts/2020/12/02/exportify-refresh.html" />
+<meta property="og:site_name" content="Watsonbox" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-12-02T18:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Exportify Refresh" />
+<script type="application/ld+json">
+{"url":"https://watsonbox.github.com/posts/2020/12/02/exportify-refresh.html","headline":"Exportify Refresh","dateModified":"2020-12-02T18:00:00+01:00","datePublished":"2020-12-02T18:00:00+01:00","author":{"@type":"Person","name":"Howard Wilson"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://watsonbox.github.com/posts/2020/12/02/exportify-refresh.html"},"description":"An overview of new Exportify features, fixed bugs and improved robustness, as well as a complete overhaul of the React dev stack","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://watsonbox.github.com/feed.xml" title="Watsonbox" /><script async src="https://www.googletagmanager.com/gtag/js?id=UA-31898875-1"></script>
+<script>
+  window['ga-disable-UA-31898875-1'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-31898875-1');
+</script>
+<!-- From https://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+<link rel="mask-icon" href="/assets/images/favicon/safari-pinned-tab.svg" color="#3c3c3c">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<meta name="msapplication-TileColor" content="#3c3c3c">
+<meta name="msapplication-config" content="/assets/images/favicon/browserconfig.xml">
+<meta name="theme-color" content="#3c3c3c">
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">
+      <img src="/assets/images/watsonbox.png" />
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/">Blog</a><a class="page-link" href="/archive/">Archive</a><a class="page-link" href="/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Exportify Refresh</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2020-12-02T18:00:00+01:00" itemprop="datePublished">
+        Dec 2, 2020
+      </time> |
+        
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#exportify">Exportify</a></code>
+        
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#spotify">Spotify</a></code>
+        
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#javascript">Javascript</a></code>
+        
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#react">React</a></code>
+        
+      • 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Howard Wilson</span></span></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Way back in 2015 I released the first version of <a href="https://github.com/watsonbox/exportify">Exportify</a>, a small web application for exporting / backing up Spotify playlists to CSV format for safekeeping (click <a href="https://watsonbox.github.io/exportify/">here</a> to go straight to the app if you’d like to try it).</p>
+
+<p>It’s fair to say I’ve rather neglected this project over the past few years, so I decided to spend a good chunk of time this November on adding new features, fixing bugs and improving robustness, as well as a complete overhaul of the <a href="https://reactjs.org/">React</a> dev stack.</p>
+
+<p><a href="https://github.com/watsonbox/exportify" target="_blank"><img src="https://github.com/watsonbox/exportify/raw/3b95ee506b032b84078311c44ebbc79a165bf223/screenshot.png" /></a></p>
+
+<!--more-->
+
+<h2 id="new-features">New Features</h2>
+
+<p>Although the technical stack refresh came first in order of work, it’s probably the new features that’ll interest users the most.</p>
+
+<p>It’s important for me to say that in many cases these features came from <a href="https://github.com/watsonbox/exportify/issues?q=is%3Aissue+is%3Aclosed">the suggestions</a> <a href="https://github.com/watsonbox/exportify/pulls?q=is%3Apr+is%3Aclosed">or contributions</a> of others, so I did my best to work through old pull requests in order, and credit people wherever I could. Thanks to all who contributed 🙏. The main updates:</p>
+
+<ul>
+  <li>A new <a href="https://github.com/watsonbox/exportify/pull/82">playlist search facility</a></li>
+  <li><a href="https://github.com/watsonbox/exportify/pull/80">Artist and audio features</a> as configurable extra data in exports</li>
+  <li>Possible to <a href="https://github.com/watsonbox/exportify/pull/84">change user</a> (log out)</li>
+  <li><a href="https://github.com/watsonbox/exportify/commit/bc5253c7ad0687eaaaad4cb761d9a836dbcbed83">Liked songs can be exported</a> as a playlist</li>
+  <li><a href="https://github.com/watsonbox/exportify/pull/75">Complete revamp of rate limiting</a> meaning that in most cases it’s not something users will need to worry about</li>
+  <li>Various miscellaneous bugs fixed</li>
+</ul>
+
+<p>There’s loads more detail on each of those items and more in <a href="https://github.com/watsonbox/exportify/milestone/1?closed=1">the milestone</a> over on Github, or of course in the <a href="https://github.com/watsonbox/exportify">project <code class="language-plaintext highlighter-rouge">README</code></a>. Hopefully these additions will improve the usefulness of the tool for the majority of use cases.</p>
+
+<p>Next let’s take a look at what’s changed under the hood.</p>
+
+<h2 id="development-stack-overhaul">Development Stack Overhaul</h2>
+
+<p>When I came to revisit the tech stack for this project, I wasn’t inspired at all to build on top of what I’d put together back in 2015. Okay, there was an automated test suite but coverage wasn’t particularly great and it would fail intermittently. There was no dependency management framework, and no development/production environment separation. The libraries I’d used were out of date and the React/JS world had moved on impressively since then.</p>
+
+<p>Starting with <a href="https://github.com/facebook/create-react-app">Create React App</a> I ended up with the following tools/libs:</p>
+
+<ul>
+  <li>
+    <p><a href="https://reactjs.org/">React 17</a></p>
+
+    <p>A JavaScript library for building user interfaces</p>
+  </li>
+  <li>
+    <p><a href="https://getbootstrap.com/">Bootstrap 4</a></p>
+
+    <p>Styling and UI components</p>
+  </li>
+  <li>
+    <p><a href="https://fontawesome.com/">Font Awesome 5</a></p>
+
+    <p>Vector icon set and toolkit</p>
+  </li>
+  <li>
+    <p><a href="https://testing-library.com/docs/react-testing-library/intro/">React Testing Library</a></p>
+
+    <p>Light-weight solution for testing React DOM nodes</p>
+  </li>
+  <li>
+    <p><a href="https://mswjs.io/">Mock Service Workers (MSW)</a></p>
+
+    <p>Network-level request mocking (more of my own thoughts <a href="https://watsonbox.github.io/posts/2020/11/30/discovering-msw.html">here</a>)</p>
+  </li>
+</ul>
+
+<p>It really was day and night to see how things evolved as I added in new components and upgraded others. In particular working with MSW was a much improved testing experience for a web request-heavy app. You can check out <a href="https://watsonbox.github.io/posts/2020/11/30/discovering-msw.html">my other blog post about my experience in setting it up</a>.</p>
+
+<p>The majority of this new stack was introduced as part of <a href="https://github.com/watsonbox/exportify/pull/72">this PR</a>, so feel free to take a look if you’d like to dig into the code.</p>
+
+<h3 id="development-confidence">Development Confidence</h3>
+
+<p><em>One</em> of the reasons I haven’t updated this project more over the years was: I was kind of worried about breaking things 😬. As I see it, my recent changes now give me and contributors three lines of defense:</p>
+
+<ol>
+  <li>
+    <p><strong>Writing code</strong></p>
+
+    <p>Moving to <a href="https://www.typescriptlang.org/">Typescript</a> for type checking, in their own words, “saves you time catching errors and providing fixes before you run code”.</p>
+  </li>
+  <li>
+    <p><strong>Deploying code</strong></p>
+
+    <p>The more comprehensive automated test suite using <a href="https://testing-library.com/docs/react-testing-library/intro/">React Testing Library</a>, <a href="https://jestjs.io/">Jest</a>, and <a href="https://mswjs.io/">MSW</a> should give a lot more confidence that things aren’t breaking. Snapshot testing is now also present as a useful guard against regressions.</p>
+  </li>
+  <li>
+    <p><strong>Debugging live issues</strong></p>
+
+    <p>Those two measures clearly don’t catch everything. For the rest there’s live error monitoring with <a href="https://www.bugsnag.com/">Bugsnag</a>. I’ve <a href="https://github.com/watsonbox/exportify/blob/7dbccd31f1d8595fd900374847d40542a6f39ae9/src/index.tsx#L9-L21">configured it</a> to make sure that no sensitive data leaks into the error reports, only the details of the exception itself. This also helps to answer questions like “what percentage of distinct users experience an issue?”.</p>
+  </li>
+</ol>
+
+<h2 id="future-development">Future Development</h2>
+
+<p>A small note about my own personal vision when it comes to the feature set of this tool.</p>
+
+<p>While I’m always open to considering feature requests or code submissions, my own view is that they should remain focused on <em>getting data out of the Spotify Web API</em> rather than on presenting it or importing it into other applications.</p>
+
+<p>It’s surely the case that there are plenty of interesting things that can be done with this data once it’s been exported, though. Let me know what you come up with! 👇</p>
+
+  </div><div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://watsonbox.github.com/posts/2020/12/02/exportify-refresh.html';
+      this.page.identifier = 'https://watsonbox.github.com/posts/2020/12/02/exportify-refresh.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://watsonbox.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><a class="u-url" href="/posts/2020/12/02/exportify-refresh.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+        <ul class="contact-list">
+          <li class="p-name">Howard Wilson</li>
+          <li><a class="u-email" href="mailto:howard@watsonbox.net">howard@watsonbox.net</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>Watsonbox Blog
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

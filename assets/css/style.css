@@ -575,6 +575,8 @@ header.site-header .site-nav .page-link:hover { color: #fff; text-decoration: no
 
 .post-list > li { padding-bottom: 20px; border-bottom: 1px solid #e8e8e8; }
 
+.post-list > li ul { margin-bottom: 20px; list-style-type: disc; }
+
 .post-content h2, .post-content h3 { margin-top: 40px; }
 
 .highlighter-rouge, .gist { margin: 30px 0; }
@@ -586,6 +588,8 @@ h2, .post-content h2 { font-size: 1.5em; }
 h3, .post-content h3 { font-size: 1.3em; }
 
 p { margin-bottom: 20px; }
+
+ul:not(.post-list) > li p, ol:not(.post-list) > li p { margin-bottom: 5px; }
 
 body { margin: 0 auto; max-width: 840px; background-color: #252525; }
 

@@ -1,5 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://watsonbox.github.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://watsonbox.github.com/" rel="alternate" type="text/html" /><updated>2020-12-01T17:00:11+01:00</updated><id>https://watsonbox.github.com/feed.xml</id><title type="html">Watsonbox</title><subtitle>Watsonbox Blog
-</subtitle><author><name>Howard Wilson</name><email>howard@watsonbox.net</email></author><entry><title type="html">Discovering MSW</title><link href="https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html" rel="alternate" type="text/html" title="Discovering MSW" /><published>2020-11-30T19:42:58+01:00</published><updated>2020-11-30T19:42:58+01:00</updated><id>https://watsonbox.github.com/posts/2020/11/30/discovering-msw</id><content type="html" xml:base="https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html">&lt;p&gt;Recently, as part of a &lt;a href=&quot;https://github.com/watsonbox/exportify/pull/72&quot;&gt;development stack refresh&lt;/a&gt; for &lt;a href=&quot;https://github.com/watsonbox/exportify&quot;&gt;Exportify&lt;/a&gt;, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://watsonbox.github.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://watsonbox.github.com/" rel="alternate" type="text/html" /><updated>2020-12-02T18:58:12+01:00</updated><id>https://watsonbox.github.com/feed.xml</id><title type="html">Watsonbox</title><subtitle>Watsonbox Blog
+</subtitle><author><name>Howard Wilson</name><email>howard@watsonbox.net</email></author><entry><title type="html">Exportify Refresh</title><link href="https://watsonbox.github.com/posts/2020/12/02/exportify-refresh.html" rel="alternate" type="text/html" title="Exportify Refresh" /><published>2020-12-02T18:00:00+01:00</published><updated>2020-12-02T18:00:00+01:00</updated><id>https://watsonbox.github.com/posts/2020/12/02/exportify-refresh</id><content type="html" xml:base="https://watsonbox.github.com/posts/2020/12/02/exportify-refresh.html">&lt;p&gt;Way back in 2015 I released the first version of &lt;a href=&quot;https://github.com/watsonbox/exportify&quot;&gt;Exportify&lt;/a&gt;, a small web application for exporting / backing up Spotify playlists to CSV format for safekeeping (click &lt;a href=&quot;https://watsonbox.github.io/exportify/&quot;&gt;here&lt;/a&gt; to go straight to the app if you’d like to try it).&lt;/p&gt;
+
+&lt;p&gt;It’s fair to say I’ve rather neglected this project over the past few years, so I decided to spend a good chunk of time this November on adding new features, fixing bugs and improving robustness, as well as a complete overhaul of the &lt;a href=&quot;https://reactjs.org/&quot;&gt;React&lt;/a&gt; dev stack.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/watsonbox/exportify&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;https://github.com/watsonbox/exportify/raw/3b95ee506b032b84078311c44ebbc79a165bf223/screenshot.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;new-features&quot;&gt;New Features&lt;/h2&gt;
+
+&lt;p&gt;Although the technical stack refresh came first in order of work, it’s probably the new features that’ll interest users the most.&lt;/p&gt;
+
+&lt;p&gt;It’s important for me to say that in many cases these features came from &lt;a href=&quot;https://github.com/watsonbox/exportify/issues?q=is%3Aissue+is%3Aclosed&quot;&gt;the suggestions&lt;/a&gt; &lt;a href=&quot;https://github.com/watsonbox/exportify/pulls?q=is%3Apr+is%3Aclosed&quot;&gt;or contributions&lt;/a&gt; of others, so I did my best to work through old pull requests in order, and credit people wherever I could. Thanks to all who contributed 🙏. The main updates:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A new &lt;a href=&quot;https://github.com/watsonbox/exportify/pull/82&quot;&gt;playlist search facility&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/watsonbox/exportify/pull/80&quot;&gt;Artist and audio features&lt;/a&gt; as configurable extra data in exports&lt;/li&gt;
+  &lt;li&gt;Possible to &lt;a href=&quot;https://github.com/watsonbox/exportify/pull/84&quot;&gt;change user&lt;/a&gt; (log out)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/watsonbox/exportify/commit/bc5253c7ad0687eaaaad4cb761d9a836dbcbed83&quot;&gt;Liked songs can be exported&lt;/a&gt; as a playlist&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/watsonbox/exportify/pull/75&quot;&gt;Complete revamp of rate limiting&lt;/a&gt; meaning that in most cases it’s not something users will need to worry about&lt;/li&gt;
+  &lt;li&gt;Various miscellaneous bugs fixed&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There’s loads more detail on each of those items and more in &lt;a href=&quot;https://github.com/watsonbox/exportify/milestone/1?closed=1&quot;&gt;the milestone&lt;/a&gt; over on Github, or of course in the &lt;a href=&quot;https://github.com/watsonbox/exportify&quot;&gt;project &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;README&lt;/code&gt;&lt;/a&gt;. Hopefully these additions will improve the usefulness of the tool for the majority of use cases.&lt;/p&gt;
+
+&lt;p&gt;Next let’s take a look at what’s changed under the hood.&lt;/p&gt;
+
+&lt;h2 id=&quot;development-stack-overhaul&quot;&gt;Development Stack Overhaul&lt;/h2&gt;
+
+&lt;p&gt;When I came to revisit the tech stack for this project, I wasn’t inspired at all to build on top of what I’d put together back in 2015. Okay, there was an automated test suite but coverage wasn’t particularly great and it would fail intermittently. There was no dependency management framework, and no development/production environment separation. The libraries I’d used were out of date and the React/JS world had moved on impressively since then.&lt;/p&gt;
+
+&lt;p&gt;Starting with &lt;a href=&quot;https://github.com/facebook/create-react-app&quot;&gt;Create React App&lt;/a&gt; I ended up with the following tools/libs:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://reactjs.org/&quot;&gt;React 17&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;A JavaScript library for building user interfaces&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://getbootstrap.com/&quot;&gt;Bootstrap 4&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;Styling and UI components&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://fontawesome.com/&quot;&gt;Font Awesome 5&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;Vector icon set and toolkit&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://testing-library.com/docs/react-testing-library/intro/&quot;&gt;React Testing Library&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;Light-weight solution for testing React DOM nodes&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://mswjs.io/&quot;&gt;Mock Service Workers (MSW)&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;Network-level request mocking (more of my own thoughts &lt;a href=&quot;https://watsonbox.github.io/posts/2020/11/30/discovering-msw.html&quot;&gt;here&lt;/a&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It really was day and night to see how things evolved as I added in new components and upgraded others. In particular working with MSW was a much improved testing experience for a web request-heavy app. You can check out &lt;a href=&quot;https://watsonbox.github.io/posts/2020/11/30/discovering-msw.html&quot;&gt;my other blog post about my experience in setting it up&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The majority of this new stack was introduced as part of &lt;a href=&quot;https://github.com/watsonbox/exportify/pull/72&quot;&gt;this PR&lt;/a&gt;, so feel free to take a look if you’d like to dig into the code.&lt;/p&gt;
+
+&lt;h3 id=&quot;development-confidence&quot;&gt;Development Confidence&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;One&lt;/em&gt; of the reasons I haven’t updated this project more over the years was: I was kind of worried about breaking things 😬. As I see it, my recent changes now give me and contributors three lines of defense:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Writing code&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;Moving to &lt;a href=&quot;https://www.typescriptlang.org/&quot;&gt;Typescript&lt;/a&gt; for type checking, in their own words, “saves you time catching errors and providing fixes before you run code”.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Deploying code&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;The more comprehensive automated test suite using &lt;a href=&quot;https://testing-library.com/docs/react-testing-library/intro/&quot;&gt;React Testing Library&lt;/a&gt;, &lt;a href=&quot;https://jestjs.io/&quot;&gt;Jest&lt;/a&gt;, and &lt;a href=&quot;https://mswjs.io/&quot;&gt;MSW&lt;/a&gt; should give a lot more confidence that things aren’t breaking. Snapshot testing is now also present as a useful guard against regressions.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Debugging live issues&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;Those two measures clearly don’t catch everything. For the rest there’s live error monitoring with &lt;a href=&quot;https://www.bugsnag.com/&quot;&gt;Bugsnag&lt;/a&gt;. I’ve &lt;a href=&quot;https://github.com/watsonbox/exportify/blob/7dbccd31f1d8595fd900374847d40542a6f39ae9/src/index.tsx#L9-L21&quot;&gt;configured it&lt;/a&gt; to make sure that no sensitive data leaks into the error reports, only the details of the exception itself. This also helps to answer questions like “what percentage of distinct users experience an issue?”.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;future-development&quot;&gt;Future Development&lt;/h2&gt;
+
+&lt;p&gt;A small note about my own personal vision when it comes to the feature set of this tool.&lt;/p&gt;
+
+&lt;p&gt;While I’m always open to considering feature requests or code submissions, my own view is that they should remain focused on &lt;em&gt;getting data out of the Spotify Web API&lt;/em&gt; rather than on presenting it or importing it into other applications.&lt;/p&gt;
+
+&lt;p&gt;It’s surely the case that there are plenty of interesting things that can be done with this data once it’s been exported, though. Let me know what you come up with! 👇&lt;/p&gt;</content><author><name>Howard Wilson</name></author><category term="posts" /><category term="Exportify" /><category term="Spotify" /><category term="Javascript" /><category term="React" /><summary type="html">Way back in 2015 I released the first version of Exportify, a small web application for exporting / backing up Spotify playlists to CSV format for safekeeping (click here to go straight to the app if you’d like to try it). It’s fair to say I’ve rather neglected this project over the past few years, so I decided to spend a good chunk of time this November on adding new features, fixing bugs and improving robustness, as well as a complete overhaul of the React dev stack.</summary></entry><entry><title type="html">Discovering MSW</title><link href="https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html" rel="alternate" type="text/html" title="Discovering MSW" /><published>2020-11-30T19:42:58+01:00</published><updated>2020-11-30T19:42:58+01:00</updated><id>https://watsonbox.github.com/posts/2020/11/30/discovering-msw</id><content type="html" xml:base="https://watsonbox.github.com/posts/2020/11/30/discovering-msw.html">&lt;p&gt;Recently, as part of a &lt;a href=&quot;https://github.com/watsonbox/exportify/pull/72&quot;&gt;development stack refresh&lt;/a&gt; for &lt;a href=&quot;https://github.com/watsonbox/exportify&quot;&gt;Exportify&lt;/a&gt;, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite.&lt;/p&gt;
 
 &lt;p&gt;I needed something that would play nicely with &lt;a href=&quot;https://jestjs.io/&quot;&gt;Jest&lt;/a&gt; and React, allow me to mock requests at the transport layer so my tests could be de-coupled from the HTTP request library I chose to use, as well as of course providing a convenient DSL for writing the tests themselves.&lt;/p&gt;
 
@@ -528,73 +621,4 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-behavior=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;pseudo-fixed&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;style=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;position: fixed; left: 0; top: 150px&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Howard Wilson</name></author><category term="posts" /><category term="Facebook" /><category term="jQuery" /><category term="CoffeeScript" /><summary type="html">Recently I was asked to add a fixed position ‘tab’ to the left side of a Facebook canvas app, for example like the Get Satisfaction ‘Community’ tab. Normally this would be a simple case of using position: fixed, but not in this case because Facebook canvas apps live inside iFrames. Facebook resizes this iFrame to fit its content, meaning that the main browser scrollbar is used to scroll around the page rather than the iFrame’s scrollbar. However, fixed position elements are fixed relative to the iFrame, not the main document. Since the iFrame never actually scrolls, the fixed element stays put. The solution is to use a little javascript to scroll the fixed element relative to the Facebook scroll position at a fixed interval. This gives a slightly different user experience but is the best approach I’ve found so far. $.fn.pseudoFixed = -&amp;gt; top = this.position().top window.setInterval( =&amp;gt; FB.Canvas.getPageInfo((info) =&amp;gt; this.animate({ top: info.scrollTop + top })), 1000 ) $('[data-behavior~=pseudo-fixed]').pseudoFixed() &amp;lt;div data-behavior=&quot;pseudo-fixed&quot; style=&quot;position: fixed; left: 0; top: 150px&quot;&amp;gt;...&amp;lt;/div&amp;gt;</summary></entry><entry><title type="html">FB Canvas Apps #1: Dialog Positioning</title><link href="https://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/" rel="alternate" type="text/html" title="FB Canvas Apps #1: Dialog Positioning" /><published>2012-09-25T16:33:00+02:00</published><updated>2012-09-25T16:33:00+02:00</updated><id>https://watsonbox.github.com/blog/2012/05/01/fb-canvas-apps-1-dialog-positioning</id><content type="html" xml:base="https://watsonbox.github.com/blog/2012/05/01/sharing-session-between-rails-and-php/">&lt;p&gt;Having worked on several Facebook applications, I’ve built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame.&lt;/p&gt;
-
-&lt;p&gt;The problem is caused by Facebook resizing the canvas iFrame to accommodate the entire page. When a dialog is displayed inside the canvas application, it is displayed vertically centered inside that iFrame, which can cause the current browser scroll position to jump up or down accordingly.&lt;/p&gt;
-
-&lt;p&gt;The fix is to call Facebook’s &lt;a href=&quot;http://developers.facebook.com/docs/reference/javascript/FB.Canvas.getPageInfo/&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FB.Canvas.getPageInfo&lt;/code&gt;&lt;/a&gt; JS API method, to position the dialog relative to the user’s current browser scroll position.&lt;/p&gt;
-
-&lt;p&gt;Here is an implementation which uses &lt;a href=&quot;http://coffeescript.org/&quot;&gt;CoffeeScript&lt;/a&gt; and extends the &lt;a href=&quot;http://jqueryui.com/demos/dialog/&quot;&gt;jQuery UI dialog widget&lt;/a&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-coffeescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# Async Facebook initialisation&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fbAsyncInit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;FB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;appId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'APP_ID'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;cookie&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xfbml&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;FB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Canvas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setAutoGrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;# Allows other components to hook into this event with $(document).on('fb:initialized', -&amp;gt; ...)&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;trigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'fb:initialized'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-coffeescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;CanvasDialog&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# Some example default dialog options&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;600&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;modal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;autoOpen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;na&quot;&gt;_init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;_inCanvas&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;_fbLoaded&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;_showDialogInCanvas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'fb:initialized'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;_showDialogInCanvas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;_showDialog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;# Displays the dialog positioned correctly inside the FB canvas iFrame&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;_showDialogInCanvas&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;FB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Canvas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getPageInfo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;vi&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;position&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'center'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scrollTop&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;_showDialog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;# Calls the jQuery UI dialog's original init method&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;_showDialog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;dialog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;_init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;# True if dialog is being loading inside the FB iFrame (any iFrame for that matter)&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;_inCanvas&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;top&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;self&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;# True if FB javascript API has been loaded&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;_fbLoaded&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typeof&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;FB&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'undefined'&lt;/span&gt;
-
-
-&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;widget&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ui.canvasDialog&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;dialog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CanvasDialog&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-coffeescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'#canvasDialog'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;canvasDialog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;notes&quot;&gt;Notes&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;By triggering an event when Facebook is initialized, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CanvasDialog&lt;/code&gt; is able to wait for the Facebook JS API to become available if it has not yet been loaded.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;In development it can be useful to work outside the Facebook environment. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CanvasDialog&lt;/code&gt; detects this and shows the dialog without attempting to call the Facebook API.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;In the past I’ve often used the excellent and well maintained &lt;a href=&quot;http://www.jacklmoore.com/colorbox&quot;&gt;ColorBox&lt;/a&gt; library for dialogs. I note that it too has been &lt;a href=&quot;https://github.com/jackmoore/colorbox/pull/93&quot;&gt;updated&lt;/a&gt; with similar functionalilty.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Howard Wilson</name></author><category term="posts" /><category term="Facebook" /><category term="jQuery" /><category term="CoffeeScript" /><category term="ColorBox" /><summary type="html">Having worked on several Facebook applications, I’ve built up a few tricks to solve some common problems. This one shows how to get a dialog (jQuery UI, in this case) to appear centered in the browser rather than centered in the canvas iFrame. The problem is caused by Facebook resizing the canvas iFrame to accommodate the entire page. When a dialog is displayed inside the canvas application, it is displayed vertically centered inside that iFrame, which can cause the current browser scroll position to jump up or down accordingly. The fix is to call Facebook’s FB.Canvas.getPageInfo JS API method, to position the dialog relative to the user’s current browser scroll position. Here is an implementation which uses CoffeeScript and extends the jQuery UI dialog widget. $ -&amp;gt; # Async Facebook initialisation window.fbAsyncInit = -&amp;gt; FB.init({ appId: 'APP_ID', status: true, cookie: true, xfbml: true }) FB.Canvas.setAutoGrow() # Allows other components to hook into this event with $(document).on('fb:initialized', -&amp;gt; ...) $(document).trigger('fb:initialized') CanvasDialog = # Some example default dialog options options: { width: 600, modal: true, autoOpen: true } _init: -&amp;gt; if @_inCanvas if this._fbLoaded() this._showDialogInCanvas() else $(document).on 'fb:initialized', =&amp;gt; this._showDialogInCanvas() else this._showDialog() # Displays the dialog positioned correctly inside the FB canvas iFrame _showDialogInCanvas: -&amp;gt; FB.Canvas.getPageInfo (info) =&amp;gt; @options.position = ['center', info.scrollTop + 50] this._showDialog() # Calls the jQuery UI dialog's original init method _showDialog: -&amp;gt; $.ui.dialog.prototype._init.apply(this, arguments) # True if dialog is being loading inside the FB iFrame (any iFrame for that matter) _inCanvas: top != self # True if FB javascript API has been loaded _fbLoaded: -&amp;gt; typeof FB != 'undefined' $.widget &quot;ui.canvasDialog&quot;, $.ui.dialog, CanvasDialog $('#canvasDialog').canvasDialog() Notes By triggering an event when Facebook is initialized, the CanvasDialog is able to wait for the Facebook JS API to become available if it has not yet been loaded. In development it can be useful to work outside the Facebook environment. The CanvasDialog detects this and shows the dialog without attempting to call the Facebook API. In the past I’ve often used the excellent and well maintained ColorBox library for dialogs. I note that it too has been updated with similar functionalilty.</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Howard Wilson</name></author><category term="posts" /><category term="Facebook" /><category term="jQuery" /><category term="CoffeeScript" /><summary type="html">Recently I was asked to add a fixed position ‘tab’ to the left side of a Facebook canvas app, for example like the Get Satisfaction ‘Community’ tab. Normally this would be a simple case of using position: fixed, but not in this case because Facebook canvas apps live inside iFrames. Facebook resizes this iFrame to fit its content, meaning that the main browser scrollbar is used to scroll around the page rather than the iFrame’s scrollbar. However, fixed position elements are fixed relative to the iFrame, not the main document. Since the iFrame never actually scrolls, the fixed element stays put. The solution is to use a little javascript to scroll the fixed element relative to the Facebook scroll position at a fixed interval. This gives a slightly different user experience but is the best approach I’ve found so far. $.fn.pseudoFixed = -&amp;gt; top = this.position().top window.setInterval( =&amp;gt; FB.Canvas.getPageInfo((info) =&amp;gt; this.animate({ top: info.scrollTop + top })), 1000 ) $('[data-behavior~=pseudo-fixed]').pseudoFixed() &amp;lt;div data-behavior=&quot;pseudo-fixed&quot; style=&quot;position: fixed; left: 0; top: 150px&quot;&amp;gt;...&amp;lt;/div&amp;gt;</summary></entry></feed>

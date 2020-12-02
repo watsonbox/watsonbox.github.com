@@ -16,7 +16,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Blog" />
 <script type="application/ld+json">
-{"url":"https://watsonbox.github.com/","author":{"@type":"Person","name":"Howard Wilson"},"description":"Watsonbox Blog","@type":"WebSite","headline":"Blog","name":"Watsonbox","@context":"https://schema.org"}</script>
+{"url":"https://watsonbox.github.com/","headline":"Blog","author":{"@type":"Person","name":"Howard Wilson"},"description":"Watsonbox Blog","@type":"WebSite","name":"Watsonbox","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://watsonbox.github.com/feed.xml" title="Watsonbox" /><script async src="https://www.googletagmanager.com/gtag/js?id=UA-31898875-1"></script>
 <script>
@@ -52,7 +52,7 @@
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/">Blog</a><a class="page-link" href="/archive/">Archive</a><a class="page-link" href="/tags/">Tags</a><a class="page-link" href="/about/">About</a></div>
+        <div class="trigger"><a class="page-link" href="/">Blog</a><a class="page-link" href="/archive/">Archive</a><a class="page-link" href="/tags/">Tags</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -60,6 +60,24 @@
         <div class="home">
   
 <ul class="post-list"><li><span class="post-meta">
+          <time class="dt-published" datetime="2020-12-02T18:00:00+01:00" itemprop="datePublished">
+            Dec 2, 2020
+          </time>
+        </span>
+        <h3>
+          <a class="post-link" href="/posts/2020/12/02/exportify-refresh.html">
+            Exportify Refresh
+          </a>
+        </h3><p>Way back in 2015 I released the first version of <a href="https://github.com/watsonbox/exportify">Exportify</a>, a small web application for exporting / backing up Spotify playlists to CSV format for safekeeping (click <a href="https://watsonbox.github.io/exportify/">here</a> to go straight to the app if you’d like to try it).</p>
+
+<p>It’s fair to say I’ve rather neglected this project over the past few years, so I decided to spend a good chunk of time this November on adding new features, fixing bugs and improving robustness, as well as a complete overhaul of the <a href="https://reactjs.org/">React</a> dev stack.</p>
+
+<p><a href="https://github.com/watsonbox/exportify" target="_blank"><img src="https://github.com/watsonbox/exportify/raw/3b95ee506b032b84078311c44ebbc79a165bf223/screenshot.png" /></a></p>
+
+
+          
+            <a href="/posts/2020/12/02/exportify-refresh.html">Read More</a>
+          </li><li><span class="post-meta">
           <time class="dt-published" datetime="2020-11-30T19:42:58+01:00" itemprop="datePublished">
             Nov 30, 2020
           </time>
@@ -133,27 +151,6 @@
 
           
             <a href="/blog/2014/09/22/mean-dot-io-on-dokku/">Read More</a>
-          </li><li><span class="post-meta">
-          <time class="dt-published" datetime="2014-08-31T14:35:02+02:00" itemprop="datePublished">
-            Aug 31, 2014
-          </time>
-        </span>
-        <h3>
-          <a class="post-link" href="/blog/2014/08/31/getting-started-with-dokku/">
-            Getting Started with Dokku
-          </a>
-        </h3><p><em>UPDATE: Some recent changes to <a href="https://github.com/ohardy/dokku-mariadb">ohardy/dokku-mariadb</a> have resolved the problems with losing DB links on reboot.</em></p>
-
-<p>I decided to jump in and set up my own mini-Heroku with <a href="https://www.docker.com/">Docker</a> and <a href="https://github.com/progrium/dokku">Dokku</a> as seems to be the fashion at the moment. Here are my thoughts and a few of the issues I hit along the way. Using Dokku v0.2.3.</p>
-
-<p>I <a href="https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-dokku-application">installed Dokku on Digital Ocean</a>. It doesn’t have to be Digital Ocean but they certainly make it easy. Then <a href="https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04">added some swap space</a>, too. Save some typing by setting up an alias:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">alias </span><span class="nv">dokku</span><span class="o">=</span><span class="s1">'ssh -t dokku@yourvps.tld
-</span></code></pre></div></div>
-
-
-          
-            <a href="/blog/2014/08/31/getting-started-with-dokku/">Read More</a>
           </li></ul></div>
 
       </div>
