@@ -40,6 +40,11 @@ header.site-header {
   > li {
     padding-bottom: 20px;
     border-bottom: 1px solid #e8e8e8;
+
+    ul {
+      margin-bottom: 20px;
+      list-style-type: disc;
+    }
   }
 }
 
@@ -67,6 +72,10 @@ h3, .post-content h3 {
 
 p {
   margin-bottom: 20px;
+
+  ul:not(.post-list) > li &, ol:not(.post-list) > li & {
+    margin-bottom: 5px;
+  }
 }
 
 body {
