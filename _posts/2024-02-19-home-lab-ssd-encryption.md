@@ -37,7 +37,7 @@ To get things set up, I suggest first verifying that you have an OPAL-compatible
 
 Next prepare the PBA image [with docker](https://github.com/Jip-Hop/sedunlocksrv-pba?tab=readme-ov-file#building-with-docker) (there are other build methods available). This is the custom image containing a remotely accessible web interface for unlocking the SED drive on boot. Personally, I opted to use the [ChubbyAnt fork](https://github.com/ChubbyAnt/sedutil) of `sedutil` and enable SSH unlocking in addition to web-based.
 
-This required a change to the `Dockerfile` (note the removal of --chmod 755 as well):
+This required a change to the `Dockerfile` `CMD` command:
 
 ```Dockerfile
 FROM --platform=amd64 ubuntu:22.04
@@ -48,8 +48,6 @@ RUN apt update && \
 apt install -y cpio curl dosfstools dropbear fdisk git golang-go grub-efi-amd64-bin grub-efi-ia32-bin grub-pc-bin grub2-common libarchive>
 
 WORKDIR /tmp
-
-# Changed line
 COPY . .
 
 # Changed line
