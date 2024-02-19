@@ -6,29 +6,29 @@ layout: default
   {{ content }}
 
   {%- if site.posts.size > 0 -%}
-    <ul class="post-list">
-      {%- for post in site.posts limit: 5 -%}
-      <li>
-        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        <span class="post-meta">
-          <time class="dt-published" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">
-            {{ post.date | date: date_format }}
-          </time>
-        </span>
-        <h3>
-          <a class="post-link" href="{{ post.url | relative_url }}">
-            {{ post.title | escape }}
-          </a>
-        </h3>
-        {%- if site.show_excerpts -%}
-          {{ post.excerpt }}
-          {% if post.excerpt != post.content %}
-            <a href="{{ post.url | relative_url }}">Read More</a>
-          {% endif %}
-        {%- endif -%}
-      </li>
-      {%- endfor -%}
-    </ul>
+  <ul class="post-list">
+    {%- for post in site.posts limit: 5 -%}
+    <li>
+      {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+      <span class="post-meta">
+        <time class="dt-published" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">
+          {{ post.date | date: date_format }}
+        </time>
+      </span>
+      <h1>
+        <a class="post-link" href="{{ post.url | relative_url }}">
+          {{ post.title | escape }}
+        </a>
+      </h1>
+      {%- if site.show_excerpts -%}
+      {{ post.excerpt }}
+      {% if post.excerpt != post.content %}
+      <a href="{{ post.url | relative_url }}">Read More</a>
+      {% endif %}
+      {%- endif -%}
+    </li>
+    {%- endfor -%}
+  </ul>
   {%- endif -%}
 
 </div>

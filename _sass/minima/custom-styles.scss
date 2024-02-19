@@ -103,3 +103,36 @@ main {
 time {
   text-transform: uppercase;
 }
+
+.post-list,
+.post-content.e-content {
+  h2:before {
+    content: '## ';
+    color: #cc6666;
+    font-size: 80%;
+  }
+
+  h3:before {
+    content: '### ';
+    color: #cc6666;
+    font-size: 80%;
+  }
+
+  h4:before {
+    content: '#### ';
+    color: #cc6666;
+    font-size: 80%;
+  }
+
+  h5:before {
+    content: '##### ';
+    color: #cc6666;
+    font-size: 80%;
+  }
+
+  h6:before {
+    content: '###### ';
+    color: #cc6666;
+    font-size: 80%;
+  }
+}
