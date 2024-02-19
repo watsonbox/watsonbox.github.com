@@ -16,7 +16,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Blog" />
 <script type="application/ld+json">
-{"url":"https://watsonbox.github.com/","headline":"Blog","author":{"@type":"Person","name":"Howard Wilson"},"description":"Watsonbox Blog","@type":"WebSite","name":"Watsonbox","@context":"https://schema.org"}</script>
+{"@type":"WebSite","url":"https://watsonbox.github.com/","name":"Watsonbox","author":{"@type":"Person","name":"Howard Wilson"},"headline":"Blog","description":"Watsonbox Blog","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://watsonbox.github.com/feed.xml" title="Watsonbox" /><script async src="https://www.googletagmanager.com/gtag/js?id=UA-31898875-1"></script>
 <script>
@@ -60,49 +60,77 @@
         <div class="home">
   
 <ul class="post-list"><li><span class="post-meta">
-          <time class="dt-published" datetime="2020-12-02T18:00:00+01:00" itemprop="datePublished">
-            Dec 2, 2020
-          </time>
-        </span>
-        <h3>
-          <a class="post-link" href="/posts/2020/12/02/exportify-refresh.html">
-            Exportify Refresh
-          </a>
-        </h3><p>Way back in 2015 I released the first version of <a href="https://github.com/watsonbox/exportify">Exportify</a>, a small web application for exporting / backing up Spotify playlists to CSV format for safekeeping (click <a href="https://watsonbox.github.io/exportify/">here</a> to go straight to the app if you’d like to try it).</p>
+        <time class="dt-published" datetime="2024-02-19T22:30:00+01:00" itemprop="datePublished">
+          Feb 19, 2024
+        </time>
+      </span>
+      <h1>
+        <a class="post-link" href="/posts/2024/02/19/home-lab-ssd-encryption.html">
+          Home Lab SSD Encryption
+        </a>
+      </h1><p>Recently I rebuilt a home server which acts as a NAS for my personal data. I wanted to make sure the data would be secure in the event of the server being stolen, ideally with:</p>
+
+<ol>
+  <li>Reasonably secure encryption (targeted attacks will get the data one way or another)</li>
+  <li>Low performance overhead, since the machine isn’t high spec</li>
+  <li>The ability to be unlocked remotely in the event of a power outage</li>
+</ol>
+
+<h2 id="solution">Solution</h2>
+
+<p>Once I started to consider different options, I was surprised to discover that not only are almost all modern SSDs actually “Self-Encrypting Drives” (SEDs) - meaning that they come with support for hardware full-disk encryption - but that this encryption is always active. From <a href="https://wiki.archlinux.org/title/Self-encrypting_drives">ArchWiki</a>:</p>
+
+<blockquote>
+  <p>In fact, in drives featuring full-disk encryption, data is always encrypted with the data encryption key when stored to disk, even if there is no password set (e.g. a new drive). Manufacturers do this to make it easier for users who do not wish to enable the security features of the self-encrypting drive. These self-encrypting drives can be thought of as having a zero-length password by default that always transparently encrypts the data (similar to how passwordless SSH keys can provide somewhat secure access without user intervention).</p>
+</blockquote>
+
+
+      
+      <a href="/posts/2024/02/19/home-lab-ssd-encryption.html">Read More</a>
+      </li><li><span class="post-meta">
+        <time class="dt-published" datetime="2020-12-02T18:00:00+01:00" itemprop="datePublished">
+          Dec 2, 2020
+        </time>
+      </span>
+      <h1>
+        <a class="post-link" href="/posts/2020/12/02/exportify-refresh.html">
+          Exportify Refresh
+        </a>
+      </h1><p>Way back in 2015 I released the first version of <a href="https://github.com/watsonbox/exportify">Exportify</a>, a small web application for exporting / backing up Spotify playlists to CSV format for safekeeping (click <a href="https://watsonbox.github.io/exportify/">here</a> to go straight to the app if you’d like to try it).</p>
 
 <p>It’s fair to say I’ve rather neglected this project over the past few years, so I decided to spend a good chunk of time this November on adding new features, fixing bugs and improving robustness, as well as a complete overhaul of the <a href="https://reactjs.org/">React</a> dev stack.</p>
 
 <p><a href="https://github.com/watsonbox/exportify" target="_blank"><img src="https://github.com/watsonbox/exportify/raw/3b95ee506b032b84078311c44ebbc79a165bf223/screenshot.png" /></a></p>
 
 
-          
-            <a href="/posts/2020/12/02/exportify-refresh.html">Read More</a>
-          </li><li><span class="post-meta">
-          <time class="dt-published" datetime="2020-11-30T19:42:58+01:00" itemprop="datePublished">
-            Nov 30, 2020
-          </time>
-        </span>
-        <h3>
-          <a class="post-link" href="/posts/2020/11/30/discovering-msw.html">
-            Discovering MSW
-          </a>
-        </h3><p>Recently, as part of a <a href="https://github.com/watsonbox/exportify/pull/72">development stack refresh</a> for <a href="https://github.com/watsonbox/exportify">Exportify</a>, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite.</p>
+      
+      <a href="/posts/2020/12/02/exportify-refresh.html">Read More</a>
+      </li><li><span class="post-meta">
+        <time class="dt-published" datetime="2020-11-30T19:42:58+01:00" itemprop="datePublished">
+          Nov 30, 2020
+        </time>
+      </span>
+      <h1>
+        <a class="post-link" href="/posts/2020/11/30/discovering-msw.html">
+          Discovering MSW
+        </a>
+      </h1><p>Recently, as part of a <a href="https://github.com/watsonbox/exportify/pull/72">development stack refresh</a> for <a href="https://github.com/watsonbox/exportify">Exportify</a>, I found myself digging around for the best approach to mocking HTTP requests in a JS test suite.</p>
 
 <p>I needed something that would play nicely with <a href="https://jestjs.io/">Jest</a> and React, allow me to mock requests at the transport layer so my tests could be de-coupled from the HTTP request library I chose to use, as well as of course providing a convenient DSL for writing the tests themselves.</p>
 
 
-          
-            <a href="/posts/2020/11/30/discovering-msw.html">Read More</a>
-          </li><li><span class="post-meta">
-          <time class="dt-published" datetime="2015-02-16T17:45:42+01:00" itemprop="datePublished">
-            Feb 16, 2015
-          </time>
-        </span>
-        <h3>
-          <a class="post-link" href="/blog/2015/02/16/googleplacesautocomplete-cocoapod/">
-            GooglePlacesAutocomplete CocoaPod
-          </a>
-        </h3><p><a href="https://github.com/watsonbox/ios_google_places_autocomplete">GooglePlacesAutocomplete</a> is a simple <a href="https://developers.google.com/places/documentation/autocomplete">Google Places API</a> autocompleting address entry view for iOS devices, written in <a href="https://developer.apple.com/swift/">Swift</a>.</p>
+      
+      <a href="/posts/2020/11/30/discovering-msw.html">Read More</a>
+      </li><li><span class="post-meta">
+        <time class="dt-published" datetime="2015-02-16T17:45:42+01:00" itemprop="datePublished">
+          Feb 16, 2015
+        </time>
+      </span>
+      <h1>
+        <a class="post-link" href="/blog/2015/02/16/googleplacesautocomplete-cocoapod/">
+          GooglePlacesAutocomplete CocoaPod
+        </a>
+      </h1><p><a href="https://github.com/watsonbox/ios_google_places_autocomplete">GooglePlacesAutocomplete</a> is a simple <a href="https://developers.google.com/places/documentation/autocomplete">Google Places API</a> autocompleting address entry view for iOS devices, written in <a href="https://developer.apple.com/swift/">Swift</a>.</p>
 
 <p>There are already a couple of solutions out there for this. GooglePlacesAutocomplete is different because it is 100% Swift, and aims to provide the simplest possible method of entering validated, autocompleted addresses.</p>
 
@@ -112,16 +140,16 @@
 
 <p><img width="300" src="https://raw.githubusercontent.com/watsonbox/ios_google_places_autocomplete/master/Screenshots/view.png" />    <img width="300" src="https://raw.githubusercontent.com/watsonbox/ios_google_places_autocomplete/master/Screenshots/search.png" /></p>
 
-          </li><li><span class="post-meta">
-          <time class="dt-published" datetime="2014-10-24T15:42:02+02:00" itemprop="datePublished">
-            Oct 24, 2014
-          </time>
-        </span>
-        <h3>
-          <a class="post-link" href="/blog/2014/10/24/ruby-speech-recognition-with-pocketsphinx/">
-            Ruby speech recognition with Pocketsphinx
-          </a>
-        </h3><p><a href="https://github.com/watsonbox/pocketsphinx-ruby">pocketsphinx-ruby</a> is a high-level Ruby wrapper for the pocketsphinx C API. It uses the Ruby Foreign Function Interface (FFI) to directly load and call functions in libpocketsphinx, as well as libsphinxav for recoding live audio using a number of different audio backends.</p>
+      </li><li><span class="post-meta">
+        <time class="dt-published" datetime="2014-10-24T15:42:02+02:00" itemprop="datePublished">
+          Oct 24, 2014
+        </time>
+      </span>
+      <h1>
+        <a class="post-link" href="/blog/2014/10/24/ruby-speech-recognition-with-pocketsphinx/">
+          Ruby speech recognition with Pocketsphinx
+        </a>
+      </h1><p><a href="https://github.com/watsonbox/pocketsphinx-ruby">pocketsphinx-ruby</a> is a high-level Ruby wrapper for the pocketsphinx C API. It uses the Ruby Foreign Function Interface (FFI) to directly load and call functions in libpocketsphinx, as well as libsphinxav for recoding live audio using a number of different audio backends.</p>
 
 <p>The goal of the project is to make it as easy as possible for the Ruby community to experiment with speech recognition, in particular for use in grammar-based command and control applications. Setting up a real time recognizer is as simple as:</p>
 
@@ -137,21 +165,7 @@
 
 <p>This library supports Ruby MRI 1.9.3+, JRuby, and Rubinius. It depends on the current development versions of Pocketsphinx and Sphinxbase - there are <a href="https://github.com/watsonbox/homebrew-cmu-sphinx">Homebrew recipes</a> available for a quick start on OSX.</p>
 
-          </li><li><span class="post-meta">
-          <time class="dt-published" datetime="2014-09-22T12:32:41+02:00" itemprop="datePublished">
-            Sep 22, 2014
-          </time>
-        </span>
-        <h3>
-          <a class="post-link" href="/blog/2014/09/22/mean-dot-io-on-dokku/">
-            Mean.io on Dokku
-          </a>
-        </h3><p>Here’s how I set up the <a href="http://mean.io/">Mean.io</a> stack for deployment with <a href="https://github.com/progrium/dokku">Dokku</a>.</p>
-
-
-          
-            <a href="/blog/2014/09/22/mean-dot-io-on-dokku/">Read More</a>
-          </li></ul></div>
+      </li></ul></div>
 
       </div>
     </main><footer class="site-footer h-card">

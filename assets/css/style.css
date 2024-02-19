@@ -587,14 +587,24 @@ h2, .post-content h2 { font-size: 1.5em; }
 
 h3, .post-content h3 { font-size: 1.3em; }
 
-p { margin-bottom: 20px; }
+p, li > ul, li > ol { margin-bottom: 20px; }
 
-ul:not(.post-list) > li p, ol:not(.post-list) > li p { margin-bottom: 5px; }
+ul:not(.post-list) > li p, ol:not(.post-list) > li p, ul:not(.post-list) > li li > ul, ol:not(.post-list) > li li > ul, ul:not(.post-list) > li li > ol, ol:not(.post-list) > li li > ol { margin-bottom: 5px; }
 
 body { margin: 0 auto; max-width: 840px; background-color: #252525; }
 
 main { background-color: #f8f8f8; }
 
 time { text-transform: uppercase; }
+
+.post-list h2:before, .post-content.e-content h2:before { content: '## '; color: #cc6666; font-size: 80%; }
+
+.post-list h3:before, .post-content.e-content h3:before { content: '### '; color: #cc6666; font-size: 80%; }
+
+.post-list h4:before, .post-content.e-content h4:before { content: '#### '; color: #cc6666; font-size: 80%; }
+
+.post-list h5:before, .post-content.e-content h5:before { content: '##### '; color: #cc6666; font-size: 80%; }
+
+.post-list h6:before, .post-content.e-content h6:before { content: '###### '; color: #cc6666; font-size: 80%; }
 
 /*# sourceMappingURL=style.css.map */

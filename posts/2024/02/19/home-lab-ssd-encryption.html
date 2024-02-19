@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Home Lab SSD Encryption | Watsonbox</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Home Lab SSD Encryption" />
+<meta name="author" content="Howard Wilson" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Setting up self-encrypting SSDs for secure data and fast performance." />
+<meta property="og:description" content="Setting up self-encrypting SSDs for secure data and fast performance." />
+<link rel="canonical" href="https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html" />
+<meta property="og:url" content="https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html" />
+<meta property="og:site_name" content="Watsonbox" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-02-19T22:30:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Home Lab SSD Encryption" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html"},"url":"https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html","author":{"@type":"Person","name":"Howard Wilson"},"headline":"Home Lab SSD Encryption","description":"Setting up self-encrypting SSDs for secure data and fast performance.","dateModified":"2024-02-19T22:30:00+01:00","datePublished":"2024-02-19T22:30:00+01:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://watsonbox.github.com/feed.xml" title="Watsonbox" /><script async src="https://www.googletagmanager.com/gtag/js?id=UA-31898875-1"></script>
+<script>
+  window['ga-disable-UA-31898875-1'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-31898875-1');
+</script>
+<!-- From https://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+<link rel="mask-icon" href="/assets/images/favicon/safari-pinned-tab.svg" color="#3c3c3c">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<meta name="msapplication-TileColor" content="#3c3c3c">
+<meta name="msapplication-config" content="/assets/images/favicon/browserconfig.xml">
+<meta name="theme-color" content="#3c3c3c">
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">
+      <img src="/assets/images/watsonbox.png" />
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/">Blog</a><a class="page-link" href="/archive/">Archive</a><a class="page-link" href="/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Home Lab SSD Encryption</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2024-02-19T22:30:00+01:00" itemprop="datePublished">
+        Feb 19, 2024
+      </time> |
+        
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#home-lab">Home Lab</a></code>
+        
+      • 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Howard Wilson</span></span></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Recently I rebuilt a home server which acts as a NAS for my personal data. I wanted to make sure the data would be secure in the event of the server being stolen, ideally with:</p>
+
+<ol>
+  <li>Reasonably secure encryption (targeted attacks will get the data one way or another)</li>
+  <li>Low performance overhead, since the machine isn’t high spec</li>
+  <li>The ability to be unlocked remotely in the event of a power outage</li>
+</ol>
+
+<h2 id="solution">Solution</h2>
+
+<p>Once I started to consider different options, I was surprised to discover that not only are almost all modern SSDs actually “Self-Encrypting Drives” (SEDs) - meaning that they come with support for hardware full-disk encryption - but that this encryption is always active. From <a href="https://wiki.archlinux.org/title/Self-encrypting_drives">ArchWiki</a>:</p>
+
+<blockquote>
+  <p>In fact, in drives featuring full-disk encryption, data is always encrypted with the data encryption key when stored to disk, even if there is no password set (e.g. a new drive). Manufacturers do this to make it easier for users who do not wish to enable the security features of the self-encrypting drive. These self-encrypting drives can be thought of as having a zero-length password by default that always transparently encrypts the data (similar to how passwordless SSH keys can provide somewhat secure access without user intervention).</p>
+</blockquote>
+
+<!--more-->
+
+<h3 id="security">Security</h3>
+
+<p>SEDs conforming to TCG Opal 2.0 use 128-bit block sizes with 128-bit and 256-bit AES keys. Also, by encrypting data at the hardware level, these drives are less vulnerable to software-based attacks.</p>
+
+<h3 id="performance">Performance</h3>
+
+<p>Hardware encryption means that it’s the drive performing the encryption/decryption, not the CPU, so there is no performance overhead. Furthermore, the advertised read/write performance of the SSD isn’t impacted either since the encryption takes place whether or not it’s used to secure the data.</p>
+
+<h2 id="remote-unlock--setup">Remote Unlock &amp; Setup</h2>
+
+<p>I expected this to be the trickiest part of my requirements to satisfy, but once I came across <a href="https://github.com/Jip-Hop/sedunlocksrv-pba"><code class="language-plaintext highlighter-rouge">sedunlocksrv-pba</code></a>, it turned out to be quite straightforward:</p>
+
+<blockquote>
+  <p>Fully encrypt your home server or NAS and conveniently unlock it on startup without the need to attach monitor and keyboard. Unlocking can be done from any device on your LAN with a browser. By default a self-signed HTTPS certificate is used (generated during building) to secure the unlocking.</p>
+</blockquote>
+
+<p>To get things set up, I suggest first verifying that you have an OPAL-compatible SED drive by following <a href="https://sedutil.com/">the instructions on sedutil.com</a>.</p>
+
+<p>Next prepare the PBA image <a href="https://github.com/Jip-Hop/sedunlocksrv-pba?tab=readme-ov-file#building-with-docker">with docker</a> (there are other build methods available). This is the custom image containing a remotely accessible web interface for unlocking the SED drive on boot. Personally, I opted to use the <a href="https://github.com/ChubbyAnt/sedutil">ChubbyAnt fork</a> of <code class="language-plaintext highlighter-rouge">sedutil</code> and enable SSH unlocking in addition to web-based.</p>
+
+<p>This required a change to the <code class="language-plaintext highlighter-rouge">Dockerfile</code> <code class="language-plaintext highlighter-rouge">CMD</code> command:</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> --platform=amd64 ubuntu:22.04</span>
+
+<span class="k">ENV</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+
+<span class="k">RUN </span>apt update <span class="o">&amp;&amp;</span> <span class="se">\
+</span>apt <span class="nb">install</span> <span class="nt">-y</span> cpio curl dosfstools dropbear fdisk git golang-go grub-efi-amd64-bin grub-efi-ia32-bin grub-pc-bin grub2-common libarchive&gt;
+
+<span class="k">WORKDIR</span><span class="s"> /tmp</span>
+<span class="k">COPY</span><span class="s"> . .</span>
+
+<span class="c"># Changed line</span>
+<span class="k">CMD</span><span class="s"> SEDUTIL_FORK="ChubbyAnt" ./build.sh SSH</span>
+</code></pre></div></div>
+
+<p>Then the process was:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:Jip-Hop/sedunlocksrv-pba.git
+<span class="nb">cd </span>sedunlocksrv-pba
+vi ssh/authorized_keys <span class="c"># Add public key as per ssh/authorized_keys.example</span>
+<span class="o">(</span><span class="nv">NAME</span><span class="o">=</span>sedunlocksrv-pba<span class="p">;</span> docker build <span class="nt">-t</span> <span class="nv">$NAME</span> <span class="nb">.</span> <span class="o">&amp;&amp;</span> docker run <span class="nt">--name</span> <span class="nv">$NAME</span> <span class="nt">--privileged</span> <span class="nv">$NAME</span> <span class="o">&amp;&amp;</span> docker <span class="nb">cp</span> <span class="nv">$NAME</span>:/tmp/sedunlocksrv-pba.img sedunlocksrv-pba.img<span class="p">;</span> docker <span class="nb">rm</span> <span class="nv">$NAME</span><span class="o">)</span>
+
+<span class="c"># Output after image build and PBA compilation</span>
+Successfully copied 43MB to /home/dietpi/src/sedunlocksrv-pba/sedunlocksrv-pba.img
+sedunlocksrv-pba
+</code></pre></div></div>
+
+<p>Once that’s complete, the <a href="https://github.com/Jip-Hop/sedunlocksrv-pba?tab=readme-ov-file#encrypting-your-drive-and-flashing-the-pba">next steps</a> describe how to configure a password for the SED drive, enable locking, and finally flash the PBE image created above from a USB drive into the shadow master boot record (MBR) of the drive in question. Obviously it goes without saying that you should back up the data on the drive first, just in case.</p>
+
+<h2 id="usage">Usage</h2>
+
+<p>Here’s how it works once everything’s set up:</p>
+
+<ol>
+  <li>
+    <p>The server powers up and detects that the SED drive is locked, so boots the PBA image from the shadow MBR.</p>
+  </li>
+  <li>
+    <p>The PBA then starts simple web and SSH servers.</p>
+
+    <p><img src="/assets/images/SED Unlock Server.png" alt="Audiobookshelf Voice Notes" /></p>
+  </li>
+  <li>
+    <p>The router or firewall must be configured to forward traffic to the IP of the machine in question, making it publically accessible for entering the password. It could equally be accessed from another machine on the local network which <em>is</em> able to boot without unlocking and perhaps join a VPN automatically.</p>
+  </li>
+  <li>
+    <p>Entering the password and clicking reboot unlocks the drive and reboots using the actual MBR into whatever OS is installed. The drive will stay unlocked until the next power cycle.</p>
+  </li>
+</ol>
+
+<h3 id="final-notes">Final Notes</h3>
+
+<ul>
+  <li>
+    <p>The specific machine I was configuring was a Mac Mini 2012. That needs <a href="https://smackerelofopinion.blogspot.com/2011/09/mac-mini-rebooting-tweaks-setpci-s-01f0.html">a small modification</a> to ensure that it would boots up when power is restored: <code class="language-plaintext highlighter-rouge">setpci -s 0:1f.0 0xa4.b=0</code>.</p>
+  </li>
+  <li>
+    <p>I’d love to extend this solution to support exposing the web interface onto a Tailscale tailnet. Others have <a href="https://tavianator.com/2022/remote_reboots.html#tailscale">had success with this</a> for remote boots using <code class="language-plaintext highlighter-rouge">mkinitcpio</code> hooks.</p>
+  </li>
+</ul>
+
+  </div><div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html';
+      this.page.identifier = 'https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://watsonbox.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><a class="u-url" href="/posts/2024/02/19/home-lab-ssd-encryption.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+        <ul class="contact-list">
+          <li class="p-name">Howard Wilson</li>
+          <li><a class="u-email" href="mailto:howard@watsonbox.net">howard@watsonbox.net</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>Watsonbox Blog
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
