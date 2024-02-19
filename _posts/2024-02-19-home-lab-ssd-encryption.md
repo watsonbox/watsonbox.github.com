@@ -2,9 +2,9 @@
 layout: post
 title: "Home Lab SSD Encryption"
 description:
-  Description goes here
-date: 2024-02-11 15:00:00 +0100
-tags: [Homelab]
+  Setting up self-encrypting SSDs for secure data and fast performance.
+date: 2024-02-19 22:30:00 +0100
+tags: [Home Lab]
 ---
 
 Recently I rebuilt a home server which acts as a NAS for my personal data. I wanted to make sure the data would be secure in the event of the server being stolen, ideally with:
@@ -18,6 +18,8 @@ Recently I rebuilt a home server which acts as a NAS for my personal data. I wan
 Once I started to consider different options, I was surprised to discover that not only are almost all modern SSDs actually "Self-Encrypting Drives" (SEDs) - meaning that they come with support for hardware full-disk encryption - but that this encryption is always active. From [ArchWiki](https://wiki.archlinux.org/title/Self-encrypting_drives):
 
 > In fact, in drives featuring full-disk encryption, data is always encrypted with the data encryption key when stored to disk, even if there is no password set (e.g. a new drive). Manufacturers do this to make it easier for users who do not wish to enable the security features of the self-encrypting drive. These self-encrypting drives can be thought of as having a zero-length password by default that always transparently encrypts the data (similar to how passwordless SSH keys can provide somewhat secure access without user intervention).
+
+<!--more-->
 
 ### Security
 
