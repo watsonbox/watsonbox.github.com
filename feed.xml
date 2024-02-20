@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://watsonbox.github.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://watsonbox.github.com/" rel="alternate" type="text/html" /><updated>2024-02-19T23:03:58+01:00</updated><id>https://watsonbox.github.com/feed.xml</id><title type="html">Watsonbox</title><subtitle>Watsonbox Blog
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://watsonbox.github.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://watsonbox.github.com/" rel="alternate" type="text/html" /><updated>2024-02-20T12:09:30+01:00</updated><id>https://watsonbox.github.com/feed.xml</id><title type="html">Watsonbox</title><subtitle>Watsonbox Blog
 </subtitle><author><name>Howard Wilson</name><email>howard@watsonbox.net</email></author><entry><title type="html">Home Lab SSD Encryption</title><link href="https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html" rel="alternate" type="text/html" title="Home Lab SSD Encryption" /><published>2024-02-19T22:30:00+01:00</published><updated>2024-02-19T22:30:00+01:00</updated><id>https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption</id><content type="html" xml:base="https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html">&lt;p&gt;Recently I rebuilt a home server which acts as a NAS for my personal data. I wanted to make sure the data would be secure in the event of the server being stolen, ideally with:&lt;/p&gt;
 
 &lt;ol&gt;
@@ -33,7 +33,7 @@
   &lt;p&gt;Fully encrypt your home server or NAS and conveniently unlock it on startup without the need to attach monitor and keyboard. Unlocking can be done from any device on your LAN with a browser. By default a self-signed HTTPS certificate is used (generated during building) to secure the unlocking.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;To get things set up, I suggest first verifying that you have an OPAL-compatible SED drive by following &lt;a href=&quot;https://sedutil.com/&quot;&gt;the instructions on sedutil.com&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To get things set up, I suggest first verifying that you have a TGC OPAL-compatible SED drive by following &lt;a href=&quot;https://sedutil.com/&quot;&gt;the instructions on sedutil.com&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Next prepare the PBA image &lt;a href=&quot;https://github.com/Jip-Hop/sedunlocksrv-pba?tab=readme-ov-file#building-with-docker&quot;&gt;with docker&lt;/a&gt; (there are other build methods available). This is the custom image containing a remotely accessible web interface for unlocking the SED drive on boot. Personally, I opted to use the &lt;a href=&quot;https://github.com/ChubbyAnt/sedutil&quot;&gt;ChubbyAnt fork&lt;/a&gt; of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sedutil&lt;/code&gt; and enable SSH unlocking in addition to web-based.&lt;/p&gt;
 
@@ -44,7 +44,7 @@
 &lt;span class=&quot;k&quot;&gt;ENV&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; DEBIAN_FRONTEND=noninteractive&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;apt update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\
-&lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; cpio curl dosfstools dropbear fdisk git golang-go grub-efi-amd64-bin grub-efi-ia32-bin grub-pc-bin grub2-common libarchive&amp;gt;
+&lt;/span&gt;  apt &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; cpio curl dosfstools dropbear fdisk git golang-go grub-efi-amd64-bin grub-efi-ia32-bin grub-pc-bin grub2-common libarchive-tools rsync squashfs-tools udev wget xorriso
 
 &lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; /tmp&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; . .&lt;/span&gt;
@@ -76,19 +76,21 @@ sedunlocksrv-pba
     &lt;p&gt;The server powers up and detects that the SED drive is locked, so boots the PBA image from the shadow MBR.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;The PBA then starts simple web and SSH servers.&lt;/p&gt;
+    &lt;p&gt;The PBA then starts simple web interface and SSH server. By default a self-signed HTTPS certificate is used.&lt;/p&gt;
 
     &lt;p&gt;&lt;img src=&quot;/assets/images/SED Unlock Server.png&quot; alt=&quot;Audiobookshelf Voice Notes&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;The router or firewall must be configured to forward traffic to the IP of the machine in question, making it publically accessible for entering the password. It could equally be accessed from another machine on the local network which &lt;em&gt;is&lt;/em&gt; able to boot without unlocking and perhaps join a VPN automatically.&lt;/p&gt;
+    &lt;p&gt;The router or firewall can be configured to forward traffic to the IP of the machine in question, making it publically accessible for entering the password. Alternatively, the router (or another machine on the network which comes online after a power failure) could be configured to join a VPN, providing more secure external access.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Entering the password and clicking reboot unlocks the drive and reboots using the actual MBR into whatever OS is installed. The drive will stay unlocked until the next power cycle.&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; setting the same password for multiple drives allows them all to be unlocked in one go.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3 id=&quot;final-notes&quot;&gt;Final Notes&lt;/h3&gt;
+&lt;h2 id=&quot;final-notes&quot;&gt;Final Notes&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;

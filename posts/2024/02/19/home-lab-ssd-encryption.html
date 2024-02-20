@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Home Lab SSD Encryption" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","datePublished":"2024-02-19T22:30:00+01:00","url":"https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html"},"author":{"@type":"Person","name":"Howard Wilson"},"description":"Setting up self-encrypting SSDs for secure data and fast performance.","headline":"Home Lab SSD Encryption","dateModified":"2024-02-19T22:30:00+01:00","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html"},"url":"https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html","author":{"@type":"Person","name":"Howard Wilson"},"headline":"Home Lab SSD Encryption","description":"Setting up self-encrypting SSDs for secure data and fast performance.","dateModified":"2024-02-19T22:30:00+01:00","datePublished":"2024-02-19T22:30:00+01:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://watsonbox.github.com/feed.xml" title="Watsonbox" /><script async src="https://www.googletagmanager.com/gtag/js?id=UA-31898875-1"></script>
 <script>
@@ -120,7 +120,7 @@
 <span class="k">ENV</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
 
 <span class="k">RUN </span>apt update <span class="o">&amp;&amp;</span> <span class="se">\
-</span>apt <span class="nb">install</span> <span class="nt">-y</span> cpio curl dosfstools dropbear fdisk git golang-go grub-efi-amd64-bin grub-efi-ia32-bin grub-pc-bin grub2-common libarchive&gt;
+</span>  apt <span class="nb">install</span> <span class="nt">-y</span> cpio curl dosfstools dropbear fdisk git golang-go grub-efi-amd64-bin grub-efi-ia32-bin grub-pc-bin grub2-common libarchive-tools rsync squashfs-tools udev wget xorriso
 
 <span class="k">WORKDIR</span><span class="s"> /tmp</span>
 <span class="k">COPY</span><span class="s"> . .</span>
@@ -157,7 +157,7 @@ sedunlocksrv-pba
     <p><img src="/assets/images/SED Unlock Server.png" alt="Audiobookshelf Voice Notes" /></p>
   </li>
   <li>
-    <p>The router or firewall must be configured to forward traffic to the IP of the machine in question, making it publically accessible for entering the password. It could equally be accessed from another machine on the local network which <em>is</em> able to boot without unlocking and perhaps join a VPN automatically.</p>
+    <p>The router or firewall can be configured to forward traffic to the IP of the machine in question, making it publically accessible for entering the password. Alternatively, the router (or another machine on the network which comes online after a power failure) could be configured to join a VPN, providing more secure external access.</p>
   </li>
   <li>
     <p>Entering the password and clicking reboot unlocks the drive and reboots using the actual MBR into whatever OS is installed. The drive will stay unlocked until the next power cycle.</p>
@@ -166,7 +166,7 @@ sedunlocksrv-pba
   </li>
 </ol>
 
-<h3 id="final-notes">Final Notes</h3>
+<h2 id="final-notes">Final Notes</h2>
 
 <ul>
   <li>
