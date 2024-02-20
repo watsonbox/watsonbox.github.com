@@ -47,7 +47,7 @@ FROM --platform=amd64 ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && \
-apt install -y cpio curl dosfstools dropbear fdisk git golang-go grub-efi-amd64-bin grub-efi-ia32-bin grub-pc-bin grub2-common libarchive>
+  apt install -y cpio curl dosfstools dropbear fdisk git golang-go grub-efi-amd64-bin grub-efi-ia32-bin grub-pc-bin grub2-common libarchive-tools rsync squashfs-tools udev wget xorriso
 
 WORKDIR /tmp
 COPY . .
@@ -81,13 +81,13 @@ Here's how it works once everything's set up:
 
     ![Audiobookshelf Voice Notes](/assets/images/SED Unlock Server.png)
 
-3. The router or firewall must be configured to forward traffic to the IP of the machine in question, making it publically accessible for entering the password. It could equally be accessed from another machine on the local network which _is_ able to boot without unlocking and perhaps join a VPN automatically.
+3. The router or firewall can be configured to forward traffic to the IP of the machine in question, making it publically accessible for entering the password. Alternatively, the router (or another machine on the network which comes online after a power failure) could be configured to join a VPN, providing more secure external access.
 
 4. Entering the password and clicking reboot unlocks the drive and reboots using the actual MBR into whatever OS is installed. The drive will stay unlocked until the next power cycle.
 
     **Note:** setting the same password for multiple drives allows them all to be unlocked in one go.
 
-### Final Notes
+## Final Notes
 
 - The specific machine I was configuring was a Mac Mini 2012. That needs [a small modification](https://smackerelofopinion.blogspot.com/2011/09/mac-mini-rebooting-tweaks-setpci-s-01f0.html) to ensure that it would boots up when power is restored: `setpci -s 0:1f.0 0xa4.b=0`.
 
