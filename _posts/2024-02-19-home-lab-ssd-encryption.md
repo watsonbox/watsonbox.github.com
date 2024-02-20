@@ -35,7 +35,7 @@ I expected this to be the trickiest part of my requirements to satisfy, but once
 
 > Fully encrypt your home server or NAS and conveniently unlock it on startup without the need to attach monitor and keyboard. Unlocking can be done from any device on your LAN with a browser. By default a self-signed HTTPS certificate is used (generated during building) to secure the unlocking.
 
-To get things set up, I suggest first verifying that you have an OPAL-compatible SED drive by following [the instructions on sedutil.com](https://sedutil.com/).
+To get things set up, I suggest first verifying that you have a TGC OPAL-compatible SED drive by following [the instructions on sedutil.com](https://sedutil.com/).
 
 Next prepare the PBA image [with docker](https://github.com/Jip-Hop/sedunlocksrv-pba?tab=readme-ov-file#building-with-docker) (there are other build methods available). This is the custom image containing a remotely accessible web interface for unlocking the SED drive on boot. Personally, I opted to use the [ChubbyAnt fork](https://github.com/ChubbyAnt/sedutil) of `sedutil` and enable SSH unlocking in addition to web-based.
 
@@ -77,13 +77,15 @@ Here's how it works once everything's set up:
 
 1. The server powers up and detects that the SED drive is locked, so boots the PBA image from the shadow MBR.
 
-2. The PBA then starts simple web and SSH servers.
+2. The PBA then starts simple web interface and SSH server. By default a self-signed HTTPS certificate is used.
 
     ![Audiobookshelf Voice Notes](/assets/images/SED Unlock Server.png)
 
 3. The router or firewall must be configured to forward traffic to the IP of the machine in question, making it publically accessible for entering the password. It could equally be accessed from another machine on the local network which _is_ able to boot without unlocking and perhaps join a VPN automatically.
 
-3. Entering the password and clicking reboot unlocks the drive and reboots using the actual MBR into whatever OS is installed. The drive will stay unlocked until the next power cycle.
+4. Entering the password and clicking reboot unlocks the drive and reboots using the actual MBR into whatever OS is installed. The drive will stay unlocked until the next power cycle.
+
+    **Note:** setting the same password for multiple drives allows them all to be unlocked in one go.
 
 ### Final Notes
 
