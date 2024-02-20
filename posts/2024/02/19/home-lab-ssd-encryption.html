@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Home Lab SSD Encryption" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html"},"url":"https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html","author":{"@type":"Person","name":"Howard Wilson"},"headline":"Home Lab SSD Encryption","description":"Setting up self-encrypting SSDs for secure data and fast performance.","dateModified":"2024-02-19T22:30:00+01:00","datePublished":"2024-02-19T22:30:00+01:00","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","datePublished":"2024-02-19T22:30:00+01:00","url":"https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://watsonbox.github.com/posts/2024/02/19/home-lab-ssd-encryption.html"},"author":{"@type":"Person","name":"Howard Wilson"},"description":"Setting up self-encrypting SSDs for secure data and fast performance.","headline":"Home Lab SSD Encryption","dateModified":"2024-02-19T22:30:00+01:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://watsonbox.github.com/feed.xml" title="Watsonbox" /><script async src="https://www.googletagmanager.com/gtag/js?id=UA-31898875-1"></script>
 <script>
@@ -109,7 +109,7 @@
   <p>Fully encrypt your home server or NAS and conveniently unlock it on startup without the need to attach monitor and keyboard. Unlocking can be done from any device on your LAN with a browser. By default a self-signed HTTPS certificate is used (generated during building) to secure the unlocking.</p>
 </blockquote>
 
-<p>To get things set up, I suggest first verifying that you have an OPAL-compatible SED drive by following <a href="https://sedutil.com/">the instructions on sedutil.com</a>.</p>
+<p>To get things set up, I suggest first verifying that you have a TGC OPAL-compatible SED drive by following <a href="https://sedutil.com/">the instructions on sedutil.com</a>.</p>
 
 <p>Next prepare the PBA image <a href="https://github.com/Jip-Hop/sedunlocksrv-pba?tab=readme-ov-file#building-with-docker">with docker</a> (there are other build methods available). This is the custom image containing a remotely accessible web interface for unlocking the SED drive on boot. Personally, I opted to use the <a href="https://github.com/ChubbyAnt/sedutil">ChubbyAnt fork</a> of <code class="language-plaintext highlighter-rouge">sedutil</code> and enable SSH unlocking in addition to web-based.</p>
 
@@ -152,7 +152,7 @@ sedunlocksrv-pba
     <p>The server powers up and detects that the SED drive is locked, so boots the PBA image from the shadow MBR.</p>
   </li>
   <li>
-    <p>The PBA then starts simple web and SSH servers.</p>
+    <p>The PBA then starts simple web interface and SSH server. By default a self-signed HTTPS certificate is used.</p>
 
     <p><img src="/assets/images/SED Unlock Server.png" alt="Audiobookshelf Voice Notes" /></p>
   </li>
@@ -161,6 +161,8 @@ sedunlocksrv-pba
   </li>
   <li>
     <p>Entering the password and clicking reboot unlocks the drive and reboots using the actual MBR into whatever OS is installed. The drive will stay unlocked until the next power cycle.</p>
+
+    <p><strong>Note:</strong> setting the same password for multiple drives allows them all to be unlocked in one go.</p>
   </li>
 </ol>
 
