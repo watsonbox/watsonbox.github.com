@@ -60,6 +60,33 @@
         <div class="home">
   
 <ul class="post-list"><li><span class="post-meta">
+        <time class="dt-published" datetime="2025-02-09T22:00:00+01:00" itemprop="datePublished">
+          Feb 9, 2025
+        </time>
+      </span>
+      <h1>
+        <a class="post-link" href="/posts/2025/02/09/personal-slack-data-export.html">
+          Personal Slack Data Export
+        </a>
+      </h1><p>The best tool I found for the job is <a href="https://github.com/rusq/slackdump"><code class="language-plaintext highlighter-rouge">slackdump</code></a>. The following steps apply to MacOS only, though of course you may find some work on other platforms.</p>
+
+<h2 id="setup">Setup</h2>
+
+<p>The easiest way to get started is <a href="https://github.com/rusq/slackdump?tab=readme-ov-file#installation-and-quickstart">with Homebrew</a>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>slackdump
+</code></pre></div></div>
+
+<p>To set up authentication, load the Slack web app, and follow the instructions <a href="https://github.com/rusq/slackdump/blob/master/doc/login-manual.rst">here</a> to extract the token and cookie, which should then be added to a file called <code class="language-plaintext highlighter-rouge">secrets.txt</code> in the folder where <code class="language-plaintext highlighter-rouge">slackdump</code> will be run:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SLACK_TOKEN=xoxc-&lt;...elided...&gt;
+COOKIE=xoxd-&lt;...elided...&gt;
+</code></pre></div></div>
+
+
+      
+      <a href="/posts/2025/02/09/personal-slack-data-export.html">Read More</a>
+      </li><li><span class="post-meta">
         <time class="dt-published" datetime="2024-09-04T18:00:00+02:00" itemprop="datePublished">
           Sep 4, 2024
         </time>
@@ -145,25 +172,6 @@
 
       
       <a href="/posts/2020/11/30/discovering-msw.html">Read More</a>
-      </li><li><span class="post-meta">
-        <time class="dt-published" datetime="2015-02-16T17:45:42+01:00" itemprop="datePublished">
-          Feb 16, 2015
-        </time>
-      </span>
-      <h1>
-        <a class="post-link" href="/blog/2015/02/16/googleplacesautocomplete-cocoapod/">
-          GooglePlacesAutocomplete CocoaPod
-        </a>
-      </h1><p><a href="https://github.com/watsonbox/ios_google_places_autocomplete">GooglePlacesAutocomplete</a> is a simple <a href="https://developers.google.com/places/documentation/autocomplete">Google Places API</a> autocompleting address entry view for iOS devices, written in <a href="https://developer.apple.com/swift/">Swift</a>.</p>
-
-<p>There are already a couple of solutions out there for this. GooglePlacesAutocomplete is different because it is 100% Swift, and aims to provide the simplest possible method of entering validated, autocompleted addresses.</p>
-
-<p>It’s available as a CocoaPod - installation instructions <a href="https://github.com/watsonbox/ios_google_places_autocomplete#installation">here</a>. Feedback and contributions welcome!</p>
-
-<h3 id="screenshots">Screenshots</h3>
-
-<p><img width="300" src="https://raw.githubusercontent.com/watsonbox/ios_google_places_autocomplete/master/Screenshots/view.png" />    <img width="300" src="https://raw.githubusercontent.com/watsonbox/ios_google_places_autocomplete/master/Screenshots/search.png" /></p>
-
       </li></ul></div>
 
       </div>

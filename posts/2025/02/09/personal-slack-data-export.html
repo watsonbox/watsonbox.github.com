@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Personal Slack Data Export | Watsonbox</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Personal Slack Data Export" />
+<meta name="author" content="Howard Wilson" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Here’s my opinionated guide to exporting Slack data for archival." />
+<meta property="og:description" content="Here’s my opinionated guide to exporting Slack data for archival." />
+<link rel="canonical" href="https://watsonbox.github.com/posts/2025/02/09/personal-slack-data-export.html" />
+<meta property="og:url" content="https://watsonbox.github.com/posts/2025/02/09/personal-slack-data-export.html" />
+<meta property="og:site_name" content="Watsonbox" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-02-09T22:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Personal Slack Data Export" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","datePublished":"2025-02-09T22:00:00+01:00","url":"https://watsonbox.github.com/posts/2025/02/09/personal-slack-data-export.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://watsonbox.github.com/posts/2025/02/09/personal-slack-data-export.html"},"author":{"@type":"Person","name":"Howard Wilson"},"description":"Here’s my opinionated guide to exporting Slack data for archival.","headline":"Personal Slack Data Export","dateModified":"2025-02-09T22:00:00+01:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://watsonbox.github.com/feed.xml" title="Watsonbox" /><script async src="https://www.googletagmanager.com/gtag/js?id=UA-31898875-1"></script>
+<script>
+  window['ga-disable-UA-31898875-1'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-31898875-1');
+</script>
+<!-- From https://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+<link rel="mask-icon" href="/assets/images/favicon/safari-pinned-tab.svg" color="#3c3c3c">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<meta name="msapplication-TileColor" content="#3c3c3c">
+<meta name="msapplication-config" content="/assets/images/favicon/browserconfig.xml">
+<meta name="theme-color" content="#3c3c3c">
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">
+      <img src="/assets/images/watsonbox.png" />
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/">Blog</a><a class="page-link" href="/archive/">Archive</a><a class="page-link" href="/tags/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Personal Slack Data Export</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2025-02-09T22:00:00+01:00" itemprop="datePublished">
+        Feb 9, 2025
+      </time> |
+        
+          <code class="highlighter-rouge"><a class="post-tag" href="/tags/#slack">Slack</a></code>
+        
+      • 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Howard Wilson</span></span></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>The best tool I found for the job is <a href="https://github.com/rusq/slackdump"><code class="language-plaintext highlighter-rouge">slackdump</code></a>. The following steps apply to MacOS only, though of course you may find some work on other platforms.</p>
+
+<h2 id="setup">Setup</h2>
+
+<p>The easiest way to get started is <a href="https://github.com/rusq/slackdump?tab=readme-ov-file#installation-and-quickstart">with Homebrew</a>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>slackdump
+</code></pre></div></div>
+
+<p>To set up authentication, load the Slack web app, and follow the instructions <a href="https://github.com/rusq/slackdump/blob/master/doc/login-manual.rst">here</a> to extract the token and cookie, which should then be added to a file called <code class="language-plaintext highlighter-rouge">secrets.txt</code> in the folder where <code class="language-plaintext highlighter-rouge">slackdump</code> will be run:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SLACK_TOKEN=xoxc-&lt;...elided...&gt;
+COOKIE=xoxd-&lt;...elided...&gt;
+</code></pre></div></div>
+
+<!--more-->
+
+<h2 id="channel-listing--splitting">Channel Listing &amp; Splitting</h2>
+
+<p>Unfortunately, <code class="language-plaintext highlighter-rouge">slackdump</code> doesn’t provide any runtime estimation while it’s exporting, and exports (particularly with uploaded files) can get very large. Slack rate limiting means they can also take rather a long time.</p>
+
+<p>Let’s split the export up into chunks of different types of data.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>slackdump list channels
+</code></pre></div></div>
+
+<p>This can take a few minutes, but eventually spits out a file like <code class="language-plaintext highlighter-rouge">channels-XYZ.txt</code> with a line for each type of chat you have access to.</p>
+
+<p>First let’s get rid of archived channels. We won’t bother with those.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sed</span> <span class="s1">'/  arch  /d'</span> channels-XYZ.txt <span class="o">&gt;</span> channels-live.txt
+</code></pre></div></div>
+
+<p>Now we’ll split it up into DMs, groups chats, public and channels:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">awk</span> <span class="s1">'$1 ~ /^D/ {print $1}'</span> channels-live.txt <span class="o">&gt;</span> channels-dms.txt
+<span class="nb">awk</span> <span class="s1">'$3 ~ /^Group:/ {print $1}'</span> channels-live.txt <span class="o">&gt;</span> channels-groups.txt
+<span class="nb">awk</span> <span class="s1">'$3 ~ /^#/ {print $1}'</span> channels-live.txt <span class="o">&gt;</span> channels-public.txt
+<span class="nb">awk</span> <span class="s1">'$3 ~ /^🔒/ {print $1}'</span> channels-live.txt <span class="o">&gt;</span> channels-private.txt
+</code></pre></div></div>
+
+<p>Make sure they’re all there before moving on:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ <span class="nb">wc</span> <span class="nt">-l</span> channels-dms.txt channels-groups.txt channels-public.txt channels-private.txt
+     209 channels-dms.txt
+     424 channels-groups.txt
+    1459 channels-public.txt
+      53 channels-private.txt
+    2145 total
+➜ <span class="nb">wc</span> <span class="nt">-l</span> channels-live.txt
+    2146 channels-live.txt
+</code></pre></div></div>
+
+<p>Should you wish to triage any of these first, do it in two stages like this:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">awk</span> <span class="s1">'$3 ~ /^🔒/'</span> channels-live.txt <span class="o">&gt;</span> channels-private-triage.txt
+<span class="c"># Remove any channels/chats which are not required</span>
+<span class="nb">awk</span> <span class="s1">'{print $1}'</span> channels-private-triage.txt <span class="o">&gt;</span> channels-private.txt
+</code></pre></div></div>
+
+<h2 id="exporting">Exporting</h2>
+
+<p>Run an export for each list:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>slackdump <span class="nb">export</span> <span class="nt">-o</span> dms.zip <span class="nt">-avatars</span> <span class="nt">-files</span><span class="o">=</span><span class="nb">true</span> @channels-dms.txt <span class="c"># 26m45s</span>
+slackdump <span class="nb">export</span> <span class="nt">-o</span> groups.zip <span class="nt">-avatars</span> <span class="nt">-files</span><span class="o">=</span><span class="nb">true</span> @channels-groups.txt <span class="c"># 7m35s</span>
+slackdump <span class="nb">export</span> <span class="nt">-o</span> private-channels.zip <span class="nt">-files</span><span class="o">=</span><span class="nb">false</span> @channels-private.txt <span class="c"># 1h51m</span>
+slackdump <span class="nb">export</span> <span class="nt">-o</span> public-channels.zip <span class="nt">-files</span><span class="o">=</span><span class="nb">false</span> @channels-public.txt
+</code></pre></div></div>
+
+<p>Note that I decided to only download user avatars for the DM export, and omit uploaded files for channels to save space.</p>
+
+<p>I also provided my own runtimes here, which correspond to the number of channels in the <code class="language-plaintext highlighter-rouge">wc</code> output above (except public which I cut down significantly). Clearly the runtime also depends a lot on channel sizes, but it gives a vague idea of the order of magnitude.</p>
+
+<p>Slack rate limiting definitely seems to be the limiting factor, allowing bursts of ~5s followed by 10s waits, once the export gets going.</p>
+
+<h2 id="viewing">Viewing</h2>
+
+<p>As <a href="https://github.com/rusq/slackdump?tab=readme-ov-file#previewing-results">the <code class="language-plaintext highlighter-rouge">README</code> describes</a>, Slackdump contains its own built-in viewer:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>slackdump view slack-dms.zip
+</code></pre></div></div>
+
+<p>Alternatively I’ve also had success with <code class="language-plaintext highlighter-rouge">slack-export-viewer</code>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-m</span> venv <span class="nb">.</span>
+<span class="nb">source </span>bin/activate
+pip3 <span class="nb">install </span>slack-export-viewer
+<span class="nb">source </span>bin/activate
+slack-export-viewer <span class="nt">-z</span> ./slack-export.zip <span class="nt">-p</span> 8000
+deactivate
+</code></pre></div></div>
+
+<p><strong>Note</strong>: If you get an error like “codec can’t encode character”, it’s <a href="https://github.com/hfaran/slack-export-viewer/issues/184">this</a>. Extract the zip and point it at the directory instead.</p>
+
+  </div><div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://watsonbox.github.com/posts/2025/02/09/personal-slack-data-export.html';
+      this.page.identifier = 'https://watsonbox.github.com/posts/2025/02/09/personal-slack-data-export.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://watsonbox.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><a class="u-url" href="/posts/2025/02/09/personal-slack-data-export.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+        <ul class="contact-list">
+          <li class="p-name">Howard Wilson</li>
+          <li><a class="u-email" href="mailto:howard@watsonbox.net">howard@watsonbox.net</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>Watsonbox Blog
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/watsonbox" title="watsonbox"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
