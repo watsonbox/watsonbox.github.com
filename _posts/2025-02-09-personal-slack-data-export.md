@@ -2,7 +2,7 @@
 layout: post
 title: "Personal Slack Data Export"
 description:
-  Here's my opinionated guide to exporting Slack data for archival.
+  A guide to exporting personal Slack data for archival.
 date: 2025-02-09 22:00:00 +0100
 tags: [Slack]
 ---
