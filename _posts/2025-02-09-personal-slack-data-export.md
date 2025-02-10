@@ -91,6 +91,27 @@ I also provided my own runtimes here, which correspond to the number of channels
 
 Slack rate limiting definitely seems to be the limiting factor, allowing bursts of ~5s followed by 10s waits, once the export gets going.
 
+### Monitoring Progress
+
+As mentioned, it's not easy to track export progress. I noticed that when it starts, Slackdump shows its temporary directory, for example:
+
+```
+INFO temporary directory in use tmpdir=/var/folders/59/xwg_1t6d29l23h48lddxdlsr0000fn/T/slackdump-1846332288
+```
+
+Inside are a bunch of files, one for each channel (plus one or two more). Knowing how many files are in the input channel list, we can put together a makeshift progress indicator as follows:
+
+```shell
+cd /var/[your dir]
+TOTAL=732; while :; do count=$(ls -1 2>/dev/null | grep -vE 'users.json.gz|workspace.json.gz' | wc -l); printf "\r[%-*s] %d/%d (%.1f%%)" 40 "$(printf '#%.0s' $(seq $((40 * count / TOTAL))))" "$count" "$TOTAL" "$((100 * count / TOTAL)).0"; [ "$count" -ge "$TOTAL" ] && break; sleep 1; done; echo
+```
+
+(Set `TOTAL` to the total number of channels in the input list).
+
+```
+[########################                ] 455/732 (62.0%)
+```
+
 ## Viewing
 
 As [the `README` describes](https://github.com/rusq/slackdump?tab=readme-ov-file#previewing-results), Slackdump contains its own built-in viewer:
