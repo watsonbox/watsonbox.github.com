@@ -151,6 +151,24 @@ slackdump <span class="nb">export</span> <span class="nt">-o</span> public-chann
 
 <p>Slack rate limiting definitely seems to be the limiting factor, allowing bursts of ~5s followed by 10s waits, once the export gets going.</p>
 
+<h3 id="monitoring-progress">Monitoring Progress</h3>
+
+<p>As mentioned, it’s not easy to track export progress. I noticed that when it starts, Slackdump shows its temporary directory, for example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>INFO temporary directory in use tmpdir=/var/folders/59/xwg_1t6d29l23h48lddxdlsr0000fn/T/slackdump-1846332288
+</code></pre></div></div>
+
+<p>Inside are a bunch of files, one for each channel (plus one or two more). Knowing how many files are in the input channel list, we can put together a makeshift progress indicator as follows:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /var/[your <span class="nb">dir</span><span class="o">]</span>
+<span class="nv">TOTAL</span><span class="o">=</span>732<span class="p">;</span> <span class="k">while</span> :<span class="p">;</span> <span class="k">do </span><span class="nv">count</span><span class="o">=</span><span class="si">$(</span><span class="nb">ls</span> <span class="nt">-1</span> 2&gt;/dev/null | <span class="nb">grep</span> <span class="nt">-vE</span> <span class="s1">'users.json.gz|workspace.json.gz'</span> | <span class="nb">wc</span> <span class="nt">-l</span><span class="si">)</span><span class="p">;</span> <span class="nb">printf</span> <span class="s2">"</span><span class="se">\r</span><span class="s2">[%-*s] %d/%d (%.1f%%)"</span> 40 <span class="s2">"</span><span class="si">$(</span><span class="nb">printf</span> <span class="s1">'#%.0s'</span> <span class="si">$(</span><span class="nb">seq</span> <span class="k">$((</span><span class="m">40</span> <span class="o">*</span> count <span class="o">/</span> TOTAL<span class="k">))</span><span class="si">))</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$count</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$TOTAL</span><span class="s2">"</span> <span class="s2">"</span><span class="k">$((</span><span class="m">100</span> <span class="o">*</span> count <span class="o">/</span> TOTAL<span class="k">))</span><span class="s2">.0"</span><span class="p">;</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$count</span><span class="s2">"</span> <span class="nt">-ge</span> <span class="s2">"</span><span class="nv">$TOTAL</span><span class="s2">"</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">break</span><span class="p">;</span> <span class="nb">sleep </span>1<span class="p">;</span> <span class="k">done</span><span class="p">;</span> <span class="nb">echo</span>
+</code></pre></div></div>
+
+<p>(Set <code class="language-plaintext highlighter-rouge">TOTAL</code> to the total number of channels in the input list).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[########################                ] 455/732 (62.0%)
+</code></pre></div></div>
+
 <h2 id="viewing">Viewing</h2>
 
 <p>As <a href="https://github.com/rusq/slackdump?tab=readme-ov-file#previewing-results">the <code class="language-plaintext highlighter-rouge">README</code> describes</a>, Slackdump contains its own built-in viewer:</p>
